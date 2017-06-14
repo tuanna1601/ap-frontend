@@ -1,10 +1,20 @@
 import React from 'react';
+import GoogleLogin from 'react-google-login';
 import LoginForm from './LoginForm';
-import RegisterForm from './RegisterForm';
 
 class Login extends React.Component {
   componentDidMount() {
 
+  }
+
+  googleLoginSucceed = (response) => {
+    alert('succeed');
+    console.log(response);
+  }
+
+  googleLoginFailed = (err) => {
+    alert('failed');
+    console.log(err);
   }
 
   render() {
@@ -17,7 +27,6 @@ class Login extends React.Component {
                 <div className="box-header with-border">
                   <h3 className="box-title">
                     {this.props.mode === 'login' && <span>Đăng nhập</span>}
-                    {this.props.mode === 'register' && <span>Đăng ký</span>}
                   </h3>
                   <div className="box-tools pull-right">
                     {this.props.isLoading && <i className="fa fa-refresh fa-spin" />}
@@ -31,11 +40,14 @@ class Login extends React.Component {
                       />
                     </div>
                   }
-                  {this.props.mode === 'register' &&
-                    <RegisterForm
-                      onSubmit={(values) => this.props.onRegister(values, this.props.lastURL)}
-                    />
-                  }
+                  <hr />
+                  <GoogleLogin
+                    className="btn btn-success btn-flat"
+                    clientId="223830990877-7cae8v3l7pohk9q976m73qk56pu240e6.apps.googleusercontent.com"
+                    buttonText="Đăng nhập bằng Google"
+                    onSuccess={this.googleLoginSucceed}
+                    onFailure={this.googleLoginFailed}
+                  />
                 </div>
                 <div className="box-footer">
                   <ul className="pull-right login-buttons">
@@ -43,13 +55,6 @@ class Login extends React.Component {
                       <li>
                         <a onClick={this.props.onGoLogin}>
                           Đăng nhập
-                        </a>
-                      </li>
-                    }
-                    {this.props.mode !== 'register' &&
-                      <li>
-                        <a onClick={this.props.onGoRegister}>
-                          Đăng ký
                         </a>
                       </li>
                     }

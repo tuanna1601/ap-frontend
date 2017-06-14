@@ -71,12 +71,6 @@ export function setCurrentUser(user) {
   };
 }
 
-export function goRegister() {
-  return {
-    type: SWITCH_REGISTER,
-  };
-}
-
 export function logout(callback) {
   return (dispatch, getState) => {
     const auth = getState().auth;
