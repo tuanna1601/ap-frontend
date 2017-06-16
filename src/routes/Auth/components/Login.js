@@ -7,16 +7,6 @@ class Login extends React.Component {
 
   }
 
-  googleLoginSucceed = (response) => {
-    alert('succeed');
-    console.log(response);
-  }
-
-  googleLoginFailed = (err) => {
-    alert('failed');
-    console.log(err);
-  }
-
   render() {
     return (
       <div className="content-wrapper">
@@ -45,8 +35,8 @@ class Login extends React.Component {
                     className="btn btn-success btn-flat"
                     clientId="223830990877-7cae8v3l7pohk9q976m73qk56pu240e6.apps.googleusercontent.com"
                     buttonText="Đăng nhập bằng Google"
-                    onSuccess={this.googleLoginSucceed}
-                    onFailure={this.googleLoginFailed}
+                    onSuccess={(values) => this.props.onGoogleLogin(values, this.props.lastURL)}
+                    onFailure={(err) => this.props.onGoogleLoginFailed(err)}
                   />
                 </div>
                 <div className="box-footer">
@@ -71,11 +61,10 @@ class Login extends React.Component {
 
 Login.propTypes = {
   mode: React.PropTypes.string.isRequired,
-  onCodeLogin: React.PropTypes.func.isRequired,
   onLogin: React.PropTypes.func.isRequired,
-  onRegister: React.PropTypes.func.isRequired,
+  onGoogleLogin: React.PropTypes.func.isRequired,
+  onGoogleLoginFailed: React.PropTypes.func.isRequired,
   onGoLogin: React.PropTypes.func.isRequired,
-  onGoRegister: React.PropTypes.func.isRequired,
   isLoading: React.PropTypes.bool.isRequired,
   lastURL: React.PropTypes.string,
 };

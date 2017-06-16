@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import Alert from 'react-s-alert';
 import { push } from 'react-router-redux';
-import { login, goLogin } from '../redux/auth';
+import { login, goLogin, googleLogin } from '../redux/auth';
 import Login from './Login';
 
 const mapStateToProps = (state) => ({
@@ -25,6 +25,17 @@ const mapDispatchToProps = (dispatch) => ({
       Alert.success('Đăng nhập thành công');
       dispatch(push(getRedirectURL(redirectURL)));
     }));
+  },
+  onGoogleLogin: (values, redirectURL) => {
+    const { tokenId } = values;
+    dispatch(googleLogin(tokenId, () => {
+      Alert.success('Đăng nhập thành công');
+      dispatch(push(getRedirectURL(redirectURL)));
+    }));
+  },
+  onGoogleLoginFailed: (err) => {
+    Alert.err('Có lỗi xảy ra khi đăng nhập Google');
+    console.error(err);
   },
   onGoLogin: () => dispatch(goLogin()),
 });

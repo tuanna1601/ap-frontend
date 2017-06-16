@@ -102,17 +102,17 @@ export function onAfterRenew() {
 
 export function renew() {
   return (dispatch, getState) => {
-    const auth = getState().auth;
-    if (!auth) {
-      return;
-    }
+    // const auth = getState().auth;
+    // if (!auth) {
+    //   return;
+    // }
 
-    dispatch(onBeforeRenew());
-    HTTP.get(auth, `${__CONFIG__.API.SERVER_URL}/users/renew-token`, dispatch, (data) => {
-      dispatch(onAuthSuccess(data.token));
-    }).then(() => {
-      dispatch(onAfterRenew());
-    });
+    // dispatch(onBeforeRenew());
+    // HTTP.get(auth, `${__CONFIG__.API.SERVER_URL}/users/renew-token`, dispatch, (data) => {
+    //   dispatch(onAuthSuccess(data.token));
+    // }).then(() => {
+    //   dispatch(onAfterRenew());
+    // });
   };
 }
 
@@ -129,29 +129,13 @@ export function getCurrentUser() {
   };
 }
 
-export function getSettings(type) {
-  return (dispatch, getState) => {
-    const auth = getState().auth;
-    if (!auth) {
-      return;
-    }
-
-    HTTP.get(auth, `${__CONFIG__.API.SERVER_URL}/settings/${type}`, dispatch, settings => {
-      // save to session
-      sessionStorage.setItem(`settings-${type}`, JSON.stringify(settings.value));
-    });
-  };
-}
-
 export function login(email, password, callback) {
   return (dispatch) => {
     dispatch(onBeforeLoading());
 
-    HTTP.post({ email, password }, false, `${__CONFIG__.API.SERVER_URL}/users/authenticate`, dispatch, (data) => {
+    HTTP.post({ email, password }, false, `${__CONFIG__.API.SERVER_URL}/users/login`, dispatch, (data) => {
       dispatch(onAuthSuccess(data.token));
-      dispatch(getCurrentUser());
-      dispatch(getSettings('info'));
-      dispatch(getSettings('addresses'));
+      // dispatch(getCurrentUser());
 
       if (callback) {
         callback(data);
@@ -162,34 +146,12 @@ export function login(email, password, callback) {
   };
 }
 
-export function codeLogin(code, callback) {
+export function googleLogin(token, callback) {
   return (dispatch) => {
     dispatch(onBeforeLoading());
 
-    HTTP.post({ code }, false, `${__CONFIG__.API.SERVER_URL}/users/authenticate/code`, dispatch, (data) => {
+    HTTP.post({ token }, false, `${__CONFIG__.API.SERVER_URL}/users/login-google`, dispatch, (data) => {
       dispatch(onAuthSuccess(data.token));
-      dispatch(getCurrentUser());
-      dispatch(getSettings('info'));
-      dispatch(getSettings('addresses'));
-
-      if (callback) {
-        callback(data);
-      }
-    }).then(() => {
-      dispatch(onAfterLoading());
-    });
-  };
-}
-
-export function register(name, email, password, callback) {
-  return (dispatch) => {
-    dispatch(onBeforeLoading());
-
-    HTTP.post({ name, email, password }, false, `${__CONFIG__.API.SERVER_URL}/users/register`, dispatch, (data) => {
-      dispatch(onAuthSuccess(data.token));
-      dispatch(getCurrentUser());
-      dispatch(getSettings('info'));
-      dispatch(getSettings('addresses'));
 
       if (callback) {
         callback(data);
