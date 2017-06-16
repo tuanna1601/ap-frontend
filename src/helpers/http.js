@@ -104,7 +104,17 @@ function sendPost(payload, auth, url, dispatch, onSuccess, onError) {
   renewToken(auth, dispatch);
   const options = addToken({
     method: 'POST',
-    body: JSON.stringify(formatPayload(payload)),
+    body: JSON.stringify(formatPayload(payload))
+  }, auth);
+
+  return request(options, url, dispatch, onSuccess, onError);
+}
+
+function sendFile(payload, auth, url, dispatch, onSuccess, onError) {
+  renewToken(auth, dispatch);
+  const options = addToken({
+    method: 'POST',
+    body: payload
   }, auth);
 
   return request(options, url, dispatch, onSuccess, onError);
@@ -153,6 +163,7 @@ export default {
   get: sendGet,
   put: sendPut,
   post: sendPost,
+  file: sendFile,
   delete: sendDelete,
   param,
 };
