@@ -20,5 +20,5 @@ export default (store) => ({
   indexRoute: {
     component: UserListPage,
     onEnter: (nextState, replace, callback) => checkPermission(['user:list'], store, callback),
-  },
+  }
 });

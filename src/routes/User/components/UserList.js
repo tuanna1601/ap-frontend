@@ -2,12 +2,10 @@ import React from 'react';
 import RBAC from '@/components/RBAC';
 import * as _ from 'lodash';
 import Reactable from 'reactable';
-import { getDeptClass } from '@/helpers/theme';
 import renderPagination from '@/helpers/pagination';
 
 const Table = Reactable.Table;
 const Thead = Reactable.Thead;
-const Tfoot = Reactable.Tfoot;
 const Th = Reactable.Th;
 const Tr = Reactable.Tr;
 const Td = Reactable.Td;
@@ -47,11 +45,11 @@ class UserList extends React.Component {
               {_.chain(this.props.users)
                 .orderBy(['isHighlighted', 'name'], ['asc', 'asc'])
                 .map((user) => <Tr key={user.id} className={user.isHighlighted ? 'highlighted table-row' : 'table-row'}>
-                  <Td column="id">{user.id}</Td>
+                  <Td column="id">{user._id}</Td>
                   <Td column="name">{user.name}</Td>
                   <Td column="email">{user.email}</Td>
-                  <Td column="dept" value={1}>
-                    1
+                  <Td column="role" value={`${user._id}${user.roles[0]}`}>
+                    {user.roles.join(', ')}
                   </Td>
                   <Td column="action" value={user.id} className="table-col button-list">
                     <RBAC requiredPermissions={['user:update']}>

@@ -1,6 +1,5 @@
 import moment from 'moment';
 import * as _ from 'lodash';
-import { getIdFromCode } from '@/helpers/theme';
 
 export default class Validator {
   constructor(arg) {
@@ -100,9 +99,12 @@ export default class Validator {
     return this;
   }
 
-  validateCode(type) {
-    if (this.value && !getIdFromCode(this.value, type)) {
-      this.message = 'Giá trị sai định dạng';
+  validateFile(ext) {
+    if (!this.value) {
+      this.message = 'Chưa chọn file';
+      this.hasError = true;
+    } else if (this.value.name.split('.').pop() !== ext) {
+      this.message = 'Sai định dạng file';
       this.hasError = true;
     }
     return this;

@@ -45,10 +45,11 @@ export function requireAuth(store, callback) {
 }
 
 export function checkPermission(requiredPermissions, store, callback) {
-  const auth = store.getState().auth;
+  // const auth = store.getState().auth;
 
-  return (auth && auth.isLoggedIn && auth.token && _.intersection(auth.user.permissions, requiredPermissions).length)
-    ? callback()
-    : store.dispatch(push('/auth'));
+  return callback();
+  // return (auth && auth.isLoggedIn && auth.token && _.intersection(auth.user.permissions, requiredPermissions).length)
+  //   ? callback()
+  //   : store.dispatch(push('/auth'));
 }
 

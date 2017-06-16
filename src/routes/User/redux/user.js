@@ -12,7 +12,7 @@ const RELOAD_LIST = 'USER_RELOAD_LIST';
 const SET_CURRENT_PAGE = 'USER_SET_CURRENT_PAGE';
 const RESET_CURRENT_PAGE = 'USER_RESET_CURRENT_PAGE';
 const SET_FILTER_QUERY = 'USER_SET_FILTER_QUERY';
-const AFTER_CREATE = 'USER_AFTER_CREATE';
+const AFTER_IMPORT = 'USER_AFTER_IMPORT';
 const AFTER_EDIT = 'USER_AFTER_EDIT';
 /*
  * Actions
@@ -59,10 +59,10 @@ export function onUpdateLoadingUpdate(isLoading) {
   };
 }
 
-export function afterCreateUser(user) {
+export function afterImportUsers(users) {
   return {
-    type: AFTER_CREATE,
-    user,
+    type: AFTER_IMPORT,
+    users,
   };
 }
 
@@ -99,14 +99,14 @@ export function listUsers() {
 
     const url = `${__CONFIG__.API.SERVER_URL}/users?${HTTP.param(query)}`;
     HTTP.get(auth, url, dispatch, (data) => {
-      dispatch(reloadList(data.rows, data.count));
+      dispatch(reloadList(data));
     }).then(() => {
       dispatch(onUpdateLoadingList(false));
     });
   };
 }
 
-export function createUser(user, callback) {
+export function importUser(values, callback) {
   return (dispatch, getState) => {
     const auth = getState().auth;
     if (!auth) {
@@ -114,12 +114,14 @@ export function createUser(user, callback) {
     }
 
     dispatch(onUpdateLoadingCreate(true));
+    const formData = new FormData();
+    formData.append('file', values);
 
-    HTTP.post(user, auth, `${__CONFIG__.API.SERVER_URL}/users`, dispatch, (data) => {
+    HTTP.file(formData, auth, `${__CONFIG__.API.SERVER_URL}/users/import`, dispatch, (data) => {
       if (callback) {
         callback(data);
       }
-      dispatch(afterCreateUser(data));
+      dispatch(afterImportUsers(data));
     }).then(() => {
       dispatch(onUpdateLoadingCreate(false));
     });
@@ -142,7 +144,7 @@ export function updateUser(user, callback) {
 
     dispatch(onUpdateLoadingUpdate(true));
 
-    const url = `${__CONFIG__.API.SERVER_URL}/users/${user.id}`;
+    const url = `${__CONFIG__.API.SERVER_URL}/users/${user._id}`;
     const updatedUser = _.pick(user, 'name', 'legacyBarcode', 'permissions', 'dept');
     HTTP.put(updatedUser, auth, url, dispatch, (data) => {
       if (callback) {
@@ -214,23 +216,21 @@ export function reducer(state = initialState, action) {
       });
     case RELOAD_LIST: {
       const users = _.reduce(action.users, (hashUsers, user) => Object.assign({}, hashUsers, {
-        [user.id]: user,
+        [user._id]: user,
       }), {});
       return Object.assign({}, state, {
         users,
-        pagination: Object.assign({}, state.pagination, {
-          count: action.count,
-        }),
+        // pagination: Object.assign({}, state.pagination, {
+        //   count: action.count,
+        // }),
       });
     }
-    case AFTER_CREATE: {
-      const users = Object.assign({}, state.users, {
-        [action.user.id]: Object.assign({}, action.user, {
-          isHighlighted: true,
-        }),
-      });
+    case AFTER_IMPORT: {
+      const users = _.reduce(action.users, (hashUsers, user) => Object.assign({}, hashUsers, {
+        [user._id]: user,
+      }), {});
       return Object.assign({}, state, {
-        users,
+        users: Object.assign({}, state.users, users)
       });
     }
     case EDIT: {
@@ -246,11 +246,11 @@ export function reducer(state = initialState, action) {
     }
     case AFTER_EDIT: {
       // break if not in current view
-      if (!state.users[action.user.id]) {
+      if (!state.users[action.user._id]) {
         return state;
       }
       const users = Object.assign({}, state.users, {
-        [action.user.id]: Object.assign({}, action.user, {
+        [action.user._id]: Object.assign({}, action.user, {
           isHighlighted: true,
         }),
       });
