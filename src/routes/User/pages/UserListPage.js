@@ -1,6 +1,9 @@
 import React from 'react';
 import RBAC from '@/components/RBAC';
+import { Tabs, Tab } from '@/components/Tabs';
+
 import UserList from '../components/UserListContainer';
+import UserCreateForm from '../components/UserCreateFormContainer';
 import UserImportForm from '../components/UserImportFormContainer';
 
 class UserListPage extends React.Component {
@@ -28,9 +31,18 @@ class UserListPage extends React.Component {
             </div>
           </div>
           <div className="box-body" hidden={this.state.createFormHidden}>
-            <div className="form-create">
-              <UserImportForm />
-            </div>
+            <Tabs>
+              <Tab title="Thêm nhân viên">
+                <div className="form-create">
+                  <UserCreateForm />
+                </div>
+              </Tab>
+              <Tab title="Thêm nhân viên từ file">
+                <div className="form-create">
+                  <UserImportForm />
+                </div>
+              </Tab>
+            </Tabs>
           </div>
         </div>
         <UserList />

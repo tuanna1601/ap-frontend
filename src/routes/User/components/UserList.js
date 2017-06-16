@@ -44,7 +44,7 @@ class UserList extends React.Component {
               </Thead>
               {_.chain(this.props.users)
                 .orderBy(['isHighlighted', 'name'], ['asc', 'asc'])
-                .map((user) => <Tr key={user.id} className={user.isHighlighted ? 'highlighted table-row' : 'table-row'}>
+                .map((user) => <Tr key={user._id} className={user.isHighlighted ? 'highlighted table-row' : 'table-row'}>
                   <Td column="id">{user._id}</Td>
                   <Td column="name">{user.name}</Td>
                   <Td column="email">{user.email}</Td>

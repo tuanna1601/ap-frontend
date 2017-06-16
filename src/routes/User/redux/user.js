@@ -12,6 +12,7 @@ const RELOAD_LIST = 'USER_RELOAD_LIST';
 const SET_CURRENT_PAGE = 'USER_SET_CURRENT_PAGE';
 const RESET_CURRENT_PAGE = 'USER_RESET_CURRENT_PAGE';
 const SET_FILTER_QUERY = 'USER_SET_FILTER_QUERY';
+const AFTER_CREATE = 'USER_AFTER_CREATE';
 const AFTER_IMPORT = 'USER_AFTER_IMPORT';
 const AFTER_EDIT = 'USER_AFTER_EDIT';
 /*
@@ -56,6 +57,13 @@ export function onUpdateLoadingUpdate(isLoading) {
   return {
     type: UPDATE_LOADING_UPDATE,
     isLoading,
+  };
+}
+
+export function afterCreateUser(user) {
+  return {
+    type: AFTER_CREATE,
+    user
   };
 }
 
@@ -106,6 +114,24 @@ export function listUsers() {
   };
 }
 
+export function createUser(values, callback) {
+  return (dispatch, getState) => {
+    const auth = getState().auth;
+    if (!auth) {
+      return;
+    }
+
+    dispatch(onUpdateLoadingCreate(true));
+
+    HTTP.post(values, auth, `${__CONFIG__.API.SERVER_URL}/users`, dispatch, (data) => {
+      if (callback) {
+        callback(data);
+      }
+      dispatch(afterCreateUser(data));
+    }).then(() => dispatch(onUpdateLoadingCreate(false)));
+  };
+}
+
 export function importUser(values, callback) {
   return (dispatch, getState) => {
     const auth = getState().auth;
@@ -122,9 +148,7 @@ export function importUser(values, callback) {
         callback(data);
       }
       dispatch(afterImportUsers(data));
-    }).then(() => {
-      dispatch(onUpdateLoadingCreate(false));
-    });
+    }).then(() => dispatch(onUpdateLoadingCreate(false)));
   };
 }
 
@@ -223,6 +247,13 @@ export function reducer(state = initialState, action) {
         // pagination: Object.assign({}, state.pagination, {
         //   count: action.count,
         // }),
+      });
+    }
+    case AFTER_CREATE: {
+      return Object.assign({}, state, {
+        users: Object.assign({}, state.users, {
+          [action.user._id]: action.user
+        })
       });
     }
     case AFTER_IMPORT: {
