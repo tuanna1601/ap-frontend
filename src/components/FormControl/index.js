@@ -3,6 +3,7 @@ import FormControlSelect from './FormControlSelect';
 import FormControlMultiSelect from './FormControlMultiSelect';
 import FormControlDatePicker from './FormControlDatePicker';
 import FormControlTextArea from './FormControlTextArea';
+import FormControlUpload from './FormControlUpload';
 
 export default FormControl;
 export {
@@ -11,4 +12,5 @@ export {
   FormControlMultiSelect,
   FormControlDatePicker,
   FormControlTextArea,
+  FormControlUpload,
 };
