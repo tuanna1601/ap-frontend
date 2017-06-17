@@ -169,7 +169,7 @@ export function updateUser(user, callback) {
     dispatch(onUpdateLoadingUpdate(true));
 
     const url = `${__CONFIG__.API.SERVER_URL}/users/${user._id}`;
-    const updatedUser = _.pick(user, 'name', 'legacyBarcode', 'permissions', 'dept');
+    const updatedUser = _.pick(user, 'name', 'email', 'role');
     HTTP.put(updatedUser, auth, url, dispatch, (data) => {
       if (callback) {
         callback(data);

@@ -4,8 +4,6 @@ import { FormControl, FormControlSelect } from '@/components/FormControl';
 import Validator from '@/helpers/validator';
 import { generateRoleOptions } from '@/helpers/helper';
 
-const roleOptions = generateRoleOptions();
-
 const UserCreateForm = ({ handleSubmit, isLoading, submitting, pristine, reset }) => (
   <form className="table-row" onSubmit={handleSubmit}>
     <div className="row">
@@ -33,7 +31,7 @@ const UserCreateForm = ({ handleSubmit, isLoading, submitting, pristine, reset }
         <div className="form-group">
           <Field
             type="text" component={FormControlSelect}
-            options={roleOptions}
+            options={generateRoleOptions()}
             id="role"
             name="role"
             label="Chức vụ"

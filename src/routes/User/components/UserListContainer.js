@@ -1,13 +1,13 @@
 import React from 'react';
+import Alert from 'react-s-alert';
 import { connect } from 'react-redux';
 import { showForm } from '@/store/modal';
-import Alert from 'react-s-alert';
 import {
-  listUsers, updateUser,
-  setFilterQuery, goToPage, resetCurrentPage
+  listUsers, setFilterQuery, updateUser,
+  goToPage, resetCurrentPage
 } from '../redux/user';
 import UserList from './UserList';
-import UserEditForm from './UserEditFormContainer';
+import UserCreateForm from './UserCreateForm';
 
 const mapStateToProps = (state) => ({
   users: state.user.users,
@@ -21,9 +21,11 @@ const mapDispatchToProps = (dispatch) => ({
   goToPage: (page) => dispatch(goToPage(page)),
   resetCurrentPage: () => dispatch(resetCurrentPage()),
   onEdit: (user) => {
-    const updateForm = <UserEditForm form={`user-edit-${user.id}`} initialValues={user} />;
+    const updateForm = <UserCreateForm form={`user-edit-${user.id}`} isLoading={false} initialValues={user} />;
     dispatch(showForm('Sửa người dùng', updateForm,
-      values => dispatch(updateUser(values, (data) => Alert.success(`${data.name} đã được sửa thành công`)))
+      values => dispatch(updateUser(values, (data) => {
+        Alert.success(`${data.name} đã được sửa thành công`);
+      }))
     ));
   }
 });

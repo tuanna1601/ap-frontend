@@ -1,5 +1,4 @@
 import React from 'react';
-import RBAC from '@/components/RBAC';
 import * as _ from 'lodash';
 import Reactable from 'reactable';
 import renderPagination from '@/helpers/pagination';
@@ -44,15 +43,15 @@ class UserList extends React.Component {
               </Thead>
               {_.chain(this.props.users)
                 .orderBy(['isHighlighted', 'name'], ['asc', 'asc'])
-                .map((user) => <Tr key={user._id} className={user.isHighlighted ? 'highlighted table-row' : 'table-row'}>
-                  <Td column="id">{user._id}</Td>
-                  <Td column="name">{user.name}</Td>
-                  <Td column="email">{user.email}</Td>
-                  <Td column="role" value={`${user._id}${user.roles[0]}`}>
-                    {user.roles.join(', ')}
-                  </Td>
-                  <Td column="action" value={user.id} className="table-col button-list">
-                    <RBAC requiredPermissions={['user:update']}>
+                .map((user) =>
+                  <Tr key={user._id} className={user.isHighlighted ? 'highlighted table-row' : 'table-row'}>
+                    <Td column="id">{user._id}</Td>
+                    <Td column="name">{user.name}</Td>
+                    <Td column="email">{user.email}</Td>
+                    <Td column="role" value={`${user._id}${user.roles[0]}`}>
+                      {user.roles.join(', ')}
+                    </Td>
+                    <Td column="action" value={user.id} className="table-col button-list">
                       <button
                         className="btn btn-xs btn-warning btn-flat"
                         onClick={() => this.props.onEdit(user)}
@@ -60,9 +59,8 @@ class UserList extends React.Component {
                       >
                         <i className="fa fa-fw fa-pencil" />
                       </button>
-                    </RBAC>
-                  </Td>
-                </Tr>
+                    </Td>
+                  </Tr>
                 ).value()
               }
             </Table>
