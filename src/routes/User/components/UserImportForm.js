@@ -48,7 +48,7 @@ UserImportForm.propTypes = {
 export default reduxForm({
   validate: (values) => ({
     importFile: (new Validator(values.importFile))
-      .validateFile('xlsx')
+      .validateFile(['xlsx'])
       .getMessage()
   })
 })(UserImportForm);
