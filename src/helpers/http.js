@@ -110,11 +110,21 @@ function sendPost(payload, auth, url, dispatch, onSuccess, onError) {
   return request(options, url, dispatch, onSuccess, onError);
 }
 
-function sendFile(payload, auth, url, dispatch, onSuccess, onError) {
+function sendFormDataPost(payload, auth, url, dispatch, onSuccess, onError) {
   renewToken(auth, dispatch);
   const options = addToken({
     method: 'POST',
     body: payload
+  }, auth);
+
+  return request(options, url, dispatch, onSuccess, onError);
+}
+
+function sendFormDataPut(payload, auth, url, dispatch, onSuccess, onError) {
+  renewToken(auth, dispatch);
+  const options = addToken({
+    method: 'PUT',
+    body: payload,
   }, auth);
 
   return request(options, url, dispatch, onSuccess, onError);
@@ -163,7 +173,8 @@ export default {
   get: sendGet,
   put: sendPut,
   post: sendPost,
-  file: sendFile,
+  postForm: sendFormDataPost,
   delete: sendDelete,
+  putForm: sendFormDataPut,
   param,
 };

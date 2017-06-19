@@ -143,7 +143,7 @@ export function importUser(values, callback) {
     const formData = new FormData();
     formData.append('file', values);
 
-    HTTP.file(formData, auth, `${__CONFIG__.API.SERVER_URL}/users/import`, dispatch, (data) => {
+    HTTP.postForm(formData, auth, `${__CONFIG__.API.SERVER_URL}/users/import`, dispatch, (data) => {
       if (callback) {
         callback(data);
       }
