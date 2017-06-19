@@ -5,6 +5,7 @@ import InventoryLayout from './layouts/InventoryLayout';
 import InventoryListPage from './pages/InventoryListPage';
 import InventoryCreatePage from './pages/InventoryCreatePage';
 import InventoryUpdatePage from './pages/InventoryUpdatePage';
+import InventortAdsPreviewPage from './pages/InventoryAdsPreviewPage';
 
 export default (store) => ({
   path: 'inventory',
@@ -32,6 +33,11 @@ export default (store) => ({
     {
       path: 'update',
       component: InventoryUpdatePage,
+      onEnter: (nextState, replace, callback) => checkPermission(['inventory:update'], store, callback)
+    },
+    {
+      path: 'ads-preview',
+      component: InventortAdsPreviewPage,
       onEnter: (nextState, replace, callback) => checkPermission(['inventory:update'], store, callback)
     }
   ]

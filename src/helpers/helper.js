@@ -40,3 +40,10 @@ export function generateInventoryStatusLabel(status) {
       return '';
   }
 }
+
+export function generateOptionsLabel(arr) {
+  return arr.map(data => ({
+    value: data,
+    label: data
+  }));
+}

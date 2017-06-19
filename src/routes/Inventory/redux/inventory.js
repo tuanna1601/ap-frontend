@@ -203,6 +203,25 @@ export function goToPage(page) {
   };
 }
 
+export function loadFacebookAdsPreview(query, callback) {
+  return (dispatch, getState) => {
+    const auth = getState().auth;
+    if (!auth) {
+      return;
+    }
+
+    dispatch(onUpdateLoadingUpdate(true));
+    const url = `${__CONFIG__.API.FB_URL}/generatepreview?${HTTP.param(query)}`;
+    HTTP.get(auth, url, dispatch, (data) => {
+      if (callback) {
+        callback(data);
+      }
+    }).then(() => {
+      dispatch(onUpdateLoadingUpdate(false));
+    });
+  };
+}
+
 /*
  * Initial state
  */
