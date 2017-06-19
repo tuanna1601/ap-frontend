@@ -25,3 +25,18 @@ export function generateRoleOptions() {
     value: role
   }));
 }
+
+export function generateInventoryStatusLabel(status) {
+  switch (status) {
+    case 'unassigned':
+      return 'Chưa phân phối';
+    case 'assigned':
+      return 'Chưa duyệt';
+    case 'accepeted':
+      return 'Đã duyệt';
+    case 'rejected':
+      return 'Đã từ chối';
+    default:
+      return '';
+  }
+}

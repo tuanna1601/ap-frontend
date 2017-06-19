@@ -5,6 +5,7 @@ import CoreLayout from '@/layouts/CoreLayout/CoreLayoutContainer';
 import HomeRoute from './Home';
 import AuthRoute from './Auth';
 import UserRoute from './User';
+import InventoryRoute from './Inventory';
 
 /*  Note: Instead of using JSX, we recommend using react-router
     PlainRoute objects to build route definitions.   */
@@ -16,6 +17,7 @@ const createRoutes = (store) => ({
   childRoutes: [
     AuthRoute(store),
     UserRoute(store),
+    InventoryRoute(store),
   ],
 });
 
