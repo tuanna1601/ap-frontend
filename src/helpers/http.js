@@ -56,7 +56,12 @@ function request(options, url, dispatch, onSuccess, onError) {
   return fetch(url, options)
     .then(checkStatus)
     .then(res => res.json())
-    .then((data) => onSuccess && onSuccess(data))
+    .then((data) => {
+      if (onSuccess) {
+        onSuccess(data);
+      }
+      return data;
+    })
     .catch((error) => {
       // Default error handler
       const status = error.response ? error.response.status : 500;

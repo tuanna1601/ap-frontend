@@ -15,6 +15,7 @@ const RESET_CURRENT_PAGE = 'INVENTORY_RESET_CURRENT_PAGE';
 const SET_FILTER_QUERY = 'INVENTORY_SET_FILTER_QUERY';
 const AFTER_CREATE = 'INVENTORY_AFTER_CREATE';
 const AFTER_EDIT = 'INVENTORY_AFTER_EDIT';
+const SET_ADS_PREVIEW = 'INVENTORY_SET_ADS_PREVIEW';
 /*
  * Actions
  */
@@ -203,7 +204,14 @@ export function goToPage(page) {
   };
 }
 
-export function loadFacebookAdsPreview(query, callback) {
+export function setAdsPreview(adsPreview) {
+  return {
+    type: SET_ADS_PREVIEW,
+    adsPreview
+  };
+}
+
+export function loadFacebookAdsPreview(ad_account, query, callback) {
   return (dispatch, getState) => {
     const auth = getState().auth;
     if (!auth) {
@@ -211,11 +219,12 @@ export function loadFacebookAdsPreview(query, callback) {
     }
 
     dispatch(onUpdateLoadingUpdate(true));
-    const url = `${__CONFIG__.API.FB_URL}/generatepreview?${HTTP.param(query)}`;
+    const url = `${__CONFIG__.API.FB_URL}act_${ad_account}/generatepreviews?${HTTP.param(query)}`;
     HTTP.get(auth, url, dispatch, (data) => {
       if (callback) {
-        callback(data);
+        callback(data.data[0].body);
       }
+      dispatch(setAdsPreview(data.data[0].body));
     }).then(() => {
       dispatch(onUpdateLoadingUpdate(false));
     });
@@ -236,6 +245,7 @@ const initialState = {
     limit: 50,
   },
   filterQuery: {},
+  adsPreview: '<span></span>'
 };
 
 /*
@@ -312,6 +322,11 @@ export function reducer(state = initialState, action) {
       });
       return Object.assign({}, state, {
         inventories,
+      });
+    }
+    case SET_ADS_PREVIEW: {
+      return Object.assign({}, state, {
+        adsPreview: action.adsPreview
       });
     }
     default:
