@@ -74,7 +74,6 @@ class InventoryAdsPreviewForm extends Component {
                         id="access_token" name="access_token"
                         label="Facebook Access Token" hasLabel
                       />
-                      <i>Bạn </i>
                     </div>
                   </div>
                   <div className="col-xs-12">
