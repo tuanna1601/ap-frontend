@@ -1,3 +1,5 @@
+import * as _ from 'lodash';
+
 export function generateRoleLabel(role) {
   switch (role) {
     case 'admin':
@@ -46,4 +48,13 @@ export function generateOptionsLabel(arr) {
     value: data,
     label: data
   }));
+}
+
+export function nestDescendants(id, depts) {
+  if (!depts[id] || !depts[id].descendants.length) {
+    return depts[id];
+  }
+  return Object.assign({}, depts[id], {
+    descendants: _.map(depts[id].descendants, des => nestDescendants(des, depts))
+  });
 }

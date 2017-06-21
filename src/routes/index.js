@@ -6,6 +6,7 @@ import HomeRoute from './Home';
 import AuthRoute from './Auth';
 import UserRoute from './User';
 import InventoryRoute from './Inventory';
+import DepartmentRoute from './Department';
 
 /*  Note: Instead of using JSX, we recommend using react-router
     PlainRoute objects to build route definitions.   */
@@ -18,6 +19,7 @@ const createRoutes = (store) => ({
     AuthRoute(store),
     UserRoute(store),
     InventoryRoute(store),
+    DepartmentRoute(store)
   ],
 });
 
