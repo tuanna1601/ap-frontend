@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Field, FieldArray, reduxForm } from 'redux-form';
 import { FormControl, FormControlTextArea, FormControlUpload } from '@/components/FormControl';
+import { DepartmentField } from '@/components/Field';
 import Validator from '@/helpers/validator';
 import { Tab, Tabs } from '@/components/Tabs';
 
@@ -246,23 +247,21 @@ class InventoryUpdateForm extends Component {
             <Tabs>
               <Tab title="Kho nguyên liệu quảng cáo">
                 <div className="row">
-                  {/*
-                    <div className="col-md-4">
-                      <div className="form-group">
-                        <Field
-                          type="text" component={FormControl}
-                          id="email" name="email"
-                          label="Email" hasLabel
-                        />
-                      </div>
+                  <div className="col-md-4">
+                    <div className="form-group">
+                      <DepartmentField
+                        id="department" name="department"
+                        label="Đơn vị" hasLabel
+                        disabled
+                      />
                     </div>
-                  */}
+                  </div>
                   <div className="col-md-4">
                     <div className="form-group">
                       <Field
                         type="text" component={FormControl}
                         id="name" name="name"
-                        label="Mã kho" hasLabel
+                        label="Tên kho" hasLabel
                         readOnly
                       />
                     </div>

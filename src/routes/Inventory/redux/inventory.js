@@ -99,9 +99,9 @@ export function listInventories() {
 
     dispatch(onUpdateLoadingList(true));
     const pagination = getState().inventory.pagination;
-    const filterQuery = getState().inventory.filterQuery;
 
-    const query = Object.assign({}, filterQuery, {
+
+    const query = Object.assign({}, {
       limit: pagination.limit,
       page: pagination.page,
     });
