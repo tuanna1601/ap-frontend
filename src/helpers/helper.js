@@ -31,7 +31,7 @@ export function generateRoleOptions() {
 export function generateInventoryStatusLabel(status) {
   switch (status) {
     case 'unassigned':
-      return 'Chưa phân phối';
+      return 'Chưa phân công';
     case 'assigned':
       return 'Chưa duyệt';
     case 'accepeted':
