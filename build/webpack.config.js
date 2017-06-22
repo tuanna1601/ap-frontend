@@ -55,7 +55,7 @@ webpackConfig.output = {
 webpackConfig.plugins = [
   new webpack.DefinePlugin(config.globals),
   new HtmlWebpackPlugin({
-    template: paths.client('index.html'),
+    template: paths.client('index.php'),
     hash: false,
     favicon: paths.client('static/favicon.ico'),
     filename: 'index.php',
