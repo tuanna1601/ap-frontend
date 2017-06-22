@@ -1,8 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import { Field, reduxForm } from 'redux-form';
+import * as _ from 'lodash';
 import {
-  FormControl, FormControlSelect,
+  FormControl, FormControlSelect, FormControlImage
 } from '@/components/FormControl';
+import {
+  InventoryField
+} from '@/components/Field';
 import Validator from '@/helpers/validator';
 import { generateOptionsLabel } from '@/helpers/helper';
 
@@ -43,7 +47,30 @@ class InventoryAdsPreviewForm extends Component {
   }
 
   render() {
-    const { handleSubmit, isLoading, submitting, pristine, reset } = this.props;
+    const { handleSubmit, isLoading, submitting,
+      pristine, reset, inventory } = this.props;
+
+    let headlineOptions = [];
+    let descriptionOptions = [];
+    let imageOptions = [];
+
+    if (inventory) {
+      headlineOptions = _.map(inventory.headlines, (headline) => ({
+        value: headline,
+        label: headline
+      }));
+
+      descriptionOptions = _.map(inventory.descriptions, (des) => ({
+        value: des,
+        label: des
+      }));
+
+      imageOptions = _.map((inventory.medias), (image, index) => ({
+        index,
+        value: `${__CONFIG__.API.SERVER_URL}/${image}`,
+        label: image
+      }));
+    }
 
     return (
       <div className="row">
@@ -57,6 +84,18 @@ class InventoryAdsPreviewForm extends Component {
             </div>
             <div className="box-body">
               <form className="table-row" onSubmit={handleSubmit}>
+                <div className="row">
+                  <div className="col-xs-12">
+                    <div className="form-group">
+                      <InventoryField
+                        id="inventory"
+                        name="inventory"
+                        label="Kho nguyên liệu"
+                        hasLabel
+                      />
+                    </div>
+                  </div>
+                </div>
                 <div className="row">
                   <div className="col-xs-12">
                     <div className="form-group">
@@ -98,9 +137,10 @@ class InventoryAdsPreviewForm extends Component {
                   <div className="col-xs-12">
                     <div className="form-group">
                       <Field
-                        type="text" component={FormControl}
+                        type="text" component={FormControlSelect}
                         id="post.message"
                         name="post.message"
+                        options={descriptionOptions}
                         label="Message" hasLabel
                       />
                     </div>
@@ -128,9 +168,10 @@ class InventoryAdsPreviewForm extends Component {
                   <div className="col-xs-12">
                     <div className="form-group">
                       <Field
-                        type="text" component={FormControl}
+                        type="text" component={FormControlSelect}
                         id="post.name"
                         name="post.name"
+                        options={headlineOptions}
                         label="Name" hasLabel
                       />
                     </div>
@@ -138,10 +179,10 @@ class InventoryAdsPreviewForm extends Component {
                   <div className="col-xs-12">
                     <div className="form-group">
                       <Field
-                        type="text" component={FormControl}
-                        id="post.picture"
-                        name="post.picture"
-                        label="Image URL" hasLabel
+                        id="picture" component={FormControlImage}
+                        name="picture"
+                        options={imageOptions}
+                        label="Picture" hasLabel
                       />
                     </div>
                   </div>
@@ -189,7 +230,7 @@ InventoryAdsPreviewForm.propTypes = {
 
   form: PropTypes.string.isRequired,
   adsPreview: PropTypes.element,
-  ad_format: PropTypes.string
+  inventory: PropTypes.object
 };
 
 export default reduxForm({
