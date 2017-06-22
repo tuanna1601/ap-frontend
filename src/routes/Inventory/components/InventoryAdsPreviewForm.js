@@ -179,8 +179,8 @@ class InventoryAdsPreviewForm extends Component {
                   <div className="col-xs-12">
                     <div className="form-group">
                       <Field
-                        id="picture" component={FormControlImage}
-                        name="picture"
+                        id="post.picture" component={FormControlImage}
+                        name="post.picture"
                         options={imageOptions}
                         label="Picture" hasLabel
                       />
