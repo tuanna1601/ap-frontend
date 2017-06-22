@@ -212,20 +212,8 @@ export function reducer(state = initialState, action) {
     case RELOAD_LIST: {
       const departments = _.reduce(action.departments, (hashDept, department) =>
         Object.assign({}, hashDept, { [department.id]: department }), {});
-      const nestedDepartments = _.reduce(action.departments, (nestedDept, department) => {
-        if (!department.parent) {
-          if (department.descendants && department.descendants.length) {
-            nestedDept.push(Object.assign({}, nestDescendants(department.id, departments)));
-          } else {
-            nestedDept.push(department);
-          }
-          return nestedDept;
-        }
-        return nestedDept;
-      }, []);
       return Object.assign({}, state, {
         departments,
-        nestedDepartments
       });
     }
     case AFTER_EDIT: {
