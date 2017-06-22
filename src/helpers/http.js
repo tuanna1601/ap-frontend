@@ -76,7 +76,7 @@ function request(options, url, dispatch, onSuccess, onError) {
         // Display error message on screen
         const errorObject = error.response.json();
         errorObject.then((data) => {
-          if (data.error) {
+          if (typeof data.error !== 'string') {
             Alert.error(data.error.message);
           } else {
             Alert.error(data.message);
