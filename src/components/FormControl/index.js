@@ -4,6 +4,7 @@ import FormControlMultiSelect from './FormControlMultiSelect';
 import FormControlDatePicker from './FormControlDatePicker';
 import FormControlTextArea from './FormControlTextArea';
 import FormControlUpload from './FormControlUpload';
+import FormControlImage from './FormControlImage';
 
 export default FormControl;
 export {
@@ -13,4 +14,5 @@ export {
   FormControlDatePicker,
   FormControlTextArea,
   FormControlUpload,
+  FormControlImage,
 };
