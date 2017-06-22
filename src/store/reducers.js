@@ -5,6 +5,7 @@ import { responsiveStateReducer as browser } from 'redux-responsive';
 import { reducer as auth } from '@/routes/Auth/redux/auth';
 import { reducer as theme } from './theme';
 import { reducer as modal } from './modal';
+import { reducer as common } from './common';
 
 export const makeRootReducer = (asyncReducers) => combineReducers({
   // Add sync reducers here
@@ -14,6 +15,7 @@ export const makeRootReducer = (asyncReducers) => combineReducers({
   modal,
   auth,
   browser,
+  common,
   ...asyncReducers,
 });
 

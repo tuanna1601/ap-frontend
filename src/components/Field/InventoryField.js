@@ -4,6 +4,10 @@ import * as _ from 'lodash';
 import { FormControlSelect } from '@/components/FormControl';
 
 class InventoryField extends React.Component {
+  componentDidMount() {
+    this.props.listOptions();
+  }
+
   componentWillUnmount() {
     this.props.resetOptions();
   }
@@ -13,7 +17,6 @@ class InventoryField extends React.Component {
       <Field
         component={FormControlSelect}
         options={this.props.options}
-        onInputChange={_.debounce((keyword) => this.props.listOptions(keyword), 500)}
         {...this.props}
       />
     );

@@ -1,21 +1,21 @@
 import { connect } from 'react-redux';
 import * as _ from 'lodash';
-import { listInventories } from '@/routes/Inventory/redux/inventory';
+import { listInventories } from '@/store/common';
 import InventoryField from './InventoryField';
 
 const mapStateToProps = (state) => ({
-  options: _.chain(state.inventory.inventories)
+  options: _.chain(state.common.inventories)
     .orderBy(['name'], ['asc'])
     .map((inventory) => ({
       value: inventory.id,
-      label: `${inventory.name}}`,
-      inventory
+      label: `${inventory.name}`,
+      data: inventory
     }))
     .value(),
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  listOptions: (keyword) => dispatch(listInventories({ name: keyword })),
+  listOptions: () => dispatch(listInventories()),
   resetOptions: () => dispatch(listInventories()),
 });
 
