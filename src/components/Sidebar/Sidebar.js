@@ -25,6 +25,23 @@ const Sidebar = ({ isLoggedIn, toggleMenu, tree }) => (
               </SidebarItem>
             </ul>
           </SidebarTree>
+          <SidebarTree treeId="department" className={tree.department ? 'treeview active' : 'treeview'}>
+            <a onClick={() => toggleMenu('department')}>
+              <i className="fa fa-building" />
+              <span>
+                Quản lý đơn vị
+              </span>
+              <span className="pull-right-container">
+                <i className="fa fa-angle-left pull-right" />
+              </span>
+            </a>
+            <ul className="treeview-menu">
+              <SidebarItem treeId="department.list" to="/department">
+                <i className="fa fa-list" />
+                <span>Cây đơn vị</span>
+              </SidebarItem>
+            </ul>
+          </SidebarTree>
           <SidebarTree treeId="inventory" className={tree.inventory ? 'treeview active' : 'treeview'}>
             <a onClick={() => toggleMenu('inventory')}>
               <i className="fa fa-cubes" />
