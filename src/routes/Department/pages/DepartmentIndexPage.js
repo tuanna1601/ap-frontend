@@ -32,7 +32,7 @@ class DepartmentIndexPage extends React.Component {
             </div>
           </div>
         </div>
-        <DepartmentTree />
+        {/* <DepartmentTree /> */}
       </section>
     );
   }
