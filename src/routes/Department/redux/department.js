@@ -1,6 +1,7 @@
 import * as _ from 'lodash';
 import HTTP from '@/helpers/http';
-import { nestDescendants } from '@/helpers/helper';
+import { nestChildren } from '@/helpers/helper';
+import { commonAfterCreateDepartment } from '@/store/common';
 
 /*
  * Action types
@@ -106,6 +107,7 @@ export function createDepartment(department, callback) {
         callback(data);
       }
       dispatch(afterCreateDepartment(data));
+      dispatch(commonAfterCreateDepartment(data));
     }).then(() => {
       dispatch(onUpdateLoadingCreate(false));
     });
@@ -121,7 +123,7 @@ export function updateDepartment(department, callback) {
 
     dispatch(onUpdateLoadingUpdate(true));
 
-    HTTP.put(_.pick(department, ['name', 'barcodePrefix', 'description', 'parentId', 'isFeatured']),
+    HTTP.put(_.pick(department, ['name', 'parent', 'reviewers', 'ordinators']),
       auth, `${__CONFIG__.API.SERVER_URL}/departments/${department.id}`, dispatch, (data) => {
         if (callback) {
           callback(data);
@@ -181,7 +183,6 @@ export function resetCategories() {
 const initialState = {
   departments: {},
   nestedDepartments: [],
-  isHighlighted: {},
   isLoadingList: false,
   isLoadingCreate: false,
   isLoadingUpdate: false,
@@ -212,16 +213,42 @@ export function reducer(state = initialState, action) {
     case RELOAD_LIST: {
       const departments = _.reduce(action.departments, (hashDept, department) =>
         Object.assign({}, hashDept, { [department.id]: department }), {});
+      const nestedDepartments = [];
+      _.each(action.departments, (department) => {
+        if (!department.parent) {
+          if (department.descendants && department.descendants.length) {
+            nestedDepartments.push(Object.assign({}, department, {
+              children: nestChildren(department.id, action.departments)
+            }));
+          } else {
+            nestedDepartments.push(department);
+          }
+        }
+      });
       return Object.assign({}, state, {
         departments,
+        nestedDepartments
       });
     }
     case AFTER_EDIT: {
+      const departments = Object.assign({}, state.departments, {
+        [action.department.id]: action.department
+      });
+      const nestedDepartments = [];
+      _.each(departments, (department) => {
+        if (!department.parent) {
+          if (department.descendants && department.descendants.length) {
+            nestedDepartments.push(Object.assign({}, department, {
+              children: nestChildren(department.id, departments)
+            }));
+          } else {
+            nestedDepartments.push(department);
+          }
+        }
+      });
       return Object.assign({}, state, {
-        isHighlighted: Object.assign({}, state.isHighlighted, {
-          [action.department.id]: true,
-        }),
-        isEdit: _.omit(state.isEdit, action.department.id),
+        departments,
+        nestedDepartments
       });
     }
     case AFTER_CREATE: {
@@ -239,13 +266,12 @@ export function reducer(state = initialState, action) {
         }
         return dept;
       });
-      const nestedDepartments = addToNested(action.department, state.nestedDepartments);
+      const nestedDepartments = action.department.parent ?
+        addToNested(action.department, state.nestedDepartments) :
+        _.concat(state.nestedDepartments, action.department);
       return Object.assign({}, state, {
         departments,
         nestedDepartments,
-        isHighlighted: Object.assign({}, state.isHighlighted, {
-          [action.department.id]: true,
-        }),
       });
     }
     case RESET:

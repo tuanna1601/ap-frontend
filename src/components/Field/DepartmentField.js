@@ -12,7 +12,7 @@ export default class DepartmentField extends Component {
     const options = [];
     if (this.props.hasRoot) {
       options.push({
-        value: 0,
+        value: '',
         label: '/',
       });
     }

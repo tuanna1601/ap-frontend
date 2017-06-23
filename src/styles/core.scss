@@ -463,17 +463,3 @@
     font-style: italic;
   }
 }
-
-/* ============== TREE ============= */
-
-.m-tree {
-  & > .m-node {
-    & > .inner {
-      .department-node {
-        .button-list {
-          display: none;
-        }
-      }
-    }
-  }
-}

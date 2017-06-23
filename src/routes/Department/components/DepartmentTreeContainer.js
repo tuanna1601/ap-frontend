@@ -1,35 +1,40 @@
+import React from 'react';
 import Alert from 'react-s-alert';
 import { connect } from 'react-redux';
 import 'react-ui-tree/dist/react-ui-tree.css';
 
 import { reduce } from 'lodash';
-import { updateDepartmentTree } from '../redux/department';
-import DepartmentTree from './DepartmentTree';
 
-function flattenChildren(descendants) {
-  return reduce(descendants, (desArr, des) => {
-    desArr.push({
-      id: des.id,
-      name: des.name,
-      children: flattenChildren(des.descendants)
-    });
-    return desArr;
-  }, []);
-}
+import { showForm } from '@/store/modal';
+import { listDepartments, updateDepartment } from '../redux/department';
+
+import DepartmentTree from './DepartmentTree';
+import DepartmentForm from './DepartmentForm';
 
 const mapStateToProps = (state) => ({
   tree: {
     id: 0,
     name: '/',
-    children: flattenChildren(state.department.nestedDepartments),
+    children: state.department.nestedDepartments,
   },
   isHighlighted: state.department.isHighlighted
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onSubmit: (tree) => dispatch(updateDepartmentTree(tree, () => {
-    Alert.success('Cây đơn vị đã được cập nhật thành công');
-  })),
+  listDepartments: () => dispatch(listDepartments()),
+  onEdit: (department) => {
+    const updateForm = (
+      <DepartmentForm
+        form={`department-edit-${department.id}`}
+        isLoading={false} initialValues={department}
+      />
+    );
+    dispatch(showForm('Sửa thông tin đơn vị', updateForm,
+      values => dispatch(updateDepartment(values, (data) => {
+        Alert.success(`${data.name} đã được sửa thành công`);
+      }))
+    ));
+  }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DepartmentTree);

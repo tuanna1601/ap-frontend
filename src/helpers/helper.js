@@ -50,11 +50,19 @@ export function generateOptionsLabel(arr) {
   }));
 }
 
-export function nestDescendants(id, depts) {
-  if (!depts[id] || !depts[id].descendants.length) {
-    return depts[id];
-  }
-  return Object.assign({}, depts[id], {
-    descendants: _.map(depts[id].descendants, des => nestDescendants(des, depts))
+export function nestChildren(id, depts) {
+  const results = [];
+  const filteredDepts = _.filter(depts, (dept) => dept.id !== id);
+  _.each(filteredDepts, (dept) => {
+    if (dept.parent === id) {
+      if (dept.descendants && dept.descendants.length) {
+        results.push(Object.assign({}, dept, {
+          children: nestChildren(dept.id, filteredDepts)
+        }));
+      } else {
+        results.push(dept);
+      }
+    }
   });
+  return results;
 }

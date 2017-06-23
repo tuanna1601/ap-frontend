@@ -6,14 +6,15 @@ class DepartmentTree extends React.Component {
     super(props);
 
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    // this.handleChange = this.handleChange.bind(this);
+    this.renderNode = this.renderNode.bind(this);
     this.state = {
       tree: this.props.tree,
     };
   }
 
   componentDidMount() {
+    this.props.listDepartments();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -22,22 +23,40 @@ class DepartmentTree extends React.Component {
     });
   }
 
-  handleChange(tree) {
-    this.setState({
-      tree
-    });
-  }
-
-  handleSubmit() {
-    this.props.onSubmit(this.state.tree);
-  }
+  // handleChange(tree) {
+  //   this.setState({
+  //     tree
+  //   });
+  // }
 
   renderNode(node) {
+    const nodeStyle = {
+      padding: '10px',
+      position: 'relative',
+      display: 'inline-block'
+    };
+    const btnStyle = {
+      position: 'absolute',
+      display: 'block',
+      left: '100%',
+      top: '50%',
+      transform: 'translateY(-50%)'
+    };
     return (
-      <span className="department-node">
-        {node.name}
-        <span className="button-list">
-          1
+      <span style={nodeStyle} className="department-node">
+        <span className="node-inner">
+          {node.name}
+          {node.id !== 0 &&
+            <span style={btnStyle} className="tree-button-list">
+              <button
+                className="btn btn-xs btn-warning btn-flat"
+                onClick={() => this.props.onEdit(node)}
+                title="Sửa"
+              >
+                <i className="fa fa-fw fa-pencil" />
+              </button>
+            </span>
+          }
         </span>
       </span>
     );
@@ -53,14 +72,9 @@ class DepartmentTree extends React.Component {
           <Tree
             paddingLeft={50}
             tree={this.props.tree}
-            onChange={this.handleChange}
+            // onChange={this.handleChange}
             renderNode={this.renderNode}
           />
-        </div>
-        <div className="box-footer">
-          <button className="btn btn-success btn-flat" type="button" onClick={this.handleSubmit}>
-            <i className="fa fa-save" />
-          </button>
         </div>
       </div>
     );
@@ -69,7 +83,8 @@ class DepartmentTree extends React.Component {
 
 DepartmentTree.propTypes = {
   tree: React.PropTypes.object.isRequired,
-  onSubmit: React.PropTypes.func.isRequired,
+  listDepartments: React.PropTypes.func.isRequired,
+  onEdit: React.PropTypes.func.isRequired
 };
 
 export default DepartmentTree;

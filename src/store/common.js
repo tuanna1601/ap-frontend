@@ -2,6 +2,7 @@ import * as _ from 'lodash';
 import HTTP from '@/helpers/http';
 
 const RELOAD_DEPARTMENTS = 'COMMON_RELOAD_DEPARTMENTS';
+const AFTER_CREATE_DEPARTMENT = 'COMMON_AFTER_CREATE_DEPARTMENT';
 const RELOAD_INVENTORIES = 'COMMON_RELOAD_INVENTORIES';
 
 export function reloadDeparments(rows) {
@@ -15,6 +16,13 @@ export function reloadInventories(rows) {
   return {
     type: RELOAD_INVENTORIES,
     inventories: rows
+  };
+}
+
+export function commonAfterCreateDepartment(department) {
+  return {
+    type: AFTER_CREATE_DEPARTMENT,
+    department
   };
 }
 
@@ -54,22 +62,16 @@ const initialState = {
 export function reducer(state = initialState, action) {
   switch (action.type) {
     case RELOAD_DEPARTMENTS: {
-      const departments = _.reduce(action.departments, (hashDept, department) =>
-        Object.assign({}, hashDept, { [department.id]: department }), {});
-      // const nestedDepartments = _.reduce(action.departments, (nestedDept, department) => {
-      //   if (!department.parent) {
-      //     if (department.descendants && department.descendants.length) {
-      //       nestedDept.push(Object.assign({}, nestDescendants(department.id, departments)));
-      //     } else {
-      //       nestedDept.push(department);
-      //     }
-      //     return nestedDept;
-      //   }
-      //   return nestedDept;
-      // }, []);
       return Object.assign({}, state, {
-        departments,
-        // nestedDepartments
+        departments: _.sortBy(action.departments, ['name'])
+      });
+    }
+    case AFTER_CREATE_DEPARTMENT: {
+      return Object.assign({}, state, {
+        departments: _.chain(state.departments)
+          .concat(action.department)
+          .sortBy(['name'])
+          .value()
       });
     }
     case RELOAD_INVENTORIES: {
