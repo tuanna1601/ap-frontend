@@ -1,6 +1,6 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
-import { FormControl, FormControlSelect } from '@/components/FormControl';
+import { FormControl, FormControlMultiSelect } from '@/components/FormControl';
 import Validator from '@/helpers/validator';
 import { generateRoleOptions } from '@/helpers/helper';
 
@@ -30,10 +30,10 @@ const UserCreateForm = ({ handleSubmit, isLoading, submitting, pristine, reset }
       <div className="col-md-4">
         <div className="form-group">
           <Field
-            type="text" component={FormControlSelect}
+            type="text" component={FormControlMultiSelect}
             options={generateRoleOptions()}
-            id="role"
-            name="role"
+            id="roles"
+            name="roles"
             label="Chức vụ"
           />
         </div>

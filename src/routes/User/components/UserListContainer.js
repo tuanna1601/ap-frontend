@@ -21,7 +21,12 @@ const mapDispatchToProps = (dispatch) => ({
   goToPage: (page) => dispatch(goToPage(page)),
   resetCurrentPage: () => dispatch(resetCurrentPage()),
   onEdit: (user) => {
-    const updateForm = <UserCreateForm form={`user-edit-${user.id}`} isLoading={false} initialValues={user} />;
+    const updateForm = (
+      <UserCreateForm
+        form={`user-edit-${user.id}`}
+        isLoading={false} initialValues={user}
+      />
+    );
     dispatch(showForm('Sửa người dùng', updateForm,
       values => dispatch(updateUser(values, (data) => {
         Alert.success(`${data.name} đã được sửa thành công`);
