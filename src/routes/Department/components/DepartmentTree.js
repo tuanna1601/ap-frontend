@@ -47,13 +47,27 @@ class DepartmentTree extends React.Component {
         <span className="node-inner">
           {node.name}
           {node.id !== 0 &&
-            <span style={btnStyle} className="tree-button-list">
+            <span style={btnStyle} className="button-list tree-button-list">
               <button
                 className="btn btn-xs btn-warning btn-flat"
                 onClick={() => this.props.onEdit(node)}
                 title="Sửa"
               >
                 <i className="fa fa-fw fa-pencil" />
+              </button>
+              <button
+                className="btn btn-xs btn-success btn-flat"
+                onClick={() => this.props.onEditOrdinators(node)}
+                title="Phân quyền điều phối"
+              >
+                <i className="fa fa-fw fa-random" />
+              </button>
+              <button
+                className="btn btn-xs btn-success btn-flat"
+                onClick={() => this.props.onEditReviewers(node)}
+                title="Phân quyền duyệt"
+              >
+                <i className="fa fa-fw fa-eye" />
               </button>
             </span>
           }
@@ -72,7 +86,6 @@ class DepartmentTree extends React.Component {
           <Tree
             paddingLeft={50}
             tree={this.props.tree}
-            // onChange={this.handleChange}
             renderNode={this.renderNode}
           />
         </div>
@@ -84,7 +97,9 @@ class DepartmentTree extends React.Component {
 DepartmentTree.propTypes = {
   tree: React.PropTypes.object.isRequired,
   listDepartments: React.PropTypes.func.isRequired,
-  onEdit: React.PropTypes.func.isRequired
+  onEdit: React.PropTypes.func.isRequired,
+  onEditReviewers: React.PropTypes.func.isRequired,
+  onEditOrdinators: React.PropTypes.func.isRequired,
 };
 
 export default DepartmentTree;

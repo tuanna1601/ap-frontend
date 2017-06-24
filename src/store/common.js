@@ -4,11 +4,19 @@ import HTTP from '@/helpers/http';
 const RELOAD_DEPARTMENTS = 'COMMON_RELOAD_DEPARTMENTS';
 const AFTER_CREATE_DEPARTMENT = 'COMMON_AFTER_CREATE_DEPARTMENT';
 const RELOAD_INVENTORIES = 'COMMON_RELOAD_INVENTORIES';
+const RELOAD_USERS = 'COMMON_RELOAD_USERS';
 
 export function reloadDeparments(rows) {
   return {
     type: RELOAD_DEPARTMENTS,
     departments: rows
+  };
+}
+
+export function commonAfterCreateDepartment(department) {
+  return {
+    type: AFTER_CREATE_DEPARTMENT,
+    department
   };
 }
 
@@ -19,10 +27,10 @@ export function reloadInventories(rows) {
   };
 }
 
-export function commonAfterCreateDepartment(department) {
+export function reloadUsers(rows) {
   return {
-    type: AFTER_CREATE_DEPARTMENT,
-    department
+    type: RELOAD_USERS,
+    users: rows
   };
 }
 
@@ -53,10 +61,24 @@ export function listInventories() {
   };
 }
 
+export function listUsers() {
+  return (dispatch, getState) => {
+    const auth = getState().auth;
+    if (!auth) {
+      return;
+    }
+
+    const url = `${__CONFIG__.API.SERVER_URL}/users`;
+    HTTP.get(auth, url, dispatch, (data) => {
+      dispatch(reloadUsers(data));
+    });
+  };
+}
+
 const initialState = {
-  departments: {},
+  departments: [],
   inventories: {},
-  users: {},
+  users: [],
 };
 
 export function reducer(state = initialState, action) {
@@ -81,6 +103,11 @@ export function reducer(state = initialState, action) {
         }), {});
       return Object.assign({}, state, {
         inventories,
+      });
+    }
+    case RELOAD_USERS: {
+      return Object.assign({}, state, {
+        users: action.users
       });
     }
     default:
