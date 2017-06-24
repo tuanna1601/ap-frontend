@@ -33,17 +33,19 @@ class DepartmentTree extends React.Component {
     const nodeStyle = {
       padding: '10px',
       position: 'relative',
-      display: 'inline-block'
+      display: 'block',
+      borderBottom: '1px solid #efefef',
+      borderLeft: '1px solid #efefef'
     };
     const btnStyle = {
       position: 'absolute',
       display: 'block',
-      left: '100%',
+      right: '0',
       top: '50%',
       transform: 'translateY(-50%)'
     };
     return (
-      <span style={nodeStyle} className="department-node">
+      <span style={node.id !== 0 ? nodeStyle : {}} className="department-node">
         <span className="node-inner">
           {node.name}
           {node.id !== 0 &&
@@ -84,7 +86,7 @@ class DepartmentTree extends React.Component {
         </div>
         <div className="box-body">
           <Tree
-            paddingLeft={50}
+            paddingLeft={25}
             tree={this.props.tree}
             renderNode={this.renderNode}
           />

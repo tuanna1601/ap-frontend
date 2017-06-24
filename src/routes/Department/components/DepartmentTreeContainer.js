@@ -28,6 +28,7 @@ const mapDispatchToProps = (dispatch) => ({
       <DepartmentForm
         form={`department-edit-${department.id}`}
         isLoading={false} initialValues={department}
+        filterOptions={[department.id]}
       />
     );
     dispatch(showForm('Sửa thông tin đơn vị', updateForm,
@@ -42,6 +43,7 @@ const mapDispatchToProps = (dispatch) => ({
         form={`department-reviewers-${department.id}`}
         department={department}
         userRole="reviewers"
+        filterRole="reviewer"
       />
     );
     dispatch(showForm('Phân quyền duyệt', updateForm,
@@ -61,6 +63,7 @@ const mapDispatchToProps = (dispatch) => ({
         form={`department-ordinators-${department.id}`}
         department={department}
         userRole="ordinators"
+        filterRole="ordinator"
       />
     );
     dispatch(showForm('Phân quyền điều phối', updateForm,

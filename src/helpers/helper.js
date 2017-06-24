@@ -63,13 +63,9 @@ export function nestChildren(id, depts) {
   const filteredDepts = _.filter(depts, (dept) => dept.id !== id);
   _.each(filteredDepts, (dept) => {
     if (dept.parent === id) {
-      if (dept.descendants && dept.descendants.length) {
-        results.push(Object.assign({}, dept, {
-          children: nestChildren(dept.id, filteredDepts)
-        }));
-      } else {
-        results.push(dept);
-      }
+      results.push(Object.assign({}, dept, {
+        children: nestChildren(dept.id, filteredDepts)
+      }));
     }
   });
   return results;

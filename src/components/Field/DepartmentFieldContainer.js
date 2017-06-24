@@ -1,14 +1,15 @@
 import { connect } from 'react-redux';
-import { reduce } from 'lodash';
+import * as _ from 'lodash';
 
 import { listDepartments } from '@/store/common';
 import DepartmentField from './DepartmentField';
 
-const mapStateToProps = (state) => ({
-  departments: reduce(state.common.departments, (deptArr, dept) => {
-    deptArr.push(dept);
-    return deptArr;
-  }, [])
+const mapStateToProps = (state, ownProps) => ({
+  departments: _.chain(state.common.departments)
+    .filter((department) => (ownProps.filterOptions ?
+      ownProps.filterOptions.indexOf(department.id) < 0 :
+      true))
+    .value()
 });
 
 const mapDispatchToProps = (dispatch) => ({

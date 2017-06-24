@@ -1,14 +1,19 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { FormControl } from '@/components/FormControl';
 import { DepartmentField } from '@/components/Field';
 import Validator from '@/helpers/validator';
 
-const DepartmentForm = ({ handleSubmit, submitting, pristine, reset, form }) => (
+const DepartmentForm = ({ handleSubmit, submitting, pristine, reset, form, filterOptions }) => (
   <form className="modal-form" onSubmit={handleSubmit}>
     <div className="col-md-6">
       <div className="row">
-        <DepartmentField id={`${form}.parent`} name="parent" label="Đơn vị cha" hasLabel hasRoot />
+        <DepartmentField
+          id={`${form}.parent`} name="parent"
+          filterOptions={filterOptions}
+          label="Đơn vị cha"
+          hasLabel hasRoot
+        />
       </div>
     </div>
     <div className="row">
@@ -31,11 +36,13 @@ const DepartmentForm = ({ handleSubmit, submitting, pristine, reset, form }) => 
 );
 
 DepartmentForm.propTypes = {
-  handleSubmit: React.PropTypes.func.isRequired,
-  submitting: React.PropTypes.bool.isRequired,
-  pristine: React.PropTypes.bool.isRequired,
-  reset: React.PropTypes.func.isRequired,
-  form: React.PropTypes.string.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+  submitting: PropTypes.bool.isRequired,
+  pristine: PropTypes.bool.isRequired,
+  reset: PropTypes.func.isRequired,
+  form: PropTypes.string.isRequired,
+
+  filterOptions: PropTypes.array,
 };
 
 export default reduxForm({
