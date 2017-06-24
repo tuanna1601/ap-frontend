@@ -46,7 +46,11 @@ class FormControl extends React.Component {
       );
     }
     const inputGroup = readOnly ?
-      <p>{_.isNumber(input.value) ? input.value.toLocaleString('en-US') : input.value}</p>
+      (
+        <p style={type === 'hidden' ? { display: 'none' } : {}}>
+          {_.isNumber(input.value) ? input.value.toLocaleString('en-US') : input.value}
+        </p>
+      )
       : (<input
         ref={(component) => {
           this.component = component;
