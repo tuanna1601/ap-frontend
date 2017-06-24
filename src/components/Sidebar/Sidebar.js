@@ -37,7 +37,7 @@ const Sidebar = ({ isLoggedIn, toggleMenu, tree }) => (
             </a>
             <ul className="treeview-menu">
               <SidebarItem treeId="department.list" to="/department">
-                <i className="fa fa-list" />
+                <i className="fa fa-sitemap" />
                 <span>Cây đơn vị</span>
               </SidebarItem>
             </ul>
