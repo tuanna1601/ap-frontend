@@ -6,8 +6,8 @@ import Validator from '@/helpers/validator';
 
 const DepartmentForm = ({ handleSubmit, submitting, pristine, reset, form, filterOptions }) => (
   <form className="modal-form" onSubmit={handleSubmit}>
-    <div className="col-md-6">
-      <div className="row">
+    <div className="row">
+      <div className="col-md-6">
         <DepartmentField
           id={`${form}.parent`} name="parent"
           filterOptions={filterOptions}
@@ -15,8 +15,6 @@ const DepartmentForm = ({ handleSubmit, submitting, pristine, reset, form, filte
           hasLabel hasRoot
         />
       </div>
-    </div>
-    <div className="row">
       <div className="col-md-6">
         <Field type="text" component={FormControl} id={`${form}.name`} name="name" label="Tên (*)" hasLabel />
       </div>
