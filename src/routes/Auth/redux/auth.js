@@ -1,6 +1,7 @@
 import HTTP from '@/helpers/http';
 import * as _ from 'lodash';
 import moment from 'moment';
+import * as jwt from 'jsonwebtoken';
 
 const LOGIN_SUCCESS = 'AUTH_LOGIN_SUCCESS';
 const LOGIN_FAILURE = 'AUTH_LOGIN_FAILURE';
@@ -30,12 +31,17 @@ export function onAfterLoading() {
 
 export function onAuthSuccess(token) {
   // save to session
+
+  const user = jwt.decode(token);
+
   sessionStorage.setItem('token', token);
   sessionStorage.setItem('tokenExpiredAt', moment().valueOf());
+  sessionStorage.setItem('currentUser', JSON.stringify(user));
 
   return {
     type: LOGIN_SUCCESS,
     token,
+    scope: user.scope
   };
 }
 
@@ -78,7 +84,6 @@ export function logout(callback) {
       return;
     }
 
-    HTTP.get(auth, `${__CONFIG__.API.SERVER_URL}/users/logout`, dispatch);
     sessionStorage.clear();
 
     dispatch(onLogout());
@@ -135,7 +140,6 @@ export function login(email, password, callback) {
 
     HTTP.post({ email, password }, false, `${__CONFIG__.API.SERVER_URL}/users/login`, dispatch, (data) => {
       dispatch(onAuthSuccess(data.token));
-      // dispatch(getCurrentUser());
 
       if (callback) {
         callback(data);
@@ -193,7 +197,7 @@ const initialState = {
   isRenewingToken: false,
   user: !_.isEmpty(sessionStorage.getItem('currentUser'))
     ? JSON.parse(sessionStorage.getItem('currentUser'))
-    : { permissions: [] },
+    : { scope: [] },
 };
 
 /*
