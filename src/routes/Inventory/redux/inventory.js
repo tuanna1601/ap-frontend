@@ -99,14 +99,14 @@ export function listInventories() {
 
     dispatch(onUpdateLoadingList(true));
     const pagination = getState().inventory.pagination;
+    const query = getState().inventory.filterQuery;
 
-
-    const query = Object.assign({}, {
+    const filterQuery = Object.assign({}, query, {
       limit: pagination.limit,
       page: pagination.page,
     });
 
-    const url = `${__CONFIG__.API.SERVER_URL}/inventories?${HTTP.param(query)}`;
+    const url = `${__CONFIG__.API.SERVER_URL}/inventories?${HTTP.param(filterQuery)}`;
     HTTP.get(auth, url, dispatch, (data) => {
       dispatch(reloadList(data.rows, data.count));
     }).then(() => {
@@ -115,7 +115,33 @@ export function listInventories() {
   };
 }
 
-export function listInventory(inventoryId) {
+export function listOrdinatorInventories() {
+  return (dispatch, getState) => {
+    const auth = getState().auth;
+    if (!auth) {
+      return;
+    }
+
+    dispatch(onUpdateLoadingList(true));
+    const pagination = getState().inventory.pagination;
+    const query = getState().inventory.filterQuery;
+
+
+    const filterQuery = Object.assign({}, query, {
+      limit: pagination.limit,
+      page: pagination.page,
+    });
+
+    const url = `${__CONFIG__.API.SERVER_URL}/inventories/ordinator?${HTTP.param(filterQuery)}`;
+    HTTP.get(auth, url, dispatch, (data) => {
+      dispatch(reloadList(data.rows, data.count));
+    }).then(() => {
+      dispatch(onUpdateLoadingList(false));
+    });
+  };
+}
+
+export function getInventory(inventoryId) {
   return (dispatch, getState) => {
     const auth = getState().auth;
     if (!auth) {
@@ -197,10 +223,14 @@ export function updateInventory(formValues, callback) {
   };
 }
 
-export function goToPage(page) {
+export function goToPage(page, isOrdinator) {
   return (dispatch) => {
     dispatch(setCurrentPage(page));
-    dispatch(listInventories());
+    if (isOrdinator) {
+      dispatch(listOrdinatorInventories());
+    } else {
+      dispatch(listInventories());
+    }
   };
 }
 
@@ -242,7 +272,7 @@ const initialState = {
   pagination: {
     count: 0,
     page: 1,
-    limit: 50,
+    limit: 20,
   },
   filterQuery: {},
   adsPreview: '<span></span>'

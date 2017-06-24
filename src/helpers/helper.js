@@ -34,13 +34,21 @@ export function generateInventoryStatusLabel(status) {
       return 'Chưa phân công';
     case 'assigned':
       return 'Chưa duyệt';
-    case 'accepeted':
+    case 'accepted':
       return 'Đã duyệt';
     case 'rejected':
       return 'Đã từ chối';
     default:
       return '';
   }
+}
+
+export function genenrateInventoryStatusOptions() {
+  const statuses = ['unassigned', 'assigned', 'accepted', 'rejected'];
+  return statuses.map(status => ({
+    value: status,
+    label: generateInventoryStatusLabel(status)
+  }));
 }
 
 export function generateOptionsLabel(arr) {
