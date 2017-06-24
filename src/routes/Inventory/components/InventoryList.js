@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
 import * as _ from 'lodash';
 import moment from 'moment';
 import Reactable from 'reactable';
 import { generateInventoryStatusLabel } from '@/helpers/helper';
+
+import InventoryFilter from './InventoryFilterContainer';
 
 const Table = Reactable.Table;
 const Thead = Reactable.Thead;
@@ -10,9 +12,13 @@ const Th = Reactable.Th;
 const Tr = Reactable.Tr;
 const Td = Reactable.Td;
 
-class InventoryList extends React.Component {
+class InventoryList extends Component {
   componentDidMount() {
-    this.props.listInventories();
+    if (this.props.isOrdinator) {
+      this.props.listOrdinatorInventories();
+    } else {
+      this.props.listInventories();
+    }
   }
 
   componentWillUnmount() {
@@ -28,6 +34,7 @@ class InventoryList extends React.Component {
           </div>
         </div>
         <div className="box-body">
+          <InventoryFilter params={this.props.params} isOrdinator={this.props.isOrdinator} />
           <div className="table-responsive">
             <Table className="table table-striped table-bordered" sortable>
               <Thead>
@@ -70,14 +77,17 @@ class InventoryList extends React.Component {
 }
 
 InventoryList.propTypes = {
-  inventories: React.PropTypes.object.isRequired,
-  pagination: React.PropTypes.object.isRequired,
-  listInventories: React.PropTypes.func.isRequired,
-  setFilterQuery: React.PropTypes.func.isRequired,
-  resetCurrentPage: React.PropTypes.func.isRequired,
+  inventories: PropTypes.object.isRequired,
+  pagination: PropTypes.object.isRequired,
+  listInventories: PropTypes.func.isRequired,
+  listOrdinatorInventories: PropTypes.func.isRequired,
+  setFilterQuery: PropTypes.func.isRequired,
+  resetCurrentPage: PropTypes.func.isRequired,
 
-  isLoadingList: React.PropTypes.bool.isRequired,
-  onEdit: React.PropTypes.func.isRequired,
+  params: PropTypes.object,
+  isOrdinator: PropTypes.bool,
+  isLoadingList: PropTypes.bool.isRequired,
+  onEdit: PropTypes.func.isRequired,
 };
 
 export default InventoryList;

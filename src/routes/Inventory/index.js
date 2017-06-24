@@ -3,8 +3,10 @@ import { injectReducer } from '@/store/reducers';
 import { reducer } from './redux/inventory';
 import InventoryLayout from './layouts/InventoryLayout';
 import InventoryListPage from './pages/InventoryListPage';
+import InventoryOrdinatorListPage from './pages/InventoryOrdinatorListPage';
 import InventoryCreatePage from './pages/InventoryCreatePage';
 import InventoryUpdatePage from './pages/InventoryUpdatePage';
+import InventoryReviewPage from './pages/InventoryReviewPage';
 import InventortAdsPreviewPage from './pages/InventoryAdsPreviewPage';
 
 export default (store) => ({
@@ -26,6 +28,11 @@ export default (store) => ({
   },
   childRoutes: [
     {
+      path: 'ordinator',
+      component: InventoryOrdinatorListPage,
+      onEnter: (nextState, replace, callback) => checkPermission(['inventory:list'], store, callback)
+    },
+    {
       path: 'create',
       component: InventoryCreatePage,
       onEnter: (nextState, replace, callback) => checkPermission(['inventory:create'], store, callback)
@@ -34,6 +41,11 @@ export default (store) => ({
       path: 'update',
       component: InventoryUpdatePage,
       onEnter: (nextState, replace, callback) => checkPermission(['inventory:update'], store, callback)
+    },
+    {
+      path: 'review',
+      component: InventoryReviewPage,
+      onEnter: (nextState, replace, callback) => checkPermission(['inventory:review'], store, callback)
     },
     {
       path: 'ads-preview',

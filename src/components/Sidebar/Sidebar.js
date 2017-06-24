@@ -67,6 +67,23 @@ const Sidebar = ({ isLoggedIn, toggleMenu, tree }) => (
               </SidebarItem>
             </ul>
           </SidebarTree>
+          <SidebarTree treeId="ordinate" className={tree.ordinate ? 'treeview active' : 'treeview'}>
+            <a onClick={() => toggleMenu('ordinate')}>
+              <i className="fa fa-random" />
+              <span>
+                Điều phối
+              </span>
+              <span className="pull-right-container">
+                <i className="fa fa-angle-left pull-right" />
+              </span>
+            </a>
+            <ul className="treeview-menu">
+              <SidebarItem treeId="ordinate.list" to="/inventory/ordinator?status=unassigned">
+                <i className="fa fa-list" />
+                <span>Danh sách kho</span>
+              </SidebarItem>
+            </ul>
+          </SidebarTree>
         </ul>
       }
     </div>

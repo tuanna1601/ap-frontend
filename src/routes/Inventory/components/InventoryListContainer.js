@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import * as _ from 'lodash';
 
 import {
-  listInventories, setFilterQuery,
+  listInventories, listOrdinatorInventories, setFilterQuery,
   goToPage, resetCurrentPage
 } from '../redux/inventory';
 import InventoryList from './InventoryList';
@@ -16,7 +16,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   setFilterQuery: (query) => dispatch(setFilterQuery(query)),
-  listInventories: (query) => dispatch(listInventories(query)),
+  listInventories: () => dispatch(listInventories()),
+  listOrdinatorInventories: () => dispatch(listOrdinatorInventories()),
   goToPage: (page) => dispatch(goToPage(page)),
   resetCurrentPage: () => dispatch(resetCurrentPage()),
   onEdit: (inventory) => {
