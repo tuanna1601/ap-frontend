@@ -59,7 +59,7 @@ class DepartmentUsersForm extends Component {
   }
 
   render() {
-    const { handleSubmit, submitting, pristine,
+    const { handleSubmit, submitting, pristine, filterRole,
       reset, form, userRole, addUser, users } = this.props;
     return (
       <div className="modal-form">
@@ -69,6 +69,7 @@ class DepartmentUsersForm extends Component {
               label={userRole === 'reviewers' ? 'Người duyệt' : 'Điều phối'}
               id="users" name="users"
               filterOptions={map(users, (user) => user._id)}
+              userRole={filterRole}
               onSelect={(event) => addUser(event)}
               autoSelect={false}
               hasLabel
@@ -118,6 +119,7 @@ DepartmentUsersForm.propTypes = {
 
   users: PropTypes.array.isRequired,
   userRole: PropTypes.string.isRequired,
+  filterRole: PropTypes.string.isRequired,
 
   addUser: PropTypes.func.isRequired,
   onFieldArrayRemoved: PropTypes.func.isRequired,

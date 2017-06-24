@@ -216,13 +216,9 @@ export function reducer(state = initialState, action) {
       const nestedDepartments = [];
       _.each(action.departments, (department) => {
         if (!department.parent) {
-          if (department.descendants && department.descendants.length) {
-            nestedDepartments.push(Object.assign({}, department, {
-              children: nestChildren(department.id, action.departments)
-            }));
-          } else {
-            nestedDepartments.push(department);
-          }
+          nestedDepartments.push(Object.assign({}, department, {
+            children: nestChildren(department.id, action.departments)
+          }));
         }
       });
       return Object.assign({}, state, {
@@ -230,45 +226,19 @@ export function reducer(state = initialState, action) {
         nestedDepartments
       });
     }
-    case AFTER_EDIT: {
+    case AFTER_EDIT:
+    case AFTER_CREATE: {
       const departments = Object.assign({}, state.departments, {
         [action.department.id]: action.department
       });
       const nestedDepartments = [];
       _.each(departments, (department) => {
         if (!department.parent) {
-          if (department.descendants && department.descendants.length) {
-            nestedDepartments.push(Object.assign({}, department, {
-              children: nestChildren(department.id, departments)
-            }));
-          } else {
-            nestedDepartments.push(department);
-          }
+          nestedDepartments.push(Object.assign({}, department, {
+            children: nestChildren(department.id, departments)
+          }));
         }
       });
-      return Object.assign({}, state, {
-        departments,
-        nestedDepartments
-      });
-    }
-    case AFTER_CREATE: {
-      const departments = Object.assign({}, state.departments, {
-        [action.department.id]: action.department
-      });
-      const addToNested = (child, depts) => _.map(depts, dept => {
-        if (dept.id === child.parent) {
-          dept.descendants.push(child);
-          return Object.assign({}, dept);
-        } else if (dept.descendants && dept.descendants.length) {
-          return Object.assign({}, dept, {
-            descendants: addToNested(child, dept.descendants)
-          });
-        }
-        return dept;
-      });
-      const nestedDepartments = action.department.parent ?
-        addToNested(action.department, state.nestedDepartments) :
-        _.concat(state.nestedDepartments, action.department);
       return Object.assign({}, state, {
         departments,
         nestedDepartments,

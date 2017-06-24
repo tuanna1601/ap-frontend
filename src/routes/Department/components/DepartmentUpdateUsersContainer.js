@@ -9,8 +9,6 @@ import DepartmentUsersForm from './DepartmentUsersForm';
 const mapStateToProps = (state, ownProps) => ({
   initialValues: {
     ...ownProps.department,
-    [ownProps.userRole]: _.map(ownProps.department[ownProps.userRole],
-      (usr) => _.find(state.common.users, (user) => user._id === usr))
   },
   users: formValueSelector(ownProps.form)(state, ownProps.userRole) ?
     formValueSelector(ownProps.form)(state, ownProps.userRole) : []
