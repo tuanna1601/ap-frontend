@@ -13,7 +13,7 @@ class InventoryFilter extends Component {
     return (
       <form onSubmit={this.props.handleSubmit} className="box-filter">
         <div className="row">
-          <div className="col-md-4">
+          <div className="col-md-6">
             <Field
               component={FormControlMultiSelect}
               options={genenrateInventoryStatusOptions()}

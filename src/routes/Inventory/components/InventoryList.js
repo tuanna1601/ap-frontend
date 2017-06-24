@@ -38,14 +38,14 @@ class InventoryList extends Component {
           <div className="table-responsive">
             <Table className="table table-striped table-bordered" sortable>
               <Thead>
-                <Th column="name">Mã kho</Th>
+                <Th column="name">Tên kho</Th>
                 <Th column="version">Version</Th>
                 <Th column="created">Ngày tạo</Th>
                 <Th column="status">Trạng thái</Th>
                 <Th column="action">Thao tác</Th>
               </Thead>
               {_.chain(this.props.inventories)
-                .orderBy(['isHighlighted', 'name'], ['asc', 'asc'])
+                .orderBy(['isHighlighted', 'created'], ['asc', 'asc'])
                 .map((inventory) =>
                   <Tr key={inventory.id} className={inventory.isHighlighted ? 'highlighted table-row' : 'table-row'}>
                     <Td column="name" className="table-col text-center">{inventory.name}</Td>
@@ -57,13 +57,26 @@ class InventoryList extends Component {
                       {generateInventoryStatusLabel(inventory.status)}
                     </Td>
                     <Td column="action" className="table-col button-list">
-                      <button
-                        className="btn btn-xs btn-warning btn-flat"
-                        onClick={() => this.props.onEdit(inventory)}
-                        title="Sửa"
-                      >
-                        <i className="fa fa-fw fa-pencil" />
-                      </button>
+                      <div className="button-list">
+                        {!this.props.isOrdinator &&
+                          <button
+                            className="btn btn-xs btn-warning btn-flat"
+                            onClick={() => this.props.onEdit(inventory)}
+                            title="Sửa"
+                          >
+                            <i className="fa fa-fw fa-pencil" />
+                          </button>
+                        }
+                        {this.props.isOrdinator && !inventory.reviewer &&
+                          <button
+                            className="btn btn-xs btn-success btn-flat"
+                            onClick={() => this.props.onAssign(inventory)}
+                            title="Phân công"
+                          >
+                            <i className="fa fa-fw fa-random" />
+                          </button>
+                        }
+                      </div>
                     </Td>
                   </Tr>
                 ).value()
@@ -88,6 +101,7 @@ InventoryList.propTypes = {
   isOrdinator: PropTypes.bool,
   isLoadingList: PropTypes.bool.isRequired,
   onEdit: PropTypes.func.isRequired,
+  onAssign: PropTypes.func.isRequired,
 };
 
 export default InventoryList;

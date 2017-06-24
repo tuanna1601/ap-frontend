@@ -1,12 +1,16 @@
+import React from 'react';
+import { Alert } from 'react-s-alert';
 import { push } from 'react-router-redux';
 import { connect } from 'react-redux';
 import * as _ from 'lodash';
+import { showForm } from '@/store/modal';
 
 import {
   listInventories, listOrdinatorInventories, setFilterQuery,
-  goToPage, resetCurrentPage
+  goToPage, resetCurrentPage, assignInventory
 } from '../redux/inventory';
 import InventoryList from './InventoryList';
+import InventoryAssignForm from './InventoryAssignForm';
 
 const mapStateToProps = (state) => ({
   inventories: state.inventory.inventories,
@@ -22,6 +26,25 @@ const mapDispatchToProps = (dispatch) => ({
   resetCurrentPage: () => dispatch(resetCurrentPage()),
   onEdit: (inventory) => {
     dispatch(push(`/inventory/update?id=${inventory.id}`));
+  },
+  onAssign: (inventory) => {
+    const initialValues = {
+      inventoryId: inventory.id,
+      name: inventory.name,
+      reviewer: inventory.reviewer
+    };
+    const AssignForm = (
+      <InventoryAssignForm
+        form="inventory-assign"
+        department={inventory.department}
+        initialValues={initialValues}
+      />
+    );
+    dispatch(showForm('Phân công duyệt kho', AssignForm, (values) => {
+      dispatch(assignInventory(values), (data) => {
+        Alert.success(`${data.name} đã được phân công`);
+      });
+    }));
   }
 });
 

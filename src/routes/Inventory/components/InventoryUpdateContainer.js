@@ -4,7 +4,7 @@ import Alert from 'react-s-alert';
 import * as _ from 'lodash';
 import InventoryUpdateForm from './InventoryUpdateForm';
 import {
-  updateInventory, listInventory
+  updateInventory, getInventory
 } from '../redux/inventory';
 
 function formatData(inventory) {
@@ -42,7 +42,7 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   onComponentMounted: (id) => {
-    dispatch(listInventory(id));
+    dispatch(getInventory(id));
   },
   onFieldArrayRemoved: (fields, index) => {
     fields.remove(index);
