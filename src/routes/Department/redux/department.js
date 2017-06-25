@@ -10,7 +10,6 @@ const UPDATE_LOADING_LIST = 'DEPARTMENT_UPDATE_LOADING_LIST';
 const UPDATE_LOADING_CREATE = 'DEPARTMENT_UPDATE_LOADING_CREATE';
 const UPDATE_LOADING_UPDATE = 'DEPARTMENT_UPDATE_LOADING_UPDATE';
 const UPDATE_LOADING_DELETE = 'DEPARTMENT_UPDATE_LOADING_DELETE';
-const RESET = 'DEPARTMENT_RESET';
 const AFTER_EDIT = 'DEPARTMENT_AFTER_EDIT';
 const AFTER_DELETE = 'DEPARTMENT_AFTER_DELETE';
 const AFTER_CREATE = 'DEPARTMENT_AFTER_CREATE';
@@ -155,34 +154,13 @@ export function deleteDepartment(id, callback) {
   };
 }
 
-export function updateDepartmentTree(tree, callback) {
-  return (dispatch, getState) => {
-    const auth = getState().auth;
-    if (!auth) {
-      return;
-    }
-
-    HTTP.put(tree, auth, `${__CONFIG__.API.SERVER_URL}/departments/order`, dispatch, () => {
-      if (callback) {
-        callback();
-      }
-    });
-  };
-}
-
-
-export function resetCategories() {
-  return {
-    type: RESET,
-  };
-}
-
 /*
  * Initial state
  */
 const initialState = {
   departments: {},
   nestedDepartments: [],
+  criteria: {},
   isLoadingList: false,
   isLoadingCreate: false,
   isLoadingUpdate: false,
@@ -244,11 +222,6 @@ export function reducer(state = initialState, action) {
         nestedDepartments,
       });
     }
-    case RESET:
-      return Object.assign({}, state, {
-        isHighlighted: {},
-        isEdit: {},
-      });
     case AFTER_DELETE:
     default:
       return state;
