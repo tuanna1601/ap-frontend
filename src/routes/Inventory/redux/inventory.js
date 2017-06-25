@@ -200,19 +200,114 @@ export function updateInventory(formValues, callback) {
     dispatch(onUpdateLoadingUpdate(true));
 
     const formData = new FormData();
-    const formattedData = _.pick(formValues, ['text', 'headlines', 'medias', 'newMedias', 'descriptions']);
+    const formattedData = _.pick(formValues, ['text', 'headlines', 'medias',
+      'newMedias', 'descriptions']);
     _.each(formattedData, (formValue, key) => {
-      if (formValue instanceof Array) {
-        _.each(formValue, (val) => {
-          formData.append(key, val.value);
-        });
+      if (key !== 'newMedias') {
+        formData.append(key, JSON.stringify(formValue));
       } else {
-        formData.append(key, formValue);
+        _.each(formValue, (file) => {
+          formData.append(key, file);
+        });
+      }
+    });
+    const url = `${__CONFIG__.API.SERVER_URL}/inventories/${formValues.id}`;
+    HTTP.putForm(formData, auth, url, dispatch, (data) => {
+      if (callback) {
+        callback(data);
+      }
+      dispatch(afterEditInventory(data));
+    }).then(() => {
+      dispatch(onUpdateLoadingUpdate(false));
+    });
+  };
+}
+
+export function reviewInventory(formValues, callback) {
+  return (dispatch, getState) => {
+    const auth = getState().auth;
+    if (!auth) {
+      return;
+    }
+
+    dispatch(onUpdateLoadingUpdate(true));
+
+    const comments = [];
+    _.each(formValues, (data, key) => {
+      if (key === 'text') {
+        if (data.reviews && data.reviews.length) {
+          _.each(data.reviews, (review) => {
+            comments.push({
+              criteria: review.criteria,
+              target: key,
+              targetId: data._id,
+              comment: review.comment
+            });
+        });
+        }
+      } else {
+        let singularKey;
+        switch (key) {
+          case 'headlines':
+            singularKey = 'headline';
+            break;
+          case 'medias':
+            singularKey = 'media';
+            break;
+          case 'descriptions':
+            singularKey = 'description';
+            break;
+          default:
+            break;
+        }
+
+        if (singularKey) {
+          _.each(data, (value) => {
+            if (value.reviews && value.reviews.length) {
+              _.each(value.reviews, (review) => {
+                comments.push({
+                  criteria: review.criteria,
+                  target: singularKey,
+                  targetId: value._id,
+                  comment: review.comment
+                });
+              });
+            }
+          });
+        }
       }
     });
 
-    const url = `${__CONFIG__.API.SERVER_URL}/inventories/${formValues.id}`;
-    HTTP.putForm(formData, auth, url, dispatch, (data) => {
+    const formattedValues = {
+      accepted: formValues.status === 'accepted' || false,
+      comments
+    };
+
+    const url = `${__CONFIG__.API.SERVER_URL}/reviews/inventory/${formValues.id}`;
+    HTTP.post(formattedValues, auth, url, dispatch, (data) => {
+      if (callback) {
+        callback(data);
+      }
+      // dispatch(afterEditInventory(data));
+    }).then(() => {
+      // dispatch(onUpdateLoadingUpdate(false));
+    });
+  };
+}
+
+export function assignInventory(values, callback) {
+  return (dispatch, getState) => {
+    const auth = getState().auth;
+    if (!auth) {
+      return;
+    }
+
+    dispatch(onUpdateLoadingUpdate(true));
+
+    const formattedValues = _.pick(values, ['userId', 'inventory']);
+
+    const url = `${__CONFIG__.API.SERVER_URL}/inventories/assign/reviewer`;
+    HTTP.post(formattedValues, auth, url, dispatch, (data) => {
       if (callback) {
         callback(data);
       }

@@ -23,6 +23,24 @@ class InventoryUpdateForm extends Component {
     this.props.onComponentMounted(this.props.id);
   }
 
+  renderReviews = (reviews) => {
+    return (
+      <table className="table table-condensed table-striped table-bordered table-field-array">
+        <thead>
+          <th>Comment</th>
+          <th>Tiêu chí</th>
+        </thead>
+        <tbody>
+          {reviews.map((review) => (
+            <tr key={review.id}>
+              <td>{review.comment}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
+  }
+
   renderHeadline = (fields, headline, index) => {
     if (!this.props.headlines) {
       return (
@@ -36,8 +54,8 @@ class InventoryUpdateForm extends Component {
         <td>
           <Field
             type="text" component={FormControl}
-            id={`${headline}.value`}
-            name={`${headline}.value`}
+            id={`${headline}.text`}
+            name={`${headline}.text`}
             group={`${this.props.form}.headlines`}
             index={index}
             label="Headline"
@@ -86,21 +104,23 @@ class InventoryUpdateForm extends Component {
     return (
       <tr key={index}>
         <td>
-          <div>
-            <img
-              src={`${__CONFIG__.API.SERVER_URL}/${this.props.medias[index].value}`}
-              alt={this.props.medias[index].value}
-              className="img-responsive"
-            />
-            <Field
-              type="hidden"
-              component={FormControl}
-              id={`${media}.value`}
-              name={`${media}.value`}
-              group={`${this.props.form}.media`}
-              index={index}
-              label="Media"
-            />
+          <div className="row">
+            <div className="col-md-4">
+              <img
+                src={`${__CONFIG__.API.SERVER_URL}/${this.props.medias[index].path}`}
+                alt={this.props.medias[index].path}
+                className="img-thumbnail"
+              />
+              <Field
+                type="hidden"
+                component={FormControl}
+                id={`${media}.path`}
+                name={`${media}.path`}
+                group={`${this.props.form}.media`}
+                index={index}
+                label="Media"
+              />
+            </div>
           </div>
         </td>
         <td>
@@ -139,8 +159,8 @@ class InventoryUpdateForm extends Component {
           <div>
             <Field
               component={FormControlUpload}
-              id={`${media}.value`}
-              name={`${media}.value`}
+              id={`${media}`}
+              name={`${media}`}
               group={`${this.props.form}.newMedia`}
               index={index}
               label="Media"
@@ -192,8 +212,8 @@ class InventoryUpdateForm extends Component {
         <td>
           <Field
             type="text" component={FormControlTextArea}
-            id={`${description}.value`}
-            name={`${description}.value`}
+            id={`${description}.text`}
+            name={`${description}.text`}
             group={`${this.props.form}.descriptions`}
             index={index}
             label="Description"
@@ -272,7 +292,7 @@ class InventoryUpdateForm extends Component {
                     <div className="form-group">
                       <Field
                         type="text" component={FormControlTextArea}
-                        id="text" name="text"
+                        id="text.text" name="text.text"
                         label="Text" hasLabel
                       />
                     </div>
@@ -384,14 +404,11 @@ function validateHeadlines(headlines) {
 function validateMedia(mediaArr) {
   if (mediaArr && mediaArr.length) {
     return mediaArr.map((media) => {
-      if (media && media.value) {
-        return {
-          value: (new Validator(media.value))
-            .validateFile(['jpg', 'jpeg', 'png', 'gif'])
-            .getMessage()
-        };
+      if (media) {
+        return (new Validator(media))
+          .validateFile(['jpg', 'jpeg', 'png', 'gif'])
+          .getMessage();
       }
-      return 'Chưa chọn file';
     });
   }
 

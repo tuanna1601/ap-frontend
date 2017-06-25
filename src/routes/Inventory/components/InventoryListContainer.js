@@ -2,7 +2,6 @@ import React from 'react';
 import { Alert } from 'react-s-alert';
 import { push } from 'react-router-redux';
 import { connect } from 'react-redux';
-import * as _ from 'lodash';
 import { showForm } from '@/store/modal';
 
 import {
@@ -29,7 +28,7 @@ const mapDispatchToProps = (dispatch) => ({
   },
   onAssign: (inventory) => {
     const initialValues = {
-      inventoryId: inventory.id,
+      inventory: inventory.id,
       name: inventory.name,
       reviewer: inventory.reviewer
     };
