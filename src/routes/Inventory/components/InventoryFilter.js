@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { reduxForm, Field } from 'redux-form';
 import { FormControlMultiSelect } from '@/components/FormControl';
 
-import { genenrateInventoryStatusOptions } from '@/helpers/helper';
+import { generateInventoryStatusOptions } from '@/helpers/helper';
 
 class InventoryFilter extends Component {
   componentDidMount() {
@@ -16,7 +16,7 @@ class InventoryFilter extends Component {
           <div className="col-md-6">
             <Field
               component={FormControlMultiSelect}
-              options={genenrateInventoryStatusOptions(this.props.isReviewer)}
+              options={generateInventoryStatusOptions(this.props.isReviewer)}
               id="status" name="status"
               label="Trạng thái"
             />

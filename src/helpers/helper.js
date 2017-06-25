@@ -43,7 +43,7 @@ export function generateInventoryStatusLabel(status) {
   }
 }
 
-export function genenrateInventoryStatusOptions(isReviewer) {
+export function generateInventoryStatusOptions(isReviewer) {
   let statuses = ['unassigned', 'assigned', 'accepted', 'rejected'];
   if (isReviewer) {
     statuses = ['assigned', 'accepted', 'rejected'];
