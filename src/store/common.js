@@ -5,6 +5,7 @@ const RELOAD_DEPARTMENTS = 'COMMON_RELOAD_DEPARTMENTS';
 const AFTER_CREATE_DEPARTMENT = 'COMMON_AFTER_CREATE_DEPARTMENT';
 const RELOAD_INVENTORIES = 'COMMON_RELOAD_INVENTORIES';
 const RELOAD_USERS = 'COMMON_RELOAD_USERS';
+const RELOAD_CRITERIA = 'COMMON_RELOAD_CRITERIA';
 
 export function reloadDeparments(rows) {
   return {
@@ -31,6 +32,13 @@ export function reloadUsers(rows) {
   return {
     type: RELOAD_USERS,
     users: rows
+  };
+}
+
+export function reloadCriteria(rows) {
+  return {
+    type: RELOAD_CRITERIA,
+    criteria: rows
   };
 }
 
@@ -75,8 +83,27 @@ export function listUsers() {
   };
 }
 
+export function listCriteria(department) {
+  return (dispatch, getState) => {
+    const auth = getState().auth;
+    if (!auth) {
+      return;
+    }
+
+    const query = {
+      department
+    };
+
+    const url = `${__CONFIG__.API.SERVER_URL}/criteria?${HTTP.param(query)}`;
+    HTTP.get(auth, url, dispatch, (data) => {
+      dispatch(reloadCriteria(data.rows));
+    });
+  };
+}
+
 const initialState = {
   departments: [],
+  criteria: [],
   inventories: {},
   users: [],
 };
@@ -108,6 +135,11 @@ export function reducer(state = initialState, action) {
     case RELOAD_USERS: {
       return Object.assign({}, state, {
         users: action.users
+      });
+    }
+    case RELOAD_CRITERIA: {
+      return Object.assign({}, state, {
+        criteria: action.criteria
       });
     }
     default:
