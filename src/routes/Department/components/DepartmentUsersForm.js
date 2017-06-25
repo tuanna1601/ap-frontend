@@ -19,7 +19,7 @@ class DepartmentUsersForm extends Component {
       <tr key={user}>
         <td>
           <Field
-            id={`${user}._id`} name={`${user}._id`}
+            id={`${user}.id`} name={`${user}.id`}
             type="hidden" component={FormControl}
             readOnly
           />
@@ -68,7 +68,7 @@ class DepartmentUsersForm extends Component {
             <UserField
               label={userRole === 'reviewers' ? 'Người duyệt' : 'Điều phối'}
               id="users" name="users"
-              filterOptions={map(users, (user) => user._id)}
+              filterOptions={map(users, (user) => user.id)}
               userRole={filterRole}
               onSelect={(event) => addUser(event)}
               autoSelect={false}

@@ -44,11 +44,11 @@ class UserList extends React.Component {
               {_.chain(this.props.users)
                 .orderBy(['isHighlighted', 'name'], ['asc', 'asc'])
                 .map((user) =>
-                  <Tr key={user._id} className={user.isHighlighted ? 'highlighted table-row' : 'table-row'}>
-                    <Td column="id">{user._id}</Td>
+                  <Tr key={user.id} className={user.isHighlighted ? 'highlighted table-row' : 'table-row'}>
+                    <Td column="id">{user.id}</Td>
                     <Td column="name">{user.name}</Td>
                     <Td column="email">{user.email}</Td>
-                    <Td column="role" value={`${user._id}${user.roles[0]}`}>
+                    <Td column="role" value={`${user.id}${user.roles[0]}`}>
                       {user.roles.join(', ')}
                     </Td>
                     <Td column="action" value={user.id} className="table-col button-list">

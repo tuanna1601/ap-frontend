@@ -168,7 +168,7 @@ export function updateUser(user, callback) {
 
     dispatch(onUpdateLoadingUpdate(true));
 
-    const url = `${__CONFIG__.API.SERVER_URL}/users/${user._id}`;
+    const url = `${__CONFIG__.API.SERVER_URL}/users/${user.id}`;
     const updatedUser = _.pick(user, 'name', 'email', 'roles');
     HTTP.put(updatedUser, auth, url, dispatch, (data) => {
       if (callback) {
@@ -240,7 +240,7 @@ export function reducer(state = initialState, action) {
       });
     case RELOAD_LIST: {
       const users = _.reduce(action.users, (hashUsers, user) => Object.assign({}, hashUsers, {
-        [user._id]: user,
+        [user.id]: user,
       }), {});
       return Object.assign({}, state, {
         users,
@@ -252,13 +252,13 @@ export function reducer(state = initialState, action) {
     case AFTER_CREATE: {
       return Object.assign({}, state, {
         users: Object.assign({}, state.users, {
-          [action.user._id]: action.user
+          [action.user.id]: action.user
         })
       });
     }
     case AFTER_IMPORT: {
       const users = _.reduce(action.users, (hashUsers, user) => Object.assign({}, hashUsers, {
-        [user._id]: user,
+        [user.id]: user,
       }), {});
       return Object.assign({}, state, {
         users: Object.assign({}, state.users, users)
@@ -277,11 +277,11 @@ export function reducer(state = initialState, action) {
     }
     case AFTER_EDIT: {
       // break if not in current view
-      if (!state.users[action.user._id]) {
+      if (!state.users[action.user.id]) {
         return state;
       }
       const users = Object.assign({}, state.users, {
-        [action.user._id]: Object.assign({}, action.user, {
+        [action.user.id]: Object.assign({}, action.user, {
           isHighlighted: true,
         }),
       });
