@@ -49,7 +49,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(showForm('Phân quyền duyệt', updateForm,
       values => {
         const formattedValues = Object.assign({}, values, {
-          reviewers: map(values.reviewers, (reviewer) => reviewer._id)
+          reviewers: map(values.reviewers, (reviewer) => reviewer.id)
         });
         dispatch(updateDepartment(formattedValues, (data) => {
           Alert.success(`${data.name} đã được sửa thành công`);
@@ -69,7 +69,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(showForm('Phân quyền điều phối', updateForm,
       values => {
         const formattedValues = Object.assign({}, values, {
-          ordinators: map(values.ordinators, (ordinator) => ordinator._id)
+          ordinators: map(values.ordinators, (ordinator) => ordinator.id)
         });
         dispatch(updateDepartment(formattedValues, (data) => {
           Alert.success(`${data.name} đã được sửa thành công`);

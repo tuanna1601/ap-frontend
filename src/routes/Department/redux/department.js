@@ -122,8 +122,23 @@ export function updateDepartment(department, callback) {
 
     dispatch(onUpdateLoadingUpdate(true));
 
-    HTTP.put(_.pick(department, ['name', 'parent', 'reviewers', 'ordinators']),
-      auth, `${__CONFIG__.API.SERVER_URL}/departments/${department.id}`, dispatch, (data) => {
+    const formattedValue = _.pick(department, ['name', 'parent', 'reviewers', 'ordinators']);
+    formattedValue.reviewers = _.map(formattedValue.reviewers, (reviewer) => {
+      if (typeof reviewer === 'string') {
+        return reviewer;
+      }
+      return reviewer.id;
+    });
+
+    formattedValue.ordinators = _.map(formattedValue.ordinators, (ordinator) => {
+      if (typeof ordinator === 'string') {
+        return ordinator;
+      }
+      return ordinator.id;
+    });
+
+    HTTP.put(formattedValue, auth,
+      `${__CONFIG__.API.SERVER_URL}/departments/${department.id}`, dispatch, (data) => {
         if (callback) {
           callback(data);
         }
