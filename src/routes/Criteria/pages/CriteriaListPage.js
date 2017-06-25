@@ -1,5 +1,6 @@
 import React from 'react';
 import CriteriaCreate from '../components/CriteriaCreateContainer';
+import CriteriaList from '../components/CriteriaListContainer';
 
 class CriteriaListPage extends React.Component {
   constructor(props) {
@@ -31,11 +32,7 @@ class CriteriaListPage extends React.Component {
             </div>
           </div>
         </div>
-        <div className="box box-success">
-          <div className="box-header with-border">
-            <h3 className="box-title">Danh sách tiêu chí</h3>
-          </div>
-        </div>
+        <CriteriaList />
       </section>
     );
   }

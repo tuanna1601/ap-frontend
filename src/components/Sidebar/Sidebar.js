@@ -40,6 +40,10 @@ const Sidebar = ({ isLoggedIn, toggleMenu, tree }) => (
                 <i className="fa fa-sitemap" />
                 <span>Cây đơn vị</span>
               </SidebarItem>
+              <SidebarItem treeId="department.criteria" to="/criteria">
+                <i className="fa fa-align-left" />
+                <span>Tiêu chí</span>
+              </SidebarItem>
             </ul>
           </SidebarTree>
           <SidebarTree treeId="inventory" className={tree.inventory ? 'treeview active' : 'treeview'}>

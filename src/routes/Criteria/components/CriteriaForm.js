@@ -8,17 +8,17 @@ class CriteriaForm extends Component {
   constructor(props) {
     super(props);
 
+    this.renderCriterion = this.renderCriterion.bind(this);
     this.renderCriteria = this.renderCriteria.bind(this);
-    this.renderCriterias = this.renderCriterias.bind(this);
   }
 
-  renderCriteria(fields, criteria, index) {
+  renderCriterion(fields, criterion, index) {
     return (
-      <tr key={criteria}>
+      <tr key={criterion}>
         <td>
           <Field
             type="text" component={FormControl}
-            id={`${criteria}`} name={`${criteria}`}
+            id={`${criterion}`} name={`${criterion}`}
           />
         </td>
         <td>
@@ -33,12 +33,12 @@ class CriteriaForm extends Component {
     );
   }
 
-  renderCriterias(criterias) {
-    const fields = criterias.fields;
+  renderCriteria(criteria) {
+    const fields = criteria.fields;
 
     return (
       <tbody>
-        {fields.map((criteria, index) => this.renderCriteria(fields, criteria, index))}
+        {fields.map((criterion, index) => this.renderCriterion(fields, criterion, index))}
         <tr className="button-list">
           <td colSpan={2}>
             <button
@@ -74,7 +74,7 @@ class CriteriaForm extends Component {
                 <th style={{ width: '10%' }}>&nbsp;</th>
               </tr>
             </thead>
-            <FieldArray name="name" component={this.renderCriterias} />
+            <FieldArray name="name" component={this.renderCriteria} />
           </table>
         </div>
         <div className="button-list">

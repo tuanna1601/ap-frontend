@@ -16,6 +16,9 @@ const mapDispatchToProps = (dispatch) => ({
       dispatch(reset('criteria-create'));
     }));
   },
+  onFieldArrayRemoved(fields, index) {
+    fields.remove(index);
+  }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CriteriaForm);
