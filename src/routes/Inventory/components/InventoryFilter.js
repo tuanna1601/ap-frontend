@@ -16,7 +16,7 @@ class InventoryFilter extends Component {
           <div className="col-md-6">
             <Field
               component={FormControlMultiSelect}
-              options={genenrateInventoryStatusOptions()}
+              options={genenrateInventoryStatusOptions(this.props.isReviewer)}
               id="status" name="status"
               label="Trạng thái"
             />
@@ -36,6 +36,7 @@ InventoryFilter.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
   onComponentMounted: PropTypes.func.isRequired,
+  isReviewer: PropTypes.bool,
 };
 
 export default reduxForm()(InventoryFilter);

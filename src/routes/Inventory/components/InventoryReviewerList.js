@@ -12,13 +12,9 @@ const Th = Reactable.Th;
 const Tr = Reactable.Tr;
 const Td = Reactable.Td;
 
-class InventoryList extends Component {
+class InventoryReviewerList extends Component {
   componentDidMount() {
-    // if (this.props.isOrdinator) {
-    //   this.props.listOrdinatorInventories();
-    // } else {
-    //   this.props.listInventories();
-    // }
+    // this.props.listInventories();
   }
 
   componentWillUnmount() {
@@ -34,7 +30,7 @@ class InventoryList extends Component {
           </div>
         </div>
         <div className="box-body">
-          <InventoryFilter params={this.props.params} isOrdinator={this.props.isOrdinator} />
+          <InventoryFilter params={this.props.params} isReviewer />
           <div className="table-responsive">
             <Table className="table table-striped table-bordered" sortable>
               <Thead>
@@ -58,22 +54,13 @@ class InventoryList extends Component {
                     </Td>
                     <Td column="action" className="table-col button-list">
                       <div className="button-list">
-                        {!this.props.isOrdinator &&
-                          <button
-                            className="btn btn-xs btn-warning btn-flat"
-                            onClick={() => this.props.onEdit(inventory)}
-                            title="Sửa"
-                          >
-                            <i className="fa fa-fw fa-pencil" />
-                          </button>
-                        }
-                        {this.props.isOrdinator && !inventory.reviewer &&
+                        {inventory.status !== 'accepted' &&
                           <button
                             className="btn btn-xs btn-success btn-flat"
-                            onClick={() => this.props.onAssign(inventory)}
-                            title="Phân công"
+                            onClick={() => this.props.onReview(inventory)}
+                            title="Duyệt"
                           >
-                            <i className="fa fa-fw fa-random" />
+                            <i className="fa fa-fw fa-tasks" />
                           </button>
                         }
                       </div>
@@ -89,19 +76,17 @@ class InventoryList extends Component {
   }
 }
 
-InventoryList.propTypes = {
+InventoryReviewerList.propTypes = {
   inventories: PropTypes.object.isRequired,
   pagination: PropTypes.object.isRequired,
   listInventories: PropTypes.func.isRequired,
-  listOrdinatorInventories: PropTypes.func.isRequired,
   setFilterQuery: PropTypes.func.isRequired,
   resetCurrentPage: PropTypes.func.isRequired,
 
   params: PropTypes.object,
   isOrdinator: PropTypes.bool,
   isLoadingList: PropTypes.bool.isRequired,
-  onEdit: PropTypes.func.isRequired,
-  onAssign: PropTypes.func.isRequired,
+  onReview: PropTypes.func.isRequired,
 };
 
-export default InventoryList;
+export default InventoryReviewerList;

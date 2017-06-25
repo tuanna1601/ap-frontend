@@ -43,8 +43,11 @@ export function generateInventoryStatusLabel(status) {
   }
 }
 
-export function genenrateInventoryStatusOptions() {
-  const statuses = ['unassigned', 'assigned', 'accepted', 'rejected'];
+export function genenrateInventoryStatusOptions(isReviewer) {
+  let statuses = ['unassigned', 'assigned', 'accepted', 'rejected'];
+  if (isReviewer) {
+    statuses = ['assigned', 'accepted', 'rejected'];
+  }
   return statuses.map(status => ({
     value: status,
     label: generateInventoryStatusLabel(status)

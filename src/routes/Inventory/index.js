@@ -4,6 +4,7 @@ import { reducer } from './redux/inventory';
 import InventoryLayout from './layouts/InventoryLayout';
 import InventoryListPage from './pages/InventoryListPage';
 import InventoryOrdinatorListPage from './pages/InventoryOrdinatorListPage';
+import InventoryReviewerListPage from './pages/InventoryReviewerListPage';
 import InventoryCreatePage from './pages/InventoryCreatePage';
 import InventoryUpdatePage from './pages/InventoryUpdatePage';
 import InventoryReviewPage from './pages/InventoryReviewPage';
@@ -30,6 +31,11 @@ export default (store) => ({
     {
       path: 'ordinator',
       component: InventoryOrdinatorListPage,
+      onEnter: (nextState, replace, callback) => checkPermission(['inventory:list'], store, callback)
+    },
+    {
+      path: 'reviewer',
+      component: InventoryReviewerListPage,
       onEnter: (nextState, replace, callback) => checkPermission(['inventory:list'], store, callback)
     },
     {

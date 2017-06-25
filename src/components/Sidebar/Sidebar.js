@@ -88,6 +88,23 @@ const Sidebar = ({ isLoggedIn, toggleMenu, tree }) => (
               </SidebarItem>
             </ul>
           </SidebarTree>
+          <SidebarTree treeId="review" className={tree.review ? 'treeview active' : 'treeview'}>
+            <a onClick={() => toggleMenu('review')}>
+              <i className="fa fa-tasks" />
+              <span>
+                Duyệt kho
+              </span>
+              <span className="pull-right-container">
+                <i className="fa fa-angle-left pull-right" />
+              </span>
+            </a>
+            <ul className="treeview-menu">
+              <SidebarItem treeId="review.list" to="/inventory/reviewer?status=assigned">
+                <i className="fa fa-list" />
+                <span>Danh sách kho</span>
+              </SidebarItem>
+            </ul>
+          </SidebarTree>
         </ul>
       }
     </div>
