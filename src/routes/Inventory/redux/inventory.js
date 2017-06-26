@@ -10,6 +10,7 @@ const UPDATE_LOADING_UPDATE = 'INVENTORY_UPDATE_LOADING_UPDATE';
 const EDIT = 'INVENTORY_EDIT';
 const RELOAD_LIST = 'INVENTORY_RELOAD_LIST';
 const LOAD = 'INVENTORY_LOAD';
+const LOAD_CRITERIA = 'INVENTORY_LOAD_CRITERIA';
 const SET_CURRENT_PAGE = 'INVENTORY_SET_CURRENT_PAGE';
 const RESET_CURRENT_PAGE = 'INVENTORY_RESET_CURRENT_PAGE';
 const SET_FILTER_QUERY = 'INVENTORY_SET_FILTER_QUERY';
@@ -90,6 +91,13 @@ export function loadInventory(inventory) {
   };
 }
 
+export function loadCriteria(criteria) {
+  return {
+    type: LOAD_CRITERIA,
+    criteria
+  };
+}
+
 export function listInventories() {
   return (dispatch, getState) => {
     const auth = getState().auth;
@@ -141,6 +149,65 @@ export function listOrdinatorInventories() {
   };
 }
 
+export function listReviewerInventories() {
+  return (dispatch, getState) => {
+    const auth = getState().auth;
+    if (!auth) {
+      return;
+    }
+
+    dispatch(onUpdateLoadingList(true));
+    const pagination = getState().inventory.pagination;
+    const query = getState().inventory.filterQuery;
+
+    const filterQuery = Object.assign({}, query, {
+      limit: pagination.limit,
+      page: pagination.page,
+    });
+
+    const url = `${__CONFIG__.API.SERVER_URL}/inventories/reviewer?${HTTP.param(filterQuery)}`;
+    HTTP.get(auth, url, dispatch, (data) => {
+      dispatch(reloadList(data.rows, data.count));
+    }).then(() => {
+      dispatch(onUpdateLoadingList(false));
+    });
+  };
+}
+
+export function getCriteria(inventory) {
+  return (dispatch, getState) => {
+    const auth = getState().auth;
+    if (!auth) {
+      return;
+    }
+    const { department } = inventory;
+
+    const url = `${__CONFIG__.API.SERVER_URL}/criteria?${HTTP.param({ department })}`;
+    HTTP.get(auth, url, dispatch).then(data => {
+      dispatch(loadInventory(inventory));
+      dispatch(loadCriteria(data.rows));
+      dispatch(onUpdateLoadingList(false));
+    });
+  };
+}
+
+export function getLatestReview(inventory) {
+  return (dispatch, getState) => {
+    const auth = getState().auth;
+    if (!auth) {
+      return;
+    }
+
+    const url = `${__CONFIG__.API.SERVER_URL}/reviews/inventory/${inventory.id}`;
+    HTTP.get(auth, url, dispatch).then(data => {
+      const tmp = Object.assign({}, inventory, {
+        latestReview: data
+      });
+      dispatch(getCriteria(tmp));
+    });
+  };
+}
+
 export function getInventory(inventoryId) {
   return (dispatch, getState) => {
     const auth = getState().auth;
@@ -148,12 +215,14 @@ export function getInventory(inventoryId) {
       return;
     }
 
+    dispatch(onUpdateLoadingList(true));
     const url = `${__CONFIG__.API.SERVER_URL}/inventories/${inventoryId}`;
-    HTTP.get(auth, url, dispatch, (data) => {
-      dispatch(loadInventory(data));
+    HTTP.get(auth, url, dispatch).then(data => {
+      dispatch(getLatestReview(data));
     });
   };
 }
+
 
 export function createInventory(formValues, callback) {
   return (dispatch, getState) => {
@@ -243,7 +312,7 @@ export function reviewInventory(formValues, callback) {
               targetId: data._id,
               comment: review.comment
             });
-        });
+          });
         }
       } else {
         let singularKey;
@@ -364,6 +433,7 @@ const initialState = {
   isLoadingList: false,
   isLoadingCreate: false,
   isLoadingUpdate: false,
+  criteria: {},
   pagination: {
     count: 0,
     page: 1,
@@ -418,9 +488,27 @@ export function reducer(state = initialState, action) {
     }
     case LOAD:
     case AFTER_CREATE: {
+      const inventory = action.inventory;
+      const review = inventory.review ? Object.assign({}, inventory.review, {
+        comments: _.reduce(inventory.review.comments, (hashCm, comment) =>
+          Object.assign({}, hashCm, {
+            [comment.targetId]: comment
+          }), {})
+      }) : undefined;
+      const latestReview = inventory.latestReview ? Object.assign({}, inventory.latestReview, {
+        comments: inventory.latestReview && inventory.latestReview.comments ?
+          _.reduce(inventory.latestReview.comments, (hashCm, comment) =>
+            Object.assign({}, hashCm, {
+              [comment.targetId]: comment
+            }), {}) : {}
+      }) : undefined;
+
       return Object.assign({}, state, {
         inventories: Object.assign({}, state.inventories, {
-          [action.inventory.id]: action.inventory
+          [inventory.id]: Object.assign({}, inventory, {
+            review,
+            latestReview
+          })
         })
       });
     }
@@ -449,6 +537,13 @@ export function reducer(state = initialState, action) {
         inventories,
       });
     }
+    case LOAD_CRITERIA:
+      return Object.assign({}, state, {
+        criteria: _.reduce(action.criteria, (hashCriteria, criterion) =>
+          Object.assign({}, hashCriteria, {
+            [criterion.id]: criterion
+          }), {})
+      });
     case SET_ADS_PREVIEW: {
       return Object.assign({}, state, {
         adsPreview: action.adsPreview
