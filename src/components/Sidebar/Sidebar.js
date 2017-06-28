@@ -25,6 +25,23 @@ const Sidebar = ({ isLoggedIn, toggleMenu, tree }) => (
               </SidebarItem>
             </ul>
           </SidebarTree>
+          <SidebarTree treeId="ads" className={tree.ads ? 'treeview active' : 'treeview'}>
+            <a onClick={() => toggleMenu('ads')}>
+              <i className="fa fa-address-book-o" />
+              <span>
+                Quản lý Ad Account
+              </span>
+              <span className="pull-right-container">
+                <i className="fa fa-angle-left pull-right" />
+              </span>
+            </a>
+            <ul className="treeview-menu">
+              <SidebarItem treeId="ads.list" to="/ads">
+                <i className="fa fa-list" />
+                <span>Danh sách Ad Account</span>
+              </SidebarItem>
+            </ul>
+          </SidebarTree>
           <SidebarTree treeId="department" className={tree.department ? 'treeview active' : 'treeview'}>
             <a onClick={() => toggleMenu('department')}>
               <i className="fa fa-building" />
