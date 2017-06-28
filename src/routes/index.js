@@ -8,6 +8,7 @@ import UserRoute from './User';
 import InventoryRoute from './Inventory';
 import DepartmentRoute from './Department';
 import CriteriaRoute from './Criteria';
+import AdsRoute from './Ads';
 
 /*  Note: Instead of using JSX, we recommend using react-router
     PlainRoute objects to build route definitions.   */
@@ -22,6 +23,7 @@ const createRoutes = (store) => ({
     InventoryRoute(store),
     DepartmentRoute(store),
     CriteriaRoute(store),
+    AdsRoute(store),
   ],
 });
 
