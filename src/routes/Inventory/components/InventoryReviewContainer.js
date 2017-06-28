@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { push } from 'react-router-redux';
 import { formValueSelector } from 'redux-form';
 import Alert from 'react-s-alert';
 import * as _ from 'lodash';
@@ -9,16 +10,20 @@ import {
 
 const mapStateToProps = (state, ownProps) => ({
   form: 'inventory-review',
-  isLoading: state.inventory.isLoadingCreate,
+  isLoadingCreate: state.inventory.isLoadingCreate,
+  isLoadingList: state.inventory.isLoadingList,
   initialValues: state.inventory.inventories[ownProps.id] ?
-   state.inventory.inventories[ownProps.id] : {},
+    state.inventory.inventories[ownProps.id] : {},
   enableReinitialize: true,
   department: state.inventory.inventories[ownProps.id] ?
-   state.inventory.inventories[ownProps.id].department : '',
+    state.inventory.inventories[ownProps.id].department : '',
   criteria: state.inventory.criteria,
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  navigateToList: () => {
+    dispatch(push('/inventory/reviewer?status=assigned'));
+  },
   onComponentMounted: (id) => {
     dispatch(getInventory(id));
   },
