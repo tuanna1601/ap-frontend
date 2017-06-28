@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { Alert } from 'react-s-alert';
+import Alert from 'react-s-alert';
 
 import { showConfirm } from '@/store/modal';
 import { listAdAccount, deleteAdAccount } from '../redux/ads';

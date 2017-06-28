@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Alert } from 'react-s-alert';
+import Alert from 'react-s-alert';
 
 import { showForm } from '@/store/modal';
 import { listCriteria, updateCriteria, deleteCriteria } from '../redux/criteria';
@@ -27,13 +27,13 @@ const mapDispatchToProps = (dispatch) => ({
     );
     dispatch(showForm('Sửa tiêu chí', updateForm, (values) => {
       dispatch(updateCriteria(values), () => {
-        Alert('Tiêu chí đã được sửa thành công');
+        Alert.success('Tiêu chí đã được sửa thành công');
       });
     }));
   },
   onDelete: (criterion) => {
     dispatch(deleteCriteria(criterion.id), () => {
-      Alert('Tiêu chí đã được xoá thành công');
+      Alert.success('Tiêu chí đã được xoá thành công');
     });
   }
 });
