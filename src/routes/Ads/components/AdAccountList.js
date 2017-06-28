@@ -17,7 +17,7 @@ class AdAccountList extends Component {
     return (
       <div className="box box-success">
         <div className="box-header with-border">
-          <h3 className="box-title">Danh sách tiêu chí</h3>
+          <h3 className="box-title">Danh sách Ad Account</h3>
           <div className="box-tools pull-right">
             {this.props.isLoading && <i className="fa fa-refresh fa-spin" />}
           </div>
