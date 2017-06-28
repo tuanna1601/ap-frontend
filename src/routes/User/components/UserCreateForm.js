@@ -5,7 +5,7 @@ import Validator from '@/helpers/validator';
 import { generateRoleOptions } from '@/helpers/helper';
 
 const UserCreateForm = ({ handleSubmit, isLoading, submitting, pristine, reset }) => (
-  <form className="table-row" onSubmit={handleSubmit}>
+  <form className="modal-form" onSubmit={handleSubmit}>
     <div className="row">
       <div className="col-md-4">
         <div className="form-group">
