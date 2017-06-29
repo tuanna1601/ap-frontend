@@ -14,11 +14,11 @@ const Td = Reactable.Td;
 
 class InventoryList extends Component {
   componentDidMount() {
-    // if (this.props.isOrdinator) {
-    //   this.props.listOrdinatorInventories();
-    // } else {
-    //   this.props.listInventories();
-    // }
+    if (this.props.isOrdinator) {
+      this.props.listOrdinatorInventories();
+    } else {
+      this.props.listInventories();
+    }
   }
 
   componentWillUnmount() {
@@ -41,6 +41,7 @@ class InventoryList extends Component {
                 <Th column="name">Tên kho</Th>
                 <Th column="version">Version</Th>
                 <Th column="created">Ngày tạo</Th>
+                <Th column="department">Đơn vị</Th>
                 <Th column="status">Trạng thái</Th>
                 <Th column="action">Thao tác</Th>
               </Thead>
@@ -52,6 +53,9 @@ class InventoryList extends Component {
                     <Td column="version" className="table-col text-right">{inventory.version}</Td>
                     <Td column="created" className="table-col text-right">
                       {moment(inventory.created).format('DD-MM-YYYY')}
+                    </Td>
+                    <Td column="department" className="table-col text-center">
+                      {inventory.department.name}
                     </Td>
                     <Td column="status" className="table-col text-right">
                       {generateInventoryStatusLabel(inventory.status)}
@@ -65,6 +69,15 @@ class InventoryList extends Component {
                             title="Sửa"
                           >
                             <i className="fa fa-fw fa-pencil" />
+                          </button>
+                        }
+                        {!this.props.isOrdinator &&
+                          <button
+                            className="btn btn-xs btn-primary btn-flat"
+                            onClick={() => this.props.onCreateAds(inventory)}
+                            title="Tạo quảng cáo"
+                          >
+                            <i className="fa fa-fw fa-facebook" />
                           </button>
                         }
                         {this.props.isOrdinator && !inventory.reviewer &&
@@ -102,6 +115,7 @@ InventoryList.propTypes = {
   isLoadingList: PropTypes.bool.isRequired,
   onEdit: PropTypes.func.isRequired,
   onAssign: PropTypes.func.isRequired,
+  onCreateAds: PropTypes.func.isRequired,
 };
 
 export default InventoryList;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert } from 'react-s-alert';
+import Alert from 'react-s-alert';
 import { push } from 'react-router-redux';
 import { connect } from 'react-redux';
 import { showForm } from '@/store/modal';
@@ -25,6 +25,9 @@ const mapDispatchToProps = (dispatch) => ({
   resetCurrentPage: () => dispatch(resetCurrentPage()),
   onEdit: (inventory) => {
     dispatch(push(`/inventory/update?id=${inventory.id}`));
+  },
+  onCreateAds: (inventory) => {
+    dispatch(push(`/inventory/ads-create?inventoryId=${inventory.id}`));
   },
   onAssign: (inventory) => {
     const initialValues = {

@@ -8,7 +8,7 @@ import InventoryReviewerListPage from './pages/InventoryReviewerListPage';
 import InventoryCreatePage from './pages/InventoryCreatePage';
 import InventoryUpdatePage from './pages/InventoryUpdatePage';
 import InventoryReviewPage from './pages/InventoryReviewPage';
-import InventortAdsPreviewPage from './pages/InventoryAdsPreviewPage';
+import InventoryAdsCreatePage from './pages/InventoryAdsCreatePage';
 
 export default (store) => ({
   path: 'inventory',
@@ -54,8 +54,8 @@ export default (store) => ({
       onEnter: (nextState, replace, callback) => checkPermission(['inventory:review'], store, callback)
     },
     {
-      path: 'ads-preview',
-      component: InventortAdsPreviewPage,
+      path: 'ads-create',
+      component: InventoryAdsCreatePage,
       onEnter: (nextState, replace, callback) => checkPermission(['inventory:update'], store, callback)
     }
   ]

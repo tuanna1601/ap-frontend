@@ -223,7 +223,6 @@ export function getInventory(inventoryId) {
   };
 }
 
-
 export function createInventory(formValues, callback) {
   return (dispatch, getState) => {
     const auth = getState().auth;
@@ -402,6 +401,38 @@ export function setAdsPreview(adsPreview) {
   return {
     type: SET_ADS_PREVIEW,
     adsPreview
+  };
+}
+
+export function createFacebookAds(values, callback) {
+  return (dispatch, getState) => {
+    const auth = getState().auth;
+    if (!auth) {
+      return;
+    }
+
+    let formattedValues = _.cloneDeep(values);
+
+    if (values.selectedMedia && values.selectedMedia.length) {
+      formattedValues.media = _.filter(values.inventoryObj.media,
+        (media, index) => values.selectedMedia[index]);
+    }
+
+    formattedValues = _.pick(formattedValues,
+      ['name', 'inventory', 'adaccount', 'adset',
+        'headline', 'description', 'type', 'media',
+        'callToAction', 'websiteUrl', 'page']);
+
+    dispatch(onUpdateLoadingCreate(true));
+    const url = `${__CONFIG__.API.SERVER_URL}/ads`;
+    HTTP.post(formattedValues, auth, url, dispatch, (data) => {
+      if (callback) {
+        callback(data);
+      }
+      // dispatch(setAdsPreview(data.data[0].body));
+    }).then(() => {
+      dispatch(onUpdateLoadingCreate(false));
+    });
   };
 }
 

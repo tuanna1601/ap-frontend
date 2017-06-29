@@ -43,6 +43,27 @@ export function generateInventoryStatusLabel(status) {
   }
 }
 
+export function generateAdFormatLabel(status) {
+  switch (status) {
+    case 'image':
+      return 'Single Image';
+    case 'video':
+      return 'Single Video';
+    case 'slideshow':
+      return 'Slideshow';
+    default:
+      return '';
+  }
+}
+
+export function generateAdFormatOptions() {
+  const formats = ['image', 'slideshow'];
+  return formats.map(format => ({
+    value: format,
+    label: generateAdFormatLabel(format)
+  }));
+}
+
 export function generateInventoryStatusOptions(isReviewer) {
   let statuses = ['unassigned', 'assigned', 'accepted', 'rejected'];
   if (isReviewer) {
