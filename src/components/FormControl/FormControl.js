@@ -37,7 +37,7 @@ class FormControl extends React.Component {
         <div className={formGroupClass}>
           <div className="radio" style={{ paddingTop: hasLabel ? 20 : 0 }}>
             <label htmlFor={id}>
-              <input {...input} type="radio" />
+              <input {...input} id={id} type="radio" />
               {label}
             </label>
           </div>
