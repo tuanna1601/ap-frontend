@@ -82,10 +82,6 @@ const Sidebar = ({ isLoggedIn, toggleMenu, tree }) => (
                 <i className="fa fa-pencil" />
                 <span>Tạo kho</span>
               </SidebarItem>
-              <SidebarItem treeId="inventory.ads" to="/inventory/ads-preview">
-                <i className="fa fa-facebook-square" />
-                <span>Facebook Ads Preview</span>
-              </SidebarItem>
             </ul>
           </SidebarTree>
           <SidebarTree treeId="ordinate" className={tree.ordinate ? 'treeview active' : 'treeview'}>
