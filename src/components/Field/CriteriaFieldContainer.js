@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import * as _ from 'lodash';
 import { listCriteria } from '@/store/common';
-import InventoryField from './InventoryField';
+import CriteriaField from './CriteriaField';
 
 const mapStateToProps = (state) => ({
   options: _.chain(state.common.criteria)
@@ -19,4 +19,4 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   resetOptions: () => dispatch(listCriteria(ownProps.department)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(InventoryField);
+export default connect(mapStateToProps, mapDispatchToProps)(CriteriaField);
