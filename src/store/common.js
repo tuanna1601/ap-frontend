@@ -6,6 +6,9 @@ const AFTER_CREATE_DEPARTMENT = 'COMMON_AFTER_CREATE_DEPARTMENT';
 const RELOAD_INVENTORIES = 'COMMON_RELOAD_INVENTORIES';
 const RELOAD_USERS = 'COMMON_RELOAD_USERS';
 const RELOAD_CRITERIA = 'COMMON_RELOAD_CRITERIA';
+const RELOAD_AD_ACCOUNTS = 'COMMON_RELOAD_AD_ACCOUNTS';
+const RELOAD_AD_CAMPAIGNS = 'COMMON_RELOAD_AD_CAMPAIGNS';
+const RELOAD_AD_SETS = 'COMMON_RELOAD_AD_SETS';
 
 export function reloadDeparments(rows) {
   return {
@@ -39,6 +42,27 @@ export function reloadCriteria(rows) {
   return {
     type: RELOAD_CRITERIA,
     criteria: rows
+  };
+}
+
+export function reloadAdAccounts(rows) {
+  return {
+    type: RELOAD_AD_ACCOUNTS,
+    accounts: rows
+  };
+}
+
+export function reloadAdCampaigns(rows) {
+  return {
+    type: RELOAD_AD_CAMPAIGNS,
+    campaigns: rows
+  };
+}
+
+export function reloadAdSets(rows) {
+  return {
+    type: RELOAD_AD_SETS,
+    sets: rows
   };
 }
 
@@ -101,11 +125,60 @@ export function listCriteria(department) {
   };
 }
 
+export function listAdAccount(query) {
+  return (dispatch, getState) => {
+    const auth = getState().auth;
+    if (!auth) {
+      return;
+    }
+
+    const url = `${__CONFIG__.API.SERVER_URL}/ad-accounts?${HTTP.param(query)}`;
+    HTTP.get(auth, url, dispatch, (data) => {
+      dispatch(reloadAdAccounts(data.rows));
+    });
+  };
+}
+
+export function listAdCampaign(accountId) {
+  return (dispatch, getState) => {
+    const auth = getState().auth;
+    if (!auth) {
+      return;
+    }
+
+    if (accountId) {
+      const url = `${__CONFIG__.API.SERVER_URL}/ad-accounts/${accountId}/campaigns`;
+      HTTP.get(auth, url, dispatch, (data) => {
+        dispatch(reloadAdCampaigns(data.data));
+      });
+    }
+  };
+}
+
+export function listAdSet(accountId, campaignId) {
+  return (dispatch, getState) => {
+    const auth = getState().auth;
+    if (!auth) {
+      return;
+    }
+
+    if (accountId && campaignId) {
+      const url = `${__CONFIG__.API.SERVER_URL}/ad-accounts/${accountId}/${campaignId}/adsets`;
+      HTTP.get(auth, url, dispatch, (data) => {
+        dispatch(reloadAdSets(data.data));
+      });
+    }
+  };
+}
+
 const initialState = {
   departments: [],
   criteria: [],
   inventories: {},
   users: [],
+  adAccounts: [],
+  adCampaigns: [],
+  adSets: [],
 };
 
 export function reducer(state = initialState, action) {
@@ -140,6 +213,21 @@ export function reducer(state = initialState, action) {
     case RELOAD_CRITERIA: {
       return Object.assign({}, state, {
         criteria: action.criteria
+      });
+    }
+    case RELOAD_AD_ACCOUNTS: {
+      return Object.assign({}, state, {
+        adAccounts: action.accounts
+      });
+    }
+    case RELOAD_AD_CAMPAIGNS: {
+      return Object.assign({}, state, {
+        adCampaigns: action.campaigns
+      });
+    }
+    case RELOAD_AD_SETS: {
+      return Object.assign({}, state, {
+        adSets: action.sets
       });
     }
     default:
