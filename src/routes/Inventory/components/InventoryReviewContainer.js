@@ -12,8 +12,26 @@ const mapStateToProps = (state, ownProps) => ({
   form: 'inventory-review',
   isLoadingCreate: state.inventory.isLoadingCreate,
   isLoadingList: state.inventory.isLoadingList,
-  initialValues: state.inventory.inventories[ownProps.id] ?
-    state.inventory.inventories[ownProps.id] : {},
+  initialValues: (() => {
+    const inventory = state.inventory.inventories[ownProps.id] ?
+      state.inventory.inventories[ownProps.id] : {};
+    if (inventory.text &&
+      inventory.headlines &&
+      inventory.medias &&
+      inventory.descriptions) {
+      inventory.text.reviews = undefined;
+      _.each(inventory.headlines, (headline, index) => {
+        inventory.headlines[index].reviews = undefined;
+      });
+      _.each(inventory.medias, (media, index) => {
+        inventory.medias[index].reviews = undefined;
+      });
+      _.each(inventory.descriptions, (description, index) => {
+        inventory.descriptions[index].reviews = undefined;
+      });
+    }
+    return inventory;
+  })(),
   enableReinitialize: true,
   department: state.inventory.inventories[ownProps.id] ?
     state.inventory.inventories[ownProps.id].department : '',

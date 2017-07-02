@@ -234,9 +234,20 @@ export function createInventory(formValues, callback) {
     const formData = new FormData();
     _.each(formValues, (formValue, key) => {
       if (formValue instanceof Array) {
-        _.each(formValue, (val) => {
-          formData.append(key, val.value);
-        });
+        if (key !== 'medias') {
+          _.each(formValue, (val) => {
+            formData.append(key, val.value);
+          });
+        } else {
+          _.each(formValue, (val) => {
+            if (val.thumbnail) {
+              formData.append('videos', val.value);
+              formData.append('thumbnails', val.thumbnail);
+            } else {
+              formData.append('images', val.value);
+            }
+          });
+        }
       } else {
         formData.append(key, formValue);
       }
@@ -272,10 +283,23 @@ export function updateInventory(formValues, callback) {
       'newMedias', 'descriptions']);
     _.each(formattedData, (formValue, key) => {
       if (key !== 'newMedias') {
-        formData.append(key, JSON.stringify(formValue));
+        if (key === 'text') {
+          const formattedValue = _.cloneDeep(formValue);
+          if (formattedValue.reviews) {
+            delete formattedValue.reviews;
+          }
+          formData.append(key, JSON.stringify(formattedValue));
+        } else {
+          const formattedValue = _.map(formValue, value =>
+            Object.assign({}, value, {
+              reviews: undefined,
+              type: undefined
+            }));
+          formData.append(key, JSON.stringify(formattedValue));
+        }
       } else {
         _.each(formValue, (file) => {
-          formData.append(key, file);
+          formData.append(key, file.value);
         });
       }
     });
@@ -414,12 +438,14 @@ export function createFacebookAds(values, callback) {
     let formattedValues = _.cloneDeep(values);
 
     if (values.selectedMedia && values.selectedMedia.length) {
-      formattedValues.media = _.filter(values.inventoryObj.media,
-        (media, index) => values.selectedMedia[index]);
+      formattedValues.media = _.chain(values.inventoryObj.medias)
+        .filter((media, index) => values.selectedMedia[index])
+        .map(media => media.path)
+        .value();
     }
 
     formattedValues = _.pick(formattedValues,
-      ['name', 'inventory', 'adaccount', 'adset',
+      ['name', 'inventory', 'adaccount', 'adset', 'message',
         'headline', 'description', 'type', 'media',
         'callToAction', 'websiteUrl', 'page']);
 
@@ -520,26 +546,46 @@ export function reducer(state = initialState, action) {
     case LOAD:
     case AFTER_CREATE: {
       const inventory = action.inventory;
-      const review = inventory.review ? Object.assign({}, inventory.review, {
-        comments: _.reduce(inventory.review.comments, (hashCm, comment) =>
-          Object.assign({}, hashCm, {
-            [comment.targetId]: comment
-          }), {})
-      }) : undefined;
-      const latestReview = inventory.latestReview ? Object.assign({}, inventory.latestReview, {
-        comments: inventory.latestReview && inventory.latestReview.comments ?
-          _.reduce(inventory.latestReview.comments, (hashCm, comment) =>
-            Object.assign({}, hashCm, {
-              [comment.targetId]: comment
-            }), {}) : {}
-      }) : undefined;
+      if (inventory.latestReview) {
+        const groupReviews = _.groupBy(inventory.latestReview.comments, 'target');
+        if (groupReviews.text) {
+          inventory.text.reviews = groupReviews.text;
+        }
+        if (groupReviews.media) {
+          _.each(inventory.medias, (media, index) => {
+            inventory.medias[index].reviews = [];
+            _.each(groupReviews.media, review => {
+              if (media._id === review.targetId) {
+                inventory.medias[index].reviews.push(review);
+              }
+            });
+          });
+        }
+        if (groupReviews.headline) {
+          _.each(inventory.headlines, (headline, index) => {
+            inventory.headlines[index].reviews = [];
+            _.each(groupReviews.headline, review => {
+              if (headline._id === review.targetId) {
+                inventory.headlines[index].reviews.push(review);
+              }
+            });
+          });
+        }
+        if (groupReviews.description) {
+          _.each(inventory.descriptions, (description, index) => {
+            inventory.descriptions[index].reviews = [];
+            _.each(groupReviews.description, review => {
+              if (description._id === review.targetId) {
+                inventory.descriptions[index].reviews.push(review);
+              }
+            });
+          });
+        }
+      }
 
       return Object.assign({}, state, {
         inventories: Object.assign({}, state.inventories, {
-          [inventory.id]: Object.assign({}, inventory, {
-            review,
-            latestReview
-          })
+          [inventory.id]: inventory
         })
       });
     }

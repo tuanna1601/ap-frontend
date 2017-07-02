@@ -1,9 +1,21 @@
 import React, { Component, PropTypes } from 'react';
 import { Field, FieldArray, reduxForm } from 'redux-form';
-import { FormControl, FormControlTextArea, FormControlUpload } from '@/components/FormControl';
+import { FormControl, FormControlTextArea,
+  FormControlSelect, FormControlUpload } from '@/components/FormControl';
 import { DepartmentField } from '@/components/Field';
 import Validator from '@/helpers/validator';
 import { Tab, Tabs } from '@/components/Tabs';
+
+const mediaTypeOptions = [
+  {
+    value: 'image',
+    label: 'Ảnh'
+  },
+  {
+    value: 'video',
+    label: 'Video'
+  }
+];
 
 class InventoryForm extends Component {
   constructor(props) {
@@ -86,15 +98,50 @@ class InventoryForm extends Component {
     }
     return (
       <tr key={index}>
-        <td>
+        <td style={{ width: '30%' }}>
           <Field
-            component={FormControlUpload}
-            id={`${media}.value`}
-            name={`${media}.value`}
+            component={FormControlSelect}
+            options={mediaTypeOptions}
+            id={`${media}.type`} name={`${media}.type`}
             group={`${this.props.form}.media`}
             index={index}
-            label="Media"
+            label="Loại Media" hasLabel
+            autoSelect={false}
           />
+        </td>
+        <td style={{ width: '60%' }}>
+          {this.props.media[index] &&
+            this.props.media[index].type === 'video' &&
+            <div>
+              <Field
+                component={FormControlUpload}
+                id={`${media}.thumbnail`}
+                name={`${media}.thumbnail`}
+                group={`${this.props.form}.media`}
+                index={index}
+                label="Thumbnail" hasLabel
+              />
+              <Field
+                component={FormControlUpload}
+                id={`${media}.value`}
+                name={`${media}.value`}
+                group={`${this.props.form}.media`}
+                index={index}
+                label="Video" hasLabel
+              />
+            </div>
+          }
+          {this.props.media[index] &&
+            this.props.media[index].type === 'image' &&
+            <Field
+              component={FormControlUpload}
+              id={`${media}.value`}
+              name={`${media}.value`}
+              group={`${this.props.form}.media`}
+              index={index}
+              label="Ảnh" hasLabel
+            />
+          }
         </td>
         <td>
           <button
@@ -114,7 +161,7 @@ class InventoryForm extends Component {
     return (
       <tbody>
         <tr>
-          <td colSpan={2}>
+          <td colSpan={3}>
             <h4 className="page-header no-margin">
               Thêm Media
             </h4>
@@ -122,7 +169,7 @@ class InventoryForm extends Component {
         </tr>
         {fields.map((media, index) => this.renderMedia(fields, media, index))}
         <tr className="button-list">
-          <td colSpan={2}>
+          <td colSpan={3}>
             <button
               className="btn btn-xs btn-flat btn-success" type="button"
               onClick={() => fields.push()}
@@ -262,7 +309,7 @@ class InventoryForm extends Component {
                   <table className="table table-condensed table-striped table-bordered table-field-array">
                     <thead>
                       <tr>
-                        <th style={{ width: '90%' }}>
+                        <th colSpan={2} style={{ width: '90%' }}>
                           Media
                         </th>
                         <th style={{ width: '10%' }}>
@@ -343,8 +390,11 @@ function validateMedia(mediaArr) {
       if (media && media.value) {
         return {
           value: (new Validator(media.value))
-            .validateFile(['jpg', 'jpeg', 'png', 'gif'])
-            .getMessage()
+            .validateRequired()
+            .getMessage(),
+          thumbnail: (new Validator(media.thumbnail))
+            .validateRequired()
+            .getMessage(),
         };
       }
       return 'Chưa chọn file';

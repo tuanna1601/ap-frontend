@@ -2,14 +2,13 @@ import React, { Component, PropTypes } from 'react';
 import { reduxForm, Field, FieldArray } from 'redux-form';
 
 import * as _ from 'lodash';
-import diff from '@/helpers/diff';
 import { FormControlSelect } from '@/components/FormControl';
 import { generateInventoryStatusOptions } from '@/helpers/helper';
 
 import TextField from './InventoryFields/TextField';
-import HeadlineField from './InventoryFields/HeadlineField';
-import DescriptionField from './InventoryFields/DescriptionField';
-import MediaField from './InventoryFields/MediaField';
+import HeadlineField from './InventoryFields/HeadlineFieldContainer';
+import DescriptionField from './InventoryFields/DescriptionFieldContainer';
+import MediaField from './InventoryFields/MediaFieldContainer';
 
 class InventoryReviewForm extends Component {
 
@@ -63,13 +62,29 @@ class InventoryReviewForm extends Component {
                         </th>
                       </tr>
                     </thead>
-                    <TextField department={department} form={form} />
+                    <TextField
+                      department={department}
+                      form={form}
+                      text={initialValues.text}
+                    />
                   </table>
                   <table className="table table-condensed table-bordered table-field-array">
-                    <FieldArray name="headlines" form={form} department={department} component={HeadlineField} />
+                    <FieldArray
+                      name="headlines"
+                      form={form}
+                      department={department}
+                      component={HeadlineField}
+                      headlines={initialValues.headlines}
+                    />
                   </table>
                   <table className="table table-condensed table-bordered table-field-array">
-                    <FieldArray name="descriptions" form={form} department={department} component={DescriptionField} />
+                    <FieldArray
+                      name="descriptions"
+                      form={form}
+                      department={department}
+                      component={DescriptionField}
+                      descriptions={initialValues.descriptions}
+                    />
                   </table>
                   <table className="table table-condensed table-bordered table-field-array">
                     <FieldArray
@@ -78,6 +93,7 @@ class InventoryReviewForm extends Component {
                       component={MediaField}
                       department={department}
                       medias={initialValues.medias}
+                      isOldMedia
                     />
                   </table>
                   <div className="col-xs-12">

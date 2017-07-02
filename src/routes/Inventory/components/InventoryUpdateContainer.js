@@ -9,16 +9,17 @@ import {
 
 const mapStateToProps = (state, ownProps) => ({
   form: 'inventory-update',
-  isLoading: state.inventory.isLoadingCreate,
-  initialValues: state.inventory.inventories[ownProps.id],
+  isLoadingCreate: state.inventory.isLoadingCreate,
+  isLoadingList: state.inventory.isLoadingList,
   newMedias: formValueSelector('inventory-update')(state, 'newMedias'),
-  medias: formValueSelector('inventory-update')(state, 'medias') ||
-    state.inventory.inventories[ownProps.id].medias ? state.inventory.inventories[ownProps.id].medias : [],
-  headlines: formValueSelector('inventory-update')(state, 'headlines') ||
-    state.inventory.inventories[ownProps.id].headlines ? state.inventory.inventories[ownProps.id].headlines : [],
-  descriptions: formValueSelector('inventory-update')(state, 'descriptions') ||
-    state.inventory.inventories[ownProps.id].descriptions ? state.inventory.inventories[ownProps.id].descriptions : [],
-  enableReinitialize: true
+  headlines: formValueSelector('inventory-update')(state, 'headlines'),
+  descriptions: formValueSelector('inventory-update')(state, 'descriptions'),
+  text: formValueSelector('inventory-update')(state, 'text'),
+  enableReinitialize: true,
+  initialValues: state.inventory.inventories[ownProps.id] ?
+    state.inventory.inventories[ownProps.id] : {},
+  department: state.inventory.inventories[ownProps.id] ?
+    state.inventory.inventories[ownProps.id].department : '',
 });
 
 const mapDispatchToProps = (dispatch) => ({

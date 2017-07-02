@@ -4,7 +4,7 @@ import { Field } from 'redux-form';
 import { FormControl } from '@/components/FormControl';
 import { CriteriaField } from '@/components/Field';
 
-const ReviewFieldArray = ({ fields, onFieldArrayRemove, department }) => (
+const ReviewFieldArray = ({ fields, onFieldArrayRemove, department, isUpdate }) => (
   <tbody>
     {fields.map((review, index) =>
       <tr key={review}>
@@ -15,6 +15,7 @@ const ReviewFieldArray = ({ fields, onFieldArrayRemove, department }) => (
             name={`${review}.comment`}
             index={index}
             label="Review"
+            readOnly={isUpdate}
           />
         </td>
         <td>
@@ -25,34 +26,40 @@ const ReviewFieldArray = ({ fields, onFieldArrayRemove, department }) => (
             index={index}
             label="Tiêu chí"
             autoSelect={false}
+            disabled={isUpdate}
           />
         </td>
         <td className="text-center">
-          <button
-            className="btn btn-xs btn-flat btn-danger" type="button"
-            onClick={() => onFieldArrayRemove(fields, index)}
-          >
-            <i className="fa fa-trash" />
-          </button>
+          {!isUpdate &&
+            <button
+              className="btn btn-xs btn-flat btn-danger" type="button"
+              onClick={() => onFieldArrayRemove(fields, index)}
+            >
+              <i className="fa fa-trash" />
+            </button>
+          }
         </td>
       </tr>
     )}
-    <tr className="button-list">
-      <td colSpan={3}>
-        <button
-          className="btn btn-xs btn-flat btn-success" type="button"
-          onClick={() => fields.push()}
-        >
-          <i className="fa fa-fw fa-plus" />
-        </button>
-      </td>
-    </tr>
+    {!isUpdate &&
+      <tr className="button-list">
+        <td colSpan={3}>
+          <button
+            className="btn btn-xs btn-flat btn-success" type="button"
+            onClick={() => fields.push()}
+          >
+            <i className="fa fa-fw fa-plus" />
+          </button>
+        </td>
+      </tr>
+    }
   </tbody>
 );
 
 ReviewFieldArray.propTypes = {
   fields: PropTypes.object.isRequired,
   department: PropTypes.string.isRequired,
+  isUpdate: PropTypes.bool,
   onFieldArrayRemove: PropTypes.func.isRequired
 };
 
