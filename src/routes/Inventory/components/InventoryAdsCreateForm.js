@@ -39,8 +39,75 @@ class InventoryAdsCreateForm extends Component {
     }
   }
 
+  renderMediaArr(media, type) {
+    const videoNodes = [];
+    const imageNodes = [];
+    _.each(media, (md, index) => {
+      if (md.type === 'video') {
+        const node = (
+          <tr key={md._id} className="form-group">
+            <td style={{ width: '10%' }} className="table-col">
+              <Field
+                type="radio" component={FormControl}
+                id={`media[${index}]`}
+                name="media"
+                value={md._id}
+              />
+            </td>
+            <td className="table-col">
+              <label
+                style={{ width: '100%', cursor: 'pointer' }}
+                htmlFor={type !== `media[${index}]`}
+              >
+                <video
+                  controls
+                  style={{ maxWidth: '50%' }}
+                  poster={`${__CONFIG__.API.SERVER_URL}/${md.thumbnail}`}
+                >
+                  <source src={`${__CONFIG__.API.SERVER_URL}/${md.path}`} />
+                </video>
+              </label>
+            </td>
+          </tr>
+        );
+        videoNodes.push(node);
+      } else {
+        const node = (
+          <tr key={md._id} className="form-group">
+            <td style={{ width: '10%' }} className="table-col">
+              <Field
+                type={type !== 'slideshow' ? 'radio' : 'checkbox'} component={FormControl}
+                id={type !== 'slideshow' ? `media[${index}]` : `selectedMedia[${index}]`}
+                name={type !== 'slideshow' ? 'media' : `selectedMedia[${index}]`}
+                value={md._id}
+              />
+            </td>
+            <td className="table-col">
+              <label
+                style={{ width: '100%', cursor: 'pointer' }}
+                htmlFor={type !== 'slideshow' ? `media[${index}]` : `selectedMedia[${index}]`}
+              >
+                <img
+                  src={`${__CONFIG__.API.SERVER_URL}/${md.path}`}
+                  alt={md.path}
+                  style={{ maxWidth: '50%' }}
+                  className="img-thumbnail"
+                />
+              </label>
+            </td>
+          </tr>
+        );
+        imageNodes.push(node);
+      }
+    });
+    if (type === 'video') {
+      return videoNodes;
+    }
+    return imageNodes;
+  }
+
   render() {
-    const { handleSubmit, isLoadingPreview, isLoadingCreate, isLoadingList, submitting, pristine, reset,
+    const { handleSubmit, isLoadingCreate, isLoadingList, submitting, pristine, reset,
       inventory, adaccount, adcampaign, type, resetMedia } = this.props;
 
     let headlineOptions = [];
@@ -178,31 +245,7 @@ class InventoryAdsCreateForm extends Component {
                       <div className="table-responsive">
                         <table className="table">
                           <tbody>
-                            {_.map(inventory.medias, (md, index) => (
-                              <tr key={md._id} className="form-group">
-                                <td style={{ width: '10%' }} className="table-col">
-                                  <Field
-                                    type={type !== 'slideshow' ? 'radio' : 'checkbox'} component={FormControl}
-                                    id={type !== 'slideshow' ? `media[${index}]` : `selectedMedia[${index}]`}
-                                    name={type !== 'slideshow' ? 'media' : `selectedMedia[${index}]`}
-                                    value={md.path}
-                                  />
-                                </td>
-                                <td className="table-col">
-                                  <label
-                                    style={{ width: '100%', cursor: 'pointer' }}
-                                    htmlFor={type !== 'slideshow' ? `media[${index}]` : `selectedMedia[${index}]`}
-                                  >
-                                    <img
-                                      src={`${__CONFIG__.API.SERVER_URL}/${md.path}`}
-                                      alt={md.path}
-                                      style={{ maxWidth: '50%' }}
-                                      className="img-thumbnail"
-                                    />
-                                  </label>
-                                </td>
-                              </tr>
-                            ))}
+                            {this.renderMediaArr(inventory.medias, type)}
                           </tbody>
                         </table>
                       </div>

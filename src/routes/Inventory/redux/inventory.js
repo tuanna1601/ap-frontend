@@ -438,15 +438,24 @@ export function createFacebookAds(values, callback) {
     let formattedValues = _.cloneDeep(values);
 
     if (values.selectedMedia && values.selectedMedia.length) {
-      formattedValues.media = _.chain(values.inventoryObj.medias)
+      const medias = _.filter(values.inventoryObj.medias, (media) => media.type !== 'video');
+      formattedValues.media = _.chain(medias)
         .filter((media, index) => values.selectedMedia[index])
         .map(media => media.path)
         .value();
     }
 
+    if (values.media) {
+      const media = _.find(values.inventoryObj.medias, (md) => md._id === values.media);
+      formattedValues.media = media.path;
+      if (values.type === 'video') {
+        formattedValues.thumbnail = media.thumbnail;
+      }
+    }
+
     formattedValues = _.pick(formattedValues,
       ['name', 'inventory', 'adaccount', 'adset', 'message',
-        'headline', 'description', 'type', 'media',
+        'headline', 'description', 'type', 'media', 'thumbnail',
         'callToAction', 'websiteUrl', 'page']);
 
     dispatch(onUpdateLoadingCreate(true));
