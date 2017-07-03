@@ -18,6 +18,7 @@ class FormControlUpload extends React.Component {
     } = this.props;
     const formGroupClass = !touched ? 'form-group' : `form-group ${error ? 'has-error' : 'has-success'}`;
     const formControlClass = 'form-control text-right';
+    delete input.value;
 
     const inputGroup = (
       <input
@@ -58,6 +59,7 @@ FormControlUpload.propTypes = {
   suffix: React.PropTypes.element,
   hasLabel: React.PropTypes.bool,
   autoFocus: React.PropTypes.bool,
+  value: React.PropTypes.any
 };
 
 export default FormControlUpload;
