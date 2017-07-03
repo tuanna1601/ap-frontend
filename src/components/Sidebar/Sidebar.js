@@ -27,9 +27,9 @@ const Sidebar = ({ isLoggedIn, toggleMenu, tree }) => (
           </SidebarTree>
           <SidebarTree treeId="ads" className={tree.ads ? 'treeview active' : 'treeview'}>
             <a onClick={() => toggleMenu('ads')}>
-              <i className="fa fa-address-book-o" />
+              <i className="fa fa-facebook-square" />
               <span>
-                Quản lý Ad Account
+                Quản lý Ads
               </span>
               <span className="pull-right-container">
                 <i className="fa fa-angle-left pull-right" />
@@ -38,7 +38,19 @@ const Sidebar = ({ isLoggedIn, toggleMenu, tree }) => (
             <ul className="treeview-menu">
               <SidebarItem treeId="ads.list" to="/ads">
                 <i className="fa fa-list" />
+                <span>Danh sách Ads</span>
+              </SidebarItem>
+              <SidebarItem treeId="ads.accounts" to="/ads/accounts">
+                <i className="fa fa-users" />
                 <span>Danh sách Ad Account</span>
+              </SidebarItem>
+              <SidebarItem treeId="ads.report-list" to="/ads/reports">
+                <i className="fa fa-flag" />
+                <span>Danh sách vi phạm</span>
+              </SidebarItem>
+              <SidebarItem treeId="ads.report" to="/ads/report">
+                <i className="fa fa-bug" />
+                <span>Báo cáo Ads</span>
               </SidebarItem>
             </ul>
           </SidebarTree>

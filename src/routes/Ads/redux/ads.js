@@ -15,6 +15,7 @@ const RELOAD_AD_ACCOUNT_LIST = 'ADS_RELOAD_AD_ACCOUNT_LIST';
 const SET_FILTER_QUERY = 'ADS_SET_FILTER_QUERY';
 const SET_CURRENT_PAGE = 'ADS_SET_CURRENT_PAGE';
 const RELOAD_REPORTS = 'ADS_RELOAD_REPORTS';
+const RELOAD_PREVIEW = 'ADS_RELOAD_PREVIEW';
 
 /*
  * Actions
@@ -85,6 +86,13 @@ export function reloadReports(reports, count) {
   };
 }
 
+export function reloadAdsPreview(preview) {
+  return {
+    type: RELOAD_PREVIEW,
+    preview
+  };
+}
+
 export function listAds() {
   return (dispatch, getState) => {
     const auth = getState().auth;
@@ -110,10 +118,27 @@ export function getAd(adId) {
       return;
     }
     dispatch(onUpdateLoadingList(true));
-    const url = `${__CONFIG__.API.SERVER_URL}/ads?${adId}`;
+    const url = `${__CONFIG__.API.SERVER_URL}/ads/${adId}`;
 
     HTTP.get(auth, url, dispatch, (data) => {
       dispatch(afterLoadAd(data));
+    }).then(() => {
+      dispatch(onUpdateLoadingList(false));
+    });
+  };
+}
+
+export function getAdsPreview(adId) {
+  return (dispatch, getState) => {
+    const auth = getState().auth;
+    if (!auth) {
+      return;
+    }
+    dispatch(onUpdateLoadingList(true));
+    const url = `${__CONFIG__.API.SERVER_URL}/ads/${adId}/preview`;
+
+    HTTP.get(auth, url, dispatch, (data) => {
+      dispatch(reloadAdsPreview(data.data[0].body));
     }).then(() => {
       dispatch(onUpdateLoadingList(false));
     });
@@ -127,9 +152,12 @@ export function updateAd(values, callback) {
       return;
     }
 
+    const formattedValues = {
+      note: values.note
+    };
     dispatch(onUpdateLoadingCreate(true));
-    const url = `${__CONFIG__.API.SERVER_URL}/ads`;
-    HTTP.put(values, auth, url, dispatch, (data) => {
+    const url = `${__CONFIG__.API.SERVER_URL}/ads/${values.id}/review`;
+    HTTP.put(formattedValues, auth, url, dispatch, (data) => {
       if (callback) {
         callback(data);
       }
@@ -171,6 +199,45 @@ export function reportAds(values, callback) {
     dispatch(onUpdateLoadingCreate(true));
     const url = `${__CONFIG__.API.SERVER_URL}/issues`;
     HTTP.postForm(formData, auth, url, dispatch, (data) => {
+      if (callback) {
+        callback(data);
+      }
+    }).then(() => {
+      dispatch(onUpdateLoadingCreate(false));
+    });
+  };
+}
+
+export function rejectReport(id, values, callback) {
+  return (dispatch, getState) => {
+    const auth = getState().auth;
+    if (!auth) {
+      return;
+    }
+
+    dispatch(onUpdateLoadingCreate(true));
+    const url = `${__CONFIG__.API.SERVER_URL}/issues/${id}`;
+    HTTP.put(values, auth, url, dispatch, (data) => {
+      if (callback) {
+        callback(data);
+      }
+    }).then(() => {
+      dispatch(onUpdateLoadingCreate(false));
+    });
+  };
+}
+
+export function resolveReport(values, callback) {
+  return (dispatch, getState) => {
+    const auth = getState().auth;
+    if (!auth) {
+      return;
+    }
+
+    const formattedValues = _.pick(values, ['ad', 'note']);
+    dispatch(onUpdateLoadingCreate(true));
+    const url = `${__CONFIG__.API.SERVER_URL}/issues/${values.id}/resolve`;
+    HTTP.put(formattedValues, auth, url, dispatch, (data) => {
       if (callback) {
         callback(data);
       }
@@ -273,6 +340,7 @@ const initialState = {
     page: 1,
     limit: 20,
   },
+  preview: '&nbsp;'
 };
 
 /*
@@ -318,6 +386,10 @@ export function reducer(state = initialState, action) {
           Object.assign({}, hashReport, {
             [report.id]: report
           }), {})
+      });
+    case RELOAD_PREVIEW:
+      return Object.assign({}, state, {
+        preview: action.preview
       });
     case AFTER_CREATE_AD_ACCOUNT: {
       return Object.assign({}, state, {

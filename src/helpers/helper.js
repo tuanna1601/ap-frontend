@@ -43,6 +43,21 @@ export function generateInventoryStatusLabel(status) {
   }
 }
 
+export function generateAdStatusLabel(status) {
+  switch (status) {
+    case 'published':
+      return 'Chưa hậu kiểm';
+    case 'reviewed':
+      return 'Đã hậu kiểm';
+    case 'flagged':
+      return 'Bị gắn cờ vi phạm';
+    case 'removed':
+      return 'Đã gỡ bỏ';
+    default:
+      return '';
+  }
+}
+
 export function generateAdFormatLabel(status) {
   switch (status) {
     case 'image':
@@ -57,7 +72,7 @@ export function generateAdFormatLabel(status) {
 }
 
 export function generateAdFormatOptions() {
-  const formats = ['image', 'slideshow'];
+  const formats = ['image', 'video', 'slideshow'];
   return formats.map(format => ({
     value: format,
     label: generateAdFormatLabel(format)
@@ -72,6 +87,14 @@ export function generateInventoryStatusOptions(isReviewer) {
   return statuses.map(status => ({
     value: status,
     label: generateInventoryStatusLabel(status)
+  }));
+}
+
+export function generateAdsStatusOptions() {
+  const statuses = ['published', 'reviewed', 'flagged', 'removed'];
+  return statuses.map(status => ({
+    value: status,
+    label: generateAdStatusLabel(status)
   }));
 }
 

@@ -9,6 +9,7 @@ const RELOAD_CRITERIA = 'COMMON_RELOAD_CRITERIA';
 const RELOAD_AD_ACCOUNTS = 'COMMON_RELOAD_AD_ACCOUNTS';
 const RELOAD_AD_CAMPAIGNS = 'COMMON_RELOAD_AD_CAMPAIGNS';
 const RELOAD_AD_SETS = 'COMMON_RELOAD_AD_SETS';
+const RELOAD_ADS = 'COMMON_RELOAD_ADS';
 
 export function reloadDeparments(rows) {
   return {
@@ -63,6 +64,13 @@ export function reloadAdSets(rows) {
   return {
     type: RELOAD_AD_SETS,
     sets: rows
+  };
+}
+
+export function reloadAds(ads) {
+  return {
+    type: RELOAD_ADS,
+    ads
   };
 }
 
@@ -171,6 +179,24 @@ export function listAdSet(accountId, campaignId) {
   };
 }
 
+export function listAds(keyword) {
+  return (dispatch, getState) => {
+    const auth = getState().auth;
+    if (!auth) {
+      return;
+    }
+
+    const query = {
+      text: keyword
+    };
+
+    const url = `${__CONFIG__.API.SERVER_URL}/ads?${HTTP.param(query)}`;
+    HTTP.get(auth, url, dispatch, (data) => {
+      dispatch(reloadAds(data.rows));
+    });
+  };
+}
+
 const initialState = {
   departments: [],
   criteria: [],
@@ -179,6 +205,7 @@ const initialState = {
   adAccounts: [],
   adCampaigns: [],
   adSets: [],
+  ads: []
 };
 
 export function reducer(state = initialState, action) {
@@ -228,6 +255,11 @@ export function reducer(state = initialState, action) {
     case RELOAD_AD_SETS: {
       return Object.assign({}, state, {
         adSets: action.sets
+      });
+    }
+    case RELOAD_ADS: {
+      return Object.assign({}, state, {
+        ads: action.ads
       });
     }
     default:

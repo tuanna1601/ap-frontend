@@ -462,4 +462,11 @@
     margin-right: 30px;
     font-style: italic;
   }
+
+  .iframe {
+    width: 100%;
+    overflow-x: scroll;
+    overflow-y: hidden;
+  }
 }
+
