@@ -13,7 +13,7 @@ class HeadlineField extends React.Component {
 
   renderHeadline(fields, headline, index) {
     const { department, form, headlines, isUpdate, onFieldArrayRemove } = this.props;
-    const reviews = headlines[index] ? headlines[index].reviews : [];
+    const reviews = headlines && headlines[index] ? headlines[index].reviews : [];
 
     return (
       <tr key={headline}>
@@ -31,8 +31,8 @@ class HeadlineField extends React.Component {
             <table className="table table-condensed table-striped table-bordered table-field-array">
               <thead>
                 <tr>
-                  <th style={{ width: '45%' }}>Comment</th>
                   <th style={{ width: '45%' }}>Criteria</th>
+                  <th style={{ width: '45%' }}>Comment</th>
                   <th style={{ width: '10%' }}>&nbsp;</th>
                 </tr>
               </thead>
@@ -47,8 +47,8 @@ class HeadlineField extends React.Component {
             <table className="table table-condensed table-striped table-bordered table-field-array">
               <thead>
                 <tr>
-                  <th style={{ width: '45%' }}>Comment</th>
                   <th style={{ width: '45%' }}>Criteria</th>
+                  <th style={{ width: '45%' }}>Comment</th>
                   <th style={{ width: '10%' }}>&nbsp;</th>
                 </tr>
               </thead>
@@ -99,7 +99,7 @@ class HeadlineField extends React.Component {
 
 HeadlineField.propTypes = {
   form: PropTypes.string.isRequired,
-  headlines: PropTypes.array.isRequired,
+  headlines: PropTypes.array,
   fields: PropTypes.object.isRequired,
   department: PropTypes.string.isRequired,
   isUpdate: PropTypes.bool,

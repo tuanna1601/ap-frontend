@@ -25,7 +25,7 @@ class MediaField extends React.Component {
 
   renderMedia(fields, media, index) {
     const { department, form, medias, isUpdate, onFieldArrayRemove, isOldMedia } = this.props;
-    const reviews = medias[index] ? medias[index].reviews : [];
+    const reviews = medias && medias[index] ? medias[index].reviews : [];
     if (!isOldMedia) {
       return (
         <tr key={media}>
@@ -122,8 +122,8 @@ class MediaField extends React.Component {
             <table className="table table-condensed table-striped table-bordered table-field-array">
               <thead>
                 <tr>
-                  <th style={{ width: '45%' }}>Comment</th>
                   <th style={{ width: '45%' }}>Criteria</th>
+                  <th style={{ width: '45%' }}>Comment</th>
                   <th style={{ width: '10%' }}>&nbsp;</th>
                 </tr>
               </thead>
@@ -138,8 +138,8 @@ class MediaField extends React.Component {
             <table className="table table-condensed table-striped table-bordered table-field-array">
               <thead>
                 <tr>
-                  <th style={{ width: '45%' }}>Comment</th>
                   <th style={{ width: '45%' }}>Criteria</th>
+                  <th style={{ width: '45%' }}>Comment</th>
                   <th style={{ width: '10%' }}>&nbsp;</th>
                 </tr>
               </thead>
@@ -195,7 +195,7 @@ MediaField.defaultProps = {
 
 MediaField.propTypes = {
   form: PropTypes.string.isRequired,
-  medias: PropTypes.array.isRequired,
+  medias: PropTypes.array,
   fields: PropTypes.object.isRequired,
   department: PropTypes.string.isRequired,
   isUpdate: PropTypes.bool,

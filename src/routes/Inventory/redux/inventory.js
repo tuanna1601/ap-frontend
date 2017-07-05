@@ -182,7 +182,7 @@ export function getCriteria(inventory) {
     }
     const { department } = inventory;
 
-    const url = `${__CONFIG__.API.SERVER_URL}/criteria?${HTTP.param({ department })}`;
+    const url = `${__CONFIG__.API.SERVER_URL}/criteria?${HTTP.param({ department: department.id })}`;
     HTTP.get(auth, url, dispatch).then(data => {
       dispatch(loadInventory(inventory));
       dispatch(loadCriteria(data.rows));

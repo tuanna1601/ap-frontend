@@ -22,8 +22,8 @@ const TextField = ({ form, department, text, isUpdate }) => {
             <table className="table table-condensed table-striped table-bordered table-field-array">
               <thead>
                 <tr>
-                  <th style={{ width: '45%' }}>Comment</th>
                   <th style={{ width: '45%' }}>Criteria</th>
+                  <th style={{ width: '45%' }}>Comment</th>
                   <th style={{ width: '10%' }}>&nbsp;</th>
                 </tr>
               </thead>
@@ -38,8 +38,8 @@ const TextField = ({ form, department, text, isUpdate }) => {
             <table className="table table-condensed table-striped table-bordered table-field-array">
               <thead>
                 <tr>
-                  <th style={{ width: '45%' }}>Comment</th>
                   <th style={{ width: '45%' }}>Criteria</th>
+                  <th style={{ width: '45%' }}>Comment</th>
                   <th style={{ width: '10%' }}>&nbsp;</th>
                 </tr>
               </thead>
@@ -58,7 +58,7 @@ const TextField = ({ form, department, text, isUpdate }) => {
 };
 
 TextField.propTypes = {
-  text: PropTypes.object.isRequired,
+  text: PropTypes.object,
   form: PropTypes.string.isRequired,
   department: PropTypes.string.isRequired,
   isUpdate: PropTypes.bool,

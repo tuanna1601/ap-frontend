@@ -202,19 +202,17 @@ class InventoryAdsCreateForm extends Component {
                     }
                     <div className="col-xs-12">
                       <Field
-                        type="text" component={FormControlTextArea}
-                        id="message"
-                        name="message"
-                        options={descriptionOptions}
+                        type="text" component={FormControl}
+                        id="message" name="message"
                         label="Message" hasLabel
+                        readOnly
                       />
                     </div>
                     {type !== 'slideshow' &&
                       <div className="col-xs-12">
                         <Field
                           type="text" component={FormControl}
-                          id="websiteUrl"
-                          name="websiteUrl"
+                          id="websiteUrl" name="websiteUrl"
                           label="Link" hasLabel
                         />
                       </div>
@@ -223,8 +221,7 @@ class InventoryAdsCreateForm extends Component {
                       <div className="col-xs-12">
                         <Field
                           type="text" component={FormControlSelect}
-                          id="description"
-                          name="description"
+                          id="description" name="description"
                           options={descriptionOptions}
                           label="Caption" hasLabel
                         />
@@ -234,8 +231,7 @@ class InventoryAdsCreateForm extends Component {
                       <div className="col-xs-12">
                         <Field
                           type="text" component={FormControlSelect}
-                          id="headline"
-                          name="headline"
+                          id="headline" name="headline"
                           options={headlineOptions}
                           label="Name" hasLabel
                         />

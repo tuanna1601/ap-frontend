@@ -20,6 +20,7 @@ class InventoryUpdateForm extends Component {
     const { handleSubmit, isLoadingCreate, isLoadingList,
       newMedias, headlines, text, descriptions,
       submitting, pristine, reset, form, department, initialValues } = this.props;
+      console.log(department);
 
     return (
       <div className="box box-success">
@@ -58,7 +59,7 @@ class InventoryUpdateForm extends Component {
               <table className="table table-field-array">
                 <TextField
                   form={form}
-                  department={department}
+                  department={department.id}
                   text={text}
                   isUpdate
                 />
@@ -69,7 +70,7 @@ class InventoryUpdateForm extends Component {
                   form={form}
                   name="headlines"
                   headlines={headlines}
-                  department={department}
+                  department={department.id}
                   component={HeadlineField}
                   isUpdate
                 />
@@ -80,7 +81,7 @@ class InventoryUpdateForm extends Component {
                   form={form}
                   name="descriptions"
                   descriptions={descriptions}
-                  department={department}
+                  department={department.id}
                   component={DescriptionField}
                   isUpdate
                 />
@@ -91,7 +92,7 @@ class InventoryUpdateForm extends Component {
                   form={form}
                   name="medias"
                   component={MediaField}
-                  department={department}
+                  department={department.id}
                   medias={initialValues.medias}
                   isOldMedia
                   isUpdate

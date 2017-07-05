@@ -13,7 +13,7 @@ class DescriptionField extends React.Component {
 
   renderDescription(fields, description, index) {
     const { department, form, descriptions, isUpdate, onFieldArrayRemove } = this.props;
-    const reviews = descriptions[index] ? descriptions[index].reviews : [];
+    const reviews = descriptions && descriptions[index] ? descriptions[index].reviews : [];
 
     return (
       <tr key={description}>
@@ -31,8 +31,8 @@ class DescriptionField extends React.Component {
             <table className="table table-condensed table-striped table-bordered table-field-array">
               <thead>
                 <tr>
-                  <th style={{ width: '45%' }}>Comment</th>
                   <th style={{ width: '45%' }}>Criteria</th>
+                  <th style={{ width: '45%' }}>Comment</th>
                   <th style={{ width: '10%' }}>&nbsp;</th>
                 </tr>
               </thead>
@@ -47,8 +47,8 @@ class DescriptionField extends React.Component {
             <table className="table table-condensed table-striped table-bordered table-field-array">
               <thead>
                 <tr>
-                  <th style={{ width: '45%' }}>Comment</th>
                   <th style={{ width: '45%' }}>Criteria</th>
+                  <th style={{ width: '45%' }}>Comment</th>
                   <th style={{ width: '10%' }}>&nbsp;</th>
                 </tr>
               </thead>
@@ -99,7 +99,7 @@ class DescriptionField extends React.Component {
 
 DescriptionField.propTypes = {
   form: PropTypes.string.isRequired,
-  descriptions: PropTypes.array.isRequired,
+  descriptions: PropTypes.array,
   fields: PropTypes.object.isRequired,
   department: PropTypes.string.isRequired,
   isUpdate: PropTypes.bool,

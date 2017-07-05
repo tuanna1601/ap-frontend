@@ -9,16 +9,6 @@ const ReviewFieldArray = ({ fields, onFieldArrayRemove, department, isUpdate }) 
     {fields.map((review, index) =>
       <tr key={review}>
         <td>
-          <Field
-            type="text" component={FormControl}
-            id={`${review}.comment`}
-            name={`${review}.comment`}
-            index={index}
-            label="Review"
-            readOnly={isUpdate}
-          />
-        </td>
-        <td>
           <CriteriaField
             id={`${review}.criteria`}
             name={`${review}.criteria`}
@@ -27,6 +17,16 @@ const ReviewFieldArray = ({ fields, onFieldArrayRemove, department, isUpdate }) 
             label="Tiêu chí"
             autoSelect={false}
             disabled={isUpdate}
+          />
+        </td>
+        <td>
+          <Field
+            type="text" component={FormControl}
+            id={`${review}.comment`}
+            name={`${review}.comment`}
+            index={index}
+            label="Review"
+            readOnly={isUpdate}
           />
         </td>
         <td className="text-center">
