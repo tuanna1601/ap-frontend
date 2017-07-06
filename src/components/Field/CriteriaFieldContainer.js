@@ -15,8 +15,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  listOptions: () => dispatch(listCriteria(ownProps.department)),
-  resetOptions: () => dispatch(listCriteria(ownProps.department)),
+  listOptions: () => dispatch(listCriteria(ownProps.department.id)),
+  resetOptions: () => dispatch(listCriteria(ownProps.department.id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CriteriaField);
