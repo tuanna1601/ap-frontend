@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import * as _ from 'lodash';
 import {
-  FormControl, FormControlSelect, FormControlTextArea
+  FormControl, FormControlSelect
 } from '@/components/FormControl';
 import {
   AdAccountField, AdCampaignField, AdSetField
@@ -31,12 +31,6 @@ class InventoryAdsCreateForm extends Component {
 
   componentDidMount() {
     this.props.onComponentMounted();
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.dirty && nextProps.valid) {
-      this.props.onFormValuesChange();
-    }
   }
 
   renderMediaArr(media, type) {
@@ -107,8 +101,8 @@ class InventoryAdsCreateForm extends Component {
   }
 
   render() {
-    const { handleSubmit, isLoadingCreate, isLoadingList, submitting, pristine, reset,
-      inventory, adaccount, adcampaign, type, resetMedia } = this.props;
+    const { handleSubmit, isLoadingCreate, isLoadingList, isLoadingPreview, submitting, onPreviewAd,
+      pristine, reset, inventory, adaccount, adcampaign, type, resetMedia, adsPreview } = this.props;
 
     let headlineOptions = [];
     let descriptionOptions = [];
@@ -132,7 +126,7 @@ class InventoryAdsCreateForm extends Component {
             <div className="box-header with-border">
               <h3 className="box-title">Tạo Facebook Ads</h3>
               <div className="box-tools pull-right">
-                {this.props.isLoadingCreate && <i className="fa fa-refresh fa-spin" />}
+                {isLoadingCreate && <i className="fa fa-refresh fa-spin" />}
               </div>
             </div>
             {!isLoadingList && inventory &&
@@ -257,6 +251,14 @@ class InventoryAdsCreateForm extends Component {
                         {isLoadingCreate ? <i className="fa fa-refresh fa-spin" /> : <i className="fa fa-save" />}
                       </button>
                       <button
+                        className="btn btn-primary btn-flat"
+                        disabled={isLoadingPreview}
+                        type="button"
+                        onClick={() => onPreviewAd(this.props)}
+                      >
+                        {isLoadingPreview ? <i className="fa fa-refresh fa-spin" /> : <i className="fa fa-search" />}
+                      </button>
+                      <button
                         className="btn btn-default btn-flat" type="button"
                         disabled={pristine || submitting || isLoadingCreate} onClick={reset}
                       >
@@ -274,11 +276,13 @@ class InventoryAdsCreateForm extends Component {
             <div className="box-header with-border">
               <h3 className="box-title">Ads Preview</h3>
               <div className="box-tools pull-right">
-                {this.props.isLoadingPreview && <i className="fa fa-refresh fa-spin" />}
+                {isLoadingPreview && <i className="fa fa-refresh fa-spin" />}
               </div>
             </div>
             <div className="box-body">
-              {this.props.adsPreview ? this.props.adsPreview : '&nbsp;'}
+              <div className="iframe">
+                {adsPreview || '&nbsp;'}
+              </div>
             </div>
           </div>
         </div>
@@ -305,8 +309,9 @@ InventoryAdsCreateForm.propTypes = {
   adsPreview: PropTypes.element,
   inventory: PropTypes.object,
   inventoryId: PropTypes.string.isRequired,
+  formVal: PropTypes.object,
 
-  onFormValuesChange: PropTypes.func.isRequired,
+  onPreviewAd: PropTypes.func.isRequired,
   onComponentMounted: PropTypes.func.isRequired,
   navigateToList: PropTypes.func.isRequired,
   resetMedia: PropTypes.func.isRequired

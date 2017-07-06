@@ -26,7 +26,8 @@ const mapStateToProps = (state, ownProps) => ({
     inventoryObj: state.inventory.inventories[ownProps.inventoryId],
     message: state.inventory.inventories[ownProps.inventoryId] ?
       state.inventory.inventories[ownProps.inventoryId].text.text : ''
-  }
+  },
+  formVal: getFormValues('fb-ads-create')(state),
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
@@ -39,16 +40,16 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     }
   },
   onSubmit: (values) => {
-    dispatch(createFacebookAds(values, (data) => {
-      console.log(data);
+    dispatch(createFacebookAds(values, () => {
       dispatch(reset('fb-ads-create'));
     }));
   },
-  onFormValuesChange: () => {
-    const values = getFormValues('fb-ads-create');
-    // const tmp = _.omit(values, ['adaccount', 'inventory']);
-    // console.log(tmp);
-    // dispatch(loadFacebookAdsPreview(values.adaccount, tmp));
+  onPreviewAd: (props) => {
+    const { dirty, valid, formVal } = props;
+    if (dirty && valid &&
+      formVal.adaccount && formVal.type === 'image') {
+      dispatch(loadFacebookAdsPreview(formVal));
+    }
   },
   resetMedia: () => {
     dispatch(change, 'fb-ads-create', 'selectedMedia', []);

@@ -471,16 +471,18 @@ export function createFacebookAds(values, callback) {
   };
 }
 
-export function loadFacebookAdsPreview(ad_account, query, callback) {
+export function loadFacebookAdsPreview(values, callback) {
   return (dispatch, getState) => {
     const auth = getState().auth;
     if (!auth) {
       return;
     }
 
+    const formattedValues = _.omit(values, ['inventoryObj', 'inventory', 'type',
+      'adcampaign', 'adset', 'name']);
     dispatch(onUpdateLoadingUpdate(true));
-    const url = `${__CONFIG__.API.FB_URL}act_${ad_account}/generatepreviews?${HTTP.param(query)}`;
-    HTTP.get(auth, url, dispatch, (data) => {
+    const url = `${__CONFIG__.API.SERVER_URL}/ads/preview`;
+    HTTP.post(formattedValues, auth, url, dispatch, (data) => {
       if (callback) {
         callback(data.data[0].body);
       }
