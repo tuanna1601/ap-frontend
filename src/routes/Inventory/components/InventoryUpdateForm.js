@@ -20,7 +20,6 @@ class InventoryUpdateForm extends Component {
     const { handleSubmit, isLoadingCreate, isLoadingList,
       newMedias, headlines, text, descriptions,
       submitting, pristine, reset, form, department, initialValues } = this.props;
-      console.log(department);
 
     return (
       <div className="box box-success">
