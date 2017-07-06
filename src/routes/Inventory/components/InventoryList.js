@@ -72,6 +72,7 @@ class InventoryList extends Component {
                           </button>
                         }
                         {!this.props.isOrdinator &&
+                          inventory.status === 'accepted' &&
                           <button
                             className="btn btn-xs btn-primary btn-flat"
                             onClick={() => this.props.onCreateAds(inventory)}
