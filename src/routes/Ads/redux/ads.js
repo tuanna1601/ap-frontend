@@ -244,7 +244,16 @@ export function resolveReport(values, callback) {
       return;
     }
 
-    const formattedValues = _.pick(values, ['ad', 'note']);
+    const formattedValues = _.chain(values)
+      .cloneDeep()
+      .pick(['note'])
+      .value();
+    formattedValues.ad = [];
+    _.each(values.selected, (selected, index) => {
+      if (selected) {
+        formattedValues.ad.push(values.ad[index].id);
+      }
+    });
     dispatch(onUpdateLoadingCreate(true));
     const url = `${__CONFIG__.API.SERVER_URL}/issues/${values.id}/resolve`;
     HTTP.put(formattedValues, auth, url, dispatch, (data) => {

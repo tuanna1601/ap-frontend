@@ -6,6 +6,7 @@ import AdAccountField from './AdAccountFieldContainer';
 import AdCampaignField from './AdCampaignFieldContainer';
 import AdSetField from './AdSetFieldContainer';
 import AdsField from './AdsFieldContainer';
+import AdsSearchField from './AdsSearchFieldContainer';
 
 export {
   DepartmentField,
@@ -16,4 +17,5 @@ export {
   AdCampaignField,
   AdSetField,
   AdsField,
+  AdsSearchField,
 };

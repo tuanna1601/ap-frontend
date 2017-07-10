@@ -1,22 +1,18 @@
 import { connect } from 'react-redux';
-import { Parser } from 'html-to-react';
 
 import AdsResolveReportForm from './AdsResolveReportForm';
 
-import { getAdsPreview, reloadAdsPreview } from '../redux/ads';
 
-const htmlParser = new Parser();
-
-const mapStateToProps = (state) => ({
-  preview: htmlParser.parse(state.ads.preview),
+const mapStateToProps = (state, ownProps) => ({
+  initialValues: {
+    ...ownProps.initialValues,
+    ad: state.common.ads
+  },
+  enableReinitialize: true
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  getAdsPreview: (values) => {
-    dispatch(getAdsPreview(values.ad.id));
-  },
+const mapDispatchToProps = () => ({
   onComponentUnmount: () => {
-    dispatch(reloadAdsPreview('<span></span>'));
   },
 });
 

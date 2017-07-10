@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { reduxForm, Field } from 'redux-form';
 
-import { AdsField } from '@/components/Field';
+import { AdsSearchField } from '@/components/Field';
 import { FormControlTextArea, FormControl } from '@/components/FormControl';
 
 class AdsResolveReportForm extends React.Component {
@@ -11,7 +11,8 @@ class AdsResolveReportForm extends React.Component {
 
   render() {
     const { handleSubmit, submitting, pristine,
-      reset, form, initialValues, getAdsPreview, preview, onSubmit } = this.props;
+      reset, form, initialValues, onSubmit } = this.props;
+    console.log(initialValues);
     return (
       <div className="modal-form">
         <form>
@@ -37,11 +38,9 @@ class AdsResolveReportForm extends React.Component {
               />
             </div>
             <div className="col-md-6">
-              <AdsField
+              <AdsSearchField
                 id="ad" name="ad"
                 label="Ad vi phạm"
-                hasLabel
-                onSelect={(value) => getAdsPreview(value)}
               />
               <Field
                 type="text" component={FormControlTextArea}
@@ -59,12 +58,6 @@ class AdsResolveReportForm extends React.Component {
                   src={`${__CONFIG__.API.SERVER_URL}/${initialValues.image}`}
                   alt={initialValues.title} style={{ width: '100%' }}
                 />
-              </div>
-            </div>
-            <div className="col-md-6">
-              <h4>Ads Preview</h4>
-              <div className="iframe">
-                {preview}
               </div>
             </div>
           </div>
@@ -109,7 +102,6 @@ AdsResolveReportForm.propTypes = {
   initialValues: PropTypes.object.isRequired,
   preview: PropTypes.any,
 
-  getAdsPreview: PropTypes.func.isRequired,
   onComponentUnmount: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired
 };
