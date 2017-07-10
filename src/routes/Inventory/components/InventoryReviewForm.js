@@ -55,20 +55,15 @@ class InventoryReviewForm extends Component {
                       />
                     </div>
                   </div>
+                  <h3>Text</h3>
                   <table className="table table-field-array">
-                    <thead>
-                      <tr>
-                        <th>
-                          <h3 className="no-margin">Text</h3>
-                        </th>
-                      </tr>
-                    </thead>
                     <TextField
                       department={department}
                       form={form}
                       text={initialValues.text}
                     />
                   </table>
+                  <h3>Headline</h3>
                   <table className="table table-condensed table-bordered table-field-array">
                     <FieldArray
                       name="headlines"
@@ -78,6 +73,7 @@ class InventoryReviewForm extends Component {
                       headlines={initialValues.headlines}
                     />
                   </table>
+                  <h3>Description</h3>
                   <table className="table table-condensed table-bordered table-field-array">
                     <FieldArray
                       name="descriptions"
@@ -87,6 +83,7 @@ class InventoryReviewForm extends Component {
                       descriptions={initialValues.descriptions}
                     />
                   </table>
+                  <h3>Media</h3>
                   <table className="table table-condensed table-bordered table-field-array">
                     <FieldArray
                       form={form}
