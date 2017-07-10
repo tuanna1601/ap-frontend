@@ -22,7 +22,7 @@ const mapDispatchToProps = (dispatch) => ({
         initialValues={report}
       />
     );
-    dispatch(showForm('Xử lý báo cáo vi phạm', resolveForm, (values, isAccepted) => {
+    dispatch(showForm('Xử lý báo cáo vi phạm', resolveForm, ({ values, isAccepted }) => {
       if (isAccepted) {
         dispatch(resolveReport(values, (data) => {
           Alert.success(`Tick ${data.title} đã được gắn cờ thành công`);

@@ -16,6 +16,7 @@ const SET_FILTER_QUERY = 'ADS_SET_FILTER_QUERY';
 const SET_CURRENT_PAGE = 'ADS_SET_CURRENT_PAGE';
 const RELOAD_REPORTS = 'ADS_RELOAD_REPORTS';
 const RELOAD_PREVIEW = 'ADS_RELOAD_PREVIEW';
+const AFTER_RESOLVE_ISSUE = 'ADS_AFTER_RESOLVE_ISSUE';
 
 /*
  * Actions
@@ -93,6 +94,13 @@ export function reloadAdsPreview(preview) {
   };
 }
 
+export function afterResolveIssue(issue) {
+  return {
+    type: AFTER_RESOLVE_ISSUE,
+    issue
+  };
+}
+
 export function listAds() {
   return (dispatch, getState) => {
     const auth = getState().auth;
@@ -153,7 +161,8 @@ export function updateAd(values, callback) {
     }
 
     const formattedValues = {
-      note: values.note
+      note: values.note,
+      status: values.state
     };
     dispatch(onUpdateLoadingCreate(true));
     const url = `${__CONFIG__.API.SERVER_URL}/ads/${values.id}/review`;
@@ -221,6 +230,7 @@ export function rejectReport(id, values, callback) {
       if (callback) {
         callback(data);
       }
+      dispatch(afterResolveIssue(data));
     }).then(() => {
       dispatch(onUpdateLoadingCreate(false));
     });
@@ -241,6 +251,7 @@ export function resolveReport(values, callback) {
       if (callback) {
         callback(data);
       }
+      dispatch(afterResolveIssue(data));
     }).then(() => {
       dispatch(onUpdateLoadingCreate(false));
     });
@@ -416,6 +427,14 @@ export function reducer(state = initialState, action) {
           page: action.page
         })
       });
+    case AFTER_RESOLVE_ISSUE:
+      return {
+        ...state,
+        reports: {
+          ...state.reports,
+          [action.issue.id]: action.issue
+        }
+      };
     default:
       return state;
   }

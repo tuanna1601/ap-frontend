@@ -20,7 +20,7 @@ class AdsReviewForm extends Component {
     }
   }
 
-  componentWillUnMount() {
+  componentWillUnmount() {
     this.props.onComponentUnMount();
   }
 

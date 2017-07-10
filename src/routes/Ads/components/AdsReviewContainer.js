@@ -28,8 +28,8 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(getAd(id));
     dispatch(getAdsPreview(id));
   },
-  onComponentUnMount: () => {
-    dispatch(reloadAdsPreview('&nbsp'));
+  onComponentUnmount: () => {
+    dispatch(reloadAdsPreview('<span></span>'));
   },
   onSubmit: (values) => dispatch(updateAd(values, (data) => {
     Alert.success(`${data.name} đã được hậu kiểm thành công`);
