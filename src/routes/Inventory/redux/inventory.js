@@ -228,6 +228,26 @@ export function getInventory(inventoryId) {
   };
 }
 
+export function getLatestAcceptedInventory(inventoryId, callback) {
+  return (dispatch, getState) => {
+    const auth = getState().auth;
+    if (!auth) {
+      return;
+    }
+
+    dispatch(onUpdateLoadingList(true));
+    const url = `${__CONFIG__.API.SERVER_URL}/inventories/${inventoryId}/latest-accepted`;
+    HTTP.get(auth, url, dispatch).then(data => {
+      if (callback) {
+        callback(data);
+      }
+      dispatch(loadInventory(data));
+    }).then(() => {
+      dispatch(onUpdateLoadingList(false));
+    });
+  };
+}
+
 export function createInventory(formValues, callback) {
   return (dispatch, getState) => {
     const auth = getState().auth;
@@ -441,6 +461,8 @@ export function createFacebookAds(values, callback) {
     }
 
     let formattedValues = _.cloneDeep(values);
+
+    formattedValues.message = values.inventoryObj.text.text;
 
     if (values.selectedMedia && values.selectedMedia.length) {
       const medias = _.filter(values.inventoryObj.medias, (media) => media.type !== 'video');

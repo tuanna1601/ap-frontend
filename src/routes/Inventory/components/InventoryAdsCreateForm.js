@@ -195,12 +195,12 @@ class InventoryAdsCreateForm extends Component {
                       </div>
                     }
                     <div className="col-xs-12">
-                      <Field
-                        type="text" component={FormControl}
-                        id="message" name="message"
-                        label="Message" hasLabel
-                        readOnly
-                      />
+                      <div className="form-group">
+                        <label htmlFor="message" className="control-label">
+                          Message
+                        </label>
+                        <p>{inventory.text.text}</p>
+                      </div>
                     </div>
                     {type !== 'slideshow' &&
                       <div className="col-xs-12">
@@ -227,7 +227,7 @@ class InventoryAdsCreateForm extends Component {
                           type="text" component={FormControlSelect}
                           id="headline" name="headline"
                           options={headlineOptions}
-                          label="Name" hasLabel
+                          label="Headline" hasLabel
                         />
                       </div>
                     }
@@ -308,7 +308,7 @@ InventoryAdsCreateForm.propTypes = {
   form: PropTypes.string.isRequired,
   adsPreview: PropTypes.element,
   inventory: PropTypes.object,
-  inventoryId: PropTypes.string.isRequired,
+  inventoryId: PropTypes.string,
   formVal: PropTypes.object,
 
   onPreviewAd: PropTypes.func.isRequired,

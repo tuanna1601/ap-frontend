@@ -6,7 +6,7 @@ import { Parser } from 'html-to-react';
 
 import InventoryAdsCreateForm from './InventoryAdsCreateForm';
 
-import { getInventory, loadFacebookAdsPreview, createFacebookAds } from '../redux/inventory';
+import { getLatestAcceptedInventory, loadFacebookAdsPreview, createFacebookAds } from '../redux/inventory';
 
 const htmlParser = new Parser();
 
@@ -24,8 +24,6 @@ const mapStateToProps = (state, ownProps) => ({
   initialValues: {
     inventory: ownProps.inventoryId,
     inventoryObj: state.inventory.inventories[ownProps.inventoryId],
-    message: state.inventory.inventories[ownProps.inventoryId] ?
-      state.inventory.inventories[ownProps.inventoryId].text.text : ''
   },
   formVal: getFormValues('fb-ads-create')(state),
 });
@@ -36,7 +34,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   },
   onComponentMounted: () => {
     if (ownProps.inventoryId) {
-      dispatch(getInventory(ownProps.inventoryId));
+      dispatch(getLatestAcceptedInventory(ownProps.inventoryId));
     }
   },
   onSubmit: (values) => {
