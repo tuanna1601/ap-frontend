@@ -33,6 +33,10 @@ class InventoryAdsCreateForm extends Component {
     this.props.onComponentMounted();
   }
 
+  componentWillUnmount() {
+    this.props.resetAdsPreview();
+  }
+
   renderMediaArr(media, type) {
     const videoNodes = [];
     const imageNodes = [];
@@ -214,6 +218,15 @@ class InventoryAdsCreateForm extends Component {
                     {type !== 'slideshow' &&
                       <div className="col-xs-12">
                         <Field
+                          type="text" component={FormControl}
+                          id="displayLink" name="displayLink"
+                          label="Display Link" hasLabel
+                        />
+                      </div>
+                    }
+                    {type !== 'slideshow' &&
+                      <div className="col-xs-12">
+                        <Field
                           type="text" component={FormControlSelect}
                           id="description" name="description"
                           options={descriptionOptions}
@@ -313,6 +326,7 @@ InventoryAdsCreateForm.propTypes = {
 
   onPreviewAd: PropTypes.func.isRequired,
   onComponentMounted: PropTypes.func.isRequired,
+  resetAdsPreview: PropTypes.func.isRequired,
   navigateToList: PropTypes.func.isRequired,
   resetMedia: PropTypes.func.isRequired
 };

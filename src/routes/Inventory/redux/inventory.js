@@ -17,6 +17,7 @@ const SET_FILTER_QUERY = 'INVENTORY_SET_FILTER_QUERY';
 const AFTER_CREATE = 'INVENTORY_AFTER_CREATE';
 const AFTER_EDIT = 'INVENTORY_AFTER_EDIT';
 const SET_ADS_PREVIEW = 'INVENTORY_SET_ADS_PREVIEW';
+const RESET_ADS_PREVIEW = 'INVENTORY_RESET_ADS_PREVIEW';
 /*
  * Actions
  */
@@ -483,7 +484,7 @@ export function createFacebookAds(values, callback) {
     formattedValues = _.pick(formattedValues,
       ['name', 'inventory', 'adaccount', 'adset', 'message',
         'headline', 'description', 'type', 'media', 'thumbnail',
-        'callToAction', 'websiteUrl', 'page']);
+        'callToAction', 'websiteUrl', 'page', 'displayLink']);
 
     dispatch(onUpdateLoadingCreate(true));
     const url = `${__CONFIG__.API.SERVER_URL}/ads`;
@@ -498,6 +499,12 @@ export function createFacebookAds(values, callback) {
   };
 }
 
+export function resetFacebookAdsPreview() {
+  return {
+    type: RESET_ADS_PREVIEW
+  };
+}
+
 export function loadFacebookAdsPreview(values, callback) {
   return (dispatch, getState) => {
     const auth = getState().auth;
@@ -507,6 +514,7 @@ export function loadFacebookAdsPreview(values, callback) {
 
     const formattedValues = _.omit(values, ['inventoryObj', 'inventory', 'type',
       'adcampaign', 'adset', 'name']);
+    formattedValues.message = values.inventoryObj.text.text;
     dispatch(onUpdateLoadingUpdate(true));
     const url = `${__CONFIG__.API.SERVER_URL}/ads/preview`;
     HTTP.post(formattedValues, auth, url, dispatch, (data) => {
@@ -666,6 +674,12 @@ export function reducer(state = initialState, action) {
       return Object.assign({}, state, {
         adsPreview: action.adsPreview
       });
+    }
+    case RESET_ADS_PREVIEW: {
+      return {
+        ...state,
+        adsPreview: '<span></span>'
+      };
     }
     default:
       return state;

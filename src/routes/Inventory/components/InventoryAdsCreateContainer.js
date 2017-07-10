@@ -6,7 +6,10 @@ import { Parser } from 'html-to-react';
 
 import InventoryAdsCreateForm from './InventoryAdsCreateForm';
 
-import { getLatestAcceptedInventory, loadFacebookAdsPreview, createFacebookAds } from '../redux/inventory';
+import {
+  getLatestAcceptedInventory, loadFacebookAdsPreview,
+  createFacebookAds, resetFacebookAdsPreview
+} from '../redux/inventory';
 
 const htmlParser = new Parser();
 
@@ -40,6 +43,9 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
         }
       }));
     }
+  },
+  resetAdsPreview: () => {
+    dispatch(resetFacebookAdsPreview());
   },
   onSubmit: (values) => {
     dispatch(createFacebookAds(values, () => {
