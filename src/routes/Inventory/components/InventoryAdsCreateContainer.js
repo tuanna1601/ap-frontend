@@ -34,7 +34,11 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   },
   onComponentMounted: () => {
     if (ownProps.inventoryId) {
-      dispatch(getLatestAcceptedInventory(ownProps.inventoryId));
+      dispatch(getLatestAcceptedInventory(ownProps.inventoryId, (data) => {
+        if (!data) {
+          dispatch(push('/inventory'));
+        }
+      }));
     }
   },
   onSubmit: (values) => {

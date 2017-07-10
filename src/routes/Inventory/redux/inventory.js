@@ -584,7 +584,8 @@ export function reducer(state = initialState, action) {
     case LOAD:
     case AFTER_CREATE: {
       const inventory = action.inventory;
-      if (inventory.latestReview) {
+
+      if (inventory && inventory.latestReview) {
         const groupReviews = _.groupBy(inventory.latestReview.comments, 'target');
         if (groupReviews.text) {
           inventory.text.reviews = groupReviews.text;
@@ -619,13 +620,15 @@ export function reducer(state = initialState, action) {
             });
           });
         }
+        return {
+          ...state,
+          inventories: {
+            ...state.inventories,
+            [inventory.id]: inventory
+          }
+        };
       }
-
-      return Object.assign({}, state, {
-        inventories: Object.assign({}, state.inventories, {
-          [inventory.id]: inventory
-        })
-      });
+      return state;
     }
     case EDIT: {
       const editedInventory = Object.assign({}, state.inventories[action.id], {
