@@ -122,11 +122,16 @@ export function listCriteria(department) {
       return;
     }
 
-    const query = {
-      department
-    };
+    let query;
+    if (department) {
+      query = {
+        department
+      };
+    }
 
-    const url = `${__CONFIG__.API.SERVER_URL}/criteria?${HTTP.param(query)}`;
+    const param = HTTP.param(query);
+
+    const url = `${__CONFIG__.API.SERVER_URL}/criteria?${param}`;
     HTTP.get(auth, url, dispatch, (data) => {
       dispatch(reloadCriteria(data.rows));
     });

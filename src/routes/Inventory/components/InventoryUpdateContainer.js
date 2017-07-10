@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { push } from 'react-router-redux';
 import { formValueSelector } from 'redux-form';
 import Alert from 'react-s-alert';
 import * as _ from 'lodash';
@@ -16,15 +17,21 @@ const mapStateToProps = (state, ownProps) => ({
   descriptions: formValueSelector('inventory-update')(state, 'descriptions'),
   text: formValueSelector('inventory-update')(state, 'text'),
   enableReinitialize: true,
-  initialValues: state.inventory.inventories[ownProps.id] ?
-    state.inventory.inventories[ownProps.id] : {},
+  initialValues: {
+    ...state.inventory.inventories[ownProps.id],
+    department: state.inventory.inventories[ownProps.id] ?
+      state.inventory.inventories[ownProps.id].department.id : ''
+  },
   department: state.inventory.inventories[ownProps.id] ?
-    state.inventory.inventories[ownProps.id].department : '',
+    state.inventory.inventories[ownProps.id].department.id : '',
 });
 
 const mapDispatchToProps = (dispatch) => ({
   onComponentMounted: (id) => {
     dispatch(getInventory(id));
+  },
+  navigateToList: () => {
+    dispatch(push('/inventory'));
   },
   onFieldArrayRemoved: (fields, index) => {
     fields.remove(index);

@@ -197,7 +197,7 @@ MediaField.propTypes = {
   form: PropTypes.string.isRequired,
   medias: PropTypes.array,
   fields: PropTypes.object.isRequired,
-  department: PropTypes.string.isRequired,
+  department: PropTypes.string,
   isUpdate: PropTypes.bool,
   isOldMedia: PropTypes.bool,
   onFieldArrayRemove: PropTypes.func.isRequired,

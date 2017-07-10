@@ -29,7 +29,7 @@ const TextField = ({ form, department, text, isUpdate }) => {
               </thead>
               <FieldArray
                 department={department}
-                name={'textreviews'}
+                name={'text.reviews'}
                 component={ReviewFieldArray}
               />
             </table>

@@ -182,7 +182,12 @@ export function getCriteria(inventory) {
     }
     const { department } = inventory;
 
-    const url = `${__CONFIG__.API.SERVER_URL}/criteria?${HTTP.param({ department: department.id })}`;
+
+    const query = {
+      department: department.id
+    };
+
+    const url = `${__CONFIG__.API.SERVER_URL}/criteria?${HTTP.param(query)}`;
     HTTP.get(auth, url, dispatch).then(data => {
       dispatch(loadInventory(inventory));
       dispatch(loadCriteria(data.rows));
@@ -333,6 +338,7 @@ export function reviewInventory(formValues, callback) {
               criteria: review.criteria,
               target: key,
               targetId: data._id,
+              targetValue: data.text,
               comment: review.comment
             });
           });
@@ -361,6 +367,7 @@ export function reviewInventory(formValues, callback) {
                   criteria: review.criteria,
                   target: singularKey,
                   targetId: value._id,
+                  targetValue: value.text,
                   comment: review.comment
                 });
               });
@@ -371,7 +378,6 @@ export function reviewInventory(formValues, callback) {
     });
 
     const formattedValues = {
-      accepted: formValues.status === 'accepted' || false,
       comments
     };
 
@@ -380,9 +386,8 @@ export function reviewInventory(formValues, callback) {
       if (callback) {
         callback(data);
       }
-      // dispatch(afterEditInventory(data));
     }).then(() => {
-      // dispatch(onUpdateLoadingUpdate(false));
+      dispatch(onUpdateLoadingUpdate(false));
     });
   };
 }

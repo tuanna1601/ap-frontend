@@ -12,8 +12,16 @@ import DescriptionField from './InventoryFields/DescriptionFieldContainer';
 import MediaField from './InventoryFields/MediaFieldContainer';
 
 class InventoryUpdateForm extends Component {
+  componentWillMount() {
+    if (!this.props.id) {
+      this.props.navigateToList();
+    }
+  }
+
   componentDidMount() {
-    this.props.onComponentMounted(this.props.id);
+    if (this.props.id) {
+      this.props.onComponentMounted(this.props.id);
+    }
   }
 
   render() {
@@ -29,7 +37,7 @@ class InventoryUpdateForm extends Component {
             {isLoadingCreate && <i className="fa fa-refresh fa-spin" />}
           </div>
         </div>
-        {!isLoadingList &&
+        {!isLoadingList && initialValues &&
           <div className="box-body">
             <form className="table-row" onSubmit={handleSubmit}>
               <div className="row">
@@ -58,7 +66,7 @@ class InventoryUpdateForm extends Component {
               <table className="table table-field-array">
                 <TextField
                   form={form}
-                  department={department.id}
+                  department={department}
                   text={text}
                   isUpdate
                 />
@@ -69,7 +77,7 @@ class InventoryUpdateForm extends Component {
                   form={form}
                   name="headlines"
                   headlines={headlines}
-                  department={department.id}
+                  department={department}
                   component={HeadlineField}
                   isUpdate
                 />
@@ -80,7 +88,7 @@ class InventoryUpdateForm extends Component {
                   form={form}
                   name="descriptions"
                   descriptions={descriptions}
-                  department={department.id}
+                  department={department}
                   component={DescriptionField}
                   isUpdate
                 />
@@ -91,7 +99,7 @@ class InventoryUpdateForm extends Component {
                   form={form}
                   name="medias"
                   component={MediaField}
-                  department={department.id}
+                  department={department}
                   medias={initialValues.medias}
                   isOldMedia
                   isUpdate
@@ -131,7 +139,7 @@ InventoryUpdateForm.propTypes = {
   isLoadingCreate: PropTypes.bool.isRequired,
   isLoadingList: PropTypes.bool.isRequired,
 
-  department: PropTypes.object,
+  department: PropTypes.string,
   initialValues: PropTypes.object,
   id: PropTypes.string.isRequired,
   form: PropTypes.string.isRequired,
@@ -142,6 +150,7 @@ InventoryUpdateForm.propTypes = {
 
   onFieldArrayRemoved: PropTypes.func.isRequired,
   onComponentMounted: PropTypes.func.isRequired,
+  navigateToList: PropTypes.func.isRequired,
 };
 
 function validateHeadlines(headlines) {

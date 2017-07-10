@@ -38,7 +38,7 @@ class InventoryReviewForm extends Component {
                 {isLoadingCreate && <i className="fa fa-refresh fa-spin" />}
               </div>
             </div>
-            {!isLoadingList &&
+            {!isLoadingList && initialValues &&
               <div className="box-body">
                 <form className="table-row" onSubmit={handleSubmit}>
                   <div className="row">
@@ -51,6 +51,7 @@ class InventoryReviewForm extends Component {
                         options={generateInventoryStatusOptions()}
                         id="status" name="status"
                         label="Trạng thái"
+                        disabled
                       />
                     </div>
                   </div>
@@ -113,7 +114,7 @@ class InventoryReviewForm extends Component {
           </div>
         </div>
         <div className="col-md-4">
-          <div style={{ position: 'fixed' }} className="box">
+          <div style={{ position: 'fixed', width: 'inherit' }} className="box">
             <div className="box-header with-border">
               Bộ tiêu chí
             </div>
@@ -143,7 +144,7 @@ InventoryReviewForm.propTypes = {
   id: PropTypes.string.isRequired,
   form: PropTypes.string.isRequired,
   department: PropTypes.string.isRequired,
-  initialValues: PropTypes.object.isRequired,
+  initialValues: PropTypes.object,
   criteria: PropTypes.object.isRequired,
 
   onComponentMounted: PropTypes.func.isRequired,
