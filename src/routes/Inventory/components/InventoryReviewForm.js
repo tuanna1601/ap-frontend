@@ -111,7 +111,7 @@ class InventoryReviewForm extends Component {
           </div>
         </div>
         <div className="col-md-4">
-          <div style={{ position: 'fixed', width: 'inherit' }} className="box">
+          <div className="box">
             <div className="box-header with-border">
               Bộ tiêu chí
             </div>
