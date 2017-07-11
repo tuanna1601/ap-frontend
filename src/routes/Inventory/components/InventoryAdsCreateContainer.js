@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import { change, reset, formValueSelector, getFormValues } from 'redux-form';
-import * as _ from 'lodash';
 import { Parser } from 'html-to-react';
 
 import InventoryAdsCreateForm from './InventoryAdsCreateForm';

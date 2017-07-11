@@ -10,6 +10,7 @@ const UPDATE_LOADING_UPDATE = 'INVENTORY_UPDATE_LOADING_UPDATE';
 const EDIT = 'INVENTORY_EDIT';
 const RELOAD_LIST = 'INVENTORY_RELOAD_LIST';
 const LOAD = 'INVENTORY_LOAD';
+const LOAD_LATEST_ACCEPTED = 'INVENTORY_LOAD_LATEST_ACCEPTED';
 const LOAD_CRITERIA = 'INVENTORY_LOAD_CRITERIA';
 const SET_CURRENT_PAGE = 'INVENTORY_SET_CURRENT_PAGE';
 const RESET_CURRENT_PAGE = 'INVENTORY_RESET_CURRENT_PAGE';
@@ -88,6 +89,13 @@ export function reloadList(inventories, count) {
 export function loadInventory(inventory) {
   return {
     type: LOAD,
+    inventory
+  };
+}
+
+export function loadLatestAcceptedInventory(inventory) {
+  return {
+    type: LOAD_LATEST_ACCEPTED,
     inventory
   };
 }
@@ -242,7 +250,7 @@ export function getLatestAcceptedInventory(inventoryId, callback) {
       if (callback) {
         callback(data);
       }
-      dispatch(loadInventory(data));
+      dispatch(loadLatestAcceptedInventory(data));
     }).then(() => {
       dispatch(onUpdateLoadingList(false));
     });
@@ -637,6 +645,16 @@ export function reducer(state = initialState, action) {
         };
       }
       return state;
+    }
+    case LOAD_LATEST_ACCEPTED: {
+      const inventory = action.inventory;
+      return {
+        ...state,
+        inventories: {
+          ...state.inventories,
+          [inventory.id]: inventory
+        }
+      };
     }
     case EDIT: {
       const editedInventory = Object.assign({}, state.inventories[action.id], {
