@@ -201,7 +201,7 @@ class InventoryAdsCreateForm extends Component {
                     <div className="col-xs-12">
                       <div className="form-group">
                         <label htmlFor="message" className="control-label">
-                          Message
+                          Text
                         </label>
                         <p>{inventory.text.text}</p>
                       </div>
@@ -209,9 +209,29 @@ class InventoryAdsCreateForm extends Component {
                     {type !== 'slideshow' &&
                       <div className="col-xs-12">
                         <Field
+                          type="text" component={FormControlSelect}
+                          id="headline" name="headline"
+                          options={headlineOptions}
+                          label="Headline" hasLabel
+                        />
+                      </div>
+                    }
+                    {type !== 'slideshow' &&
+                      <div className="col-xs-12">
+                        <Field
+                          type="text" component={FormControlSelect}
+                          id="description" name="description"
+                          options={descriptionOptions}
+                          label="Newsfeed Description" hasLabel
+                        />
+                      </div>
+                    }
+                    {type !== 'slideshow' &&
+                      <div className="col-xs-12">
+                        <Field
                           type="text" component={FormControl}
                           id="websiteUrl" name="websiteUrl"
-                          label="Link" hasLabel
+                          label="Website URL" hasLabel
                         />
                       </div>
                     }
@@ -224,28 +244,9 @@ class InventoryAdsCreateForm extends Component {
                         />
                       </div>
                     }
-                    {type !== 'slideshow' &&
-                      <div className="col-xs-12">
-                        <Field
-                          type="text" component={FormControlSelect}
-                          id="description" name="description"
-                          options={descriptionOptions}
-                          label="Caption" hasLabel
-                        />
-                      </div>
-                    }
-                    {type !== 'slideshow' &&
-                      <div className="col-xs-12">
-                        <Field
-                          type="text" component={FormControlSelect}
-                          id="headline" name="headline"
-                          options={headlineOptions}
-                          label="Headline" hasLabel
-                        />
-                      </div>
-                    }
                     <div className="col-xs-12">
                       <div className="table-responsive">
+                        <label htmlFor="message" className="control-label">Media</label>
                         <table className="table">
                           <tbody>
                             {this.renderMediaArr(inventory.medias, type)}
