@@ -388,7 +388,7 @@ export function reviewInventory(formValues, callback) {
                   criteria: review.criteria,
                   target: singularKey,
                   targetId: value._id,
-                  targetValue: value.text,
+                  targetValue: value.text || value.path,
                   comment: review.comment
                 });
               });
