@@ -21,7 +21,7 @@ class AdsReviewForm extends Component {
   }
 
   componentWillUnmount() {
-    this.props.onComponentUnMount();
+    this.props.onComponentUnmount();
   }
 
   render() {
@@ -170,7 +170,7 @@ AdsReviewForm.propTypes = {
   criteria: PropTypes.object.isRequired,
 
   onComponentMounted: PropTypes.func.isRequired,
-  onComponentUnMount: PropTypes.func.isRequired,
+  onComponentUnmount: PropTypes.func.isRequired,
   navigateToList: PropTypes.func.isRequired,
 };
 

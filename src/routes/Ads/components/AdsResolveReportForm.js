@@ -12,7 +12,6 @@ class AdsResolveReportForm extends React.Component {
   render() {
     const { handleSubmit, submitting, pristine,
       reset, form, initialValues, onSubmit } = this.props;
-    console.log(initialValues);
     return (
       <div className="modal-form">
         <form>
