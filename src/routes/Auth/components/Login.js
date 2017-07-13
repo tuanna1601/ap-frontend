@@ -36,7 +36,7 @@ class Login extends React.Component {
                     clientId="223830990877-7cae8v3l7pohk9q976m73qk56pu240e6.apps.googleusercontent.com"
                     buttonText="Đăng nhập bằng Google"
                     onSuccess={(values) => this.props.onGoogleLogin(values, this.props.lastURL)}
-                    onFailure={(err) => this.props.onGoogleLoginFailed(err)}
+                    onFailure={this.props.onGoogleLoginFailed}
                   />
                 </div>
                 <div className="box-footer">
