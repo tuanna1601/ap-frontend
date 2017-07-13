@@ -313,10 +313,31 @@ export function updateInventory(formValues, callback) {
     dispatch(onUpdateLoadingUpdate(true));
 
     const formData = new FormData();
-    const formattedData = _.pick(formValues, ['text', 'headlines', 'medias',
-      'newMedias', 'descriptions']);
+    let formattedData = _.pick(formValues, ['text', 'headlines', 'medias',
+      'descriptions']);
+    if (formValues.newMedias) {
+      const images = [];
+      const videos = [];
+      const thumbnails = [];
+      _.each(formValues.newMedias, (media) => {
+        if (media.type === 'image') {
+          images.push(media);
+        } else {
+          videos.push(media);
+          thumbnails.push({
+            value: media.thumbnail
+          });
+        }
+      });
+      formattedData = {
+        ...formattedData,
+        images: images.length ? images : undefined,
+        videos: videos.length ? videos : undefined,
+        thumbnails: thumbnails.length ? thumbnails : undefined
+      };
+    }
     _.each(formattedData, (formValue, key) => {
-      if (key !== 'newMedias') {
+      if (key !== 'images' && key !== 'videos' && key !== 'thumbnails') {
         if (key === 'text') {
           const formattedValue = _.cloneDeep(formValue);
           if (formattedValue.reviews) {
@@ -333,6 +354,7 @@ export function updateInventory(formValues, callback) {
         }
       } else {
         _.each(formValue, (file) => {
+          console.log(file);
           formData.append(key, file.value);
         });
       }
