@@ -25,8 +25,8 @@ const InventoryAssignForm = ({ handleSubmit, submitting, pristine, reset, form, 
       <div className="col-md-6">
         <UserField
           id={`${form}.userId`} name="userId"
-          userRole="reviewer" department={department}
           label="Người duyệt" hasLabel
+          userRole="reviewer"
           autoSelect={false}
         />
       </div>
