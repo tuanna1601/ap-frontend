@@ -60,10 +60,24 @@ export function reloadAdCampaigns(rows) {
   };
 }
 
+export function resetAdCampaigns() {
+  return {
+    type: RELOAD_AD_CAMPAIGNS,
+    campaigns: []
+  };
+}
+
 export function reloadAdSets(rows) {
   return {
     type: RELOAD_AD_SETS,
     sets: rows
+  };
+}
+
+export function resetAdSets() {
+  return {
+    type: RELOAD_AD_SETS,
+    sets: []
   };
 }
 
@@ -163,12 +177,14 @@ export function listAdCampaign(accountId) {
       const url = `${__CONFIG__.API.SERVER_URL}/ad-accounts/${accountId}/campaigns`;
       HTTP.get(auth, url, dispatch, (data) => {
         dispatch(reloadAdCampaigns(data.data));
+      }, () => {
+        dispatch(reloadAdCampaigns([]));
       });
     }
   };
 }
 
-export function listAdSet(accountId, campaignId) {
+export function listAdSets(accountId, campaignId) {
   return (dispatch, getState) => {
     const auth = getState().auth;
     if (!auth) {
@@ -179,6 +195,8 @@ export function listAdSet(accountId, campaignId) {
       const url = `${__CONFIG__.API.SERVER_URL}/ad-accounts/${accountId}/${campaignId}/adsets`;
       HTTP.get(auth, url, dispatch, (data) => {
         dispatch(reloadAdSets(data.data));
+      }, () => {
+        dispatch(reloadAdSets([]));
       });
     }
   };

@@ -106,7 +106,7 @@ class InventoryAdsCreateForm extends Component {
 
   render() {
     const { handleSubmit, isLoadingCreate, isLoadingList, isLoadingPreview, submitting, onPreviewAd,
-      pristine, reset, inventory, adaccount, adcampaign, type, resetMedia, adsPreview } = this.props;
+      pristine, reset, inventory, adaccount, adcampaign, type, resetMedia, adsPreview, resetCampaign } = this.props;
 
     let headlineOptions = [];
     let descriptionOptions = [];
@@ -141,6 +141,7 @@ class InventoryAdsCreateForm extends Component {
                       <AdAccountField
                         id="adaccount" name="adaccount"
                         label="Ad account" hasLabel
+                        onSelect={resetCampaign}
                         autoSelect={false}
                       />
                     </div>
@@ -155,6 +156,7 @@ class InventoryAdsCreateForm extends Component {
                       </div>
                     }
                     {adaccount && adcampaign &&
+                      adcampaign !== '' &&
                       <div className="col-xs-12">
                         <AdSetField
                           id="adset" name="adset"
@@ -183,7 +185,7 @@ class InventoryAdsCreateForm extends Component {
                       <Field
                         component={FormControlSelect}
                         options={generateAdFormatOptions()}
-                        onChange={resetMedia()}
+                        onChange={resetMedia}
                         id="type" name="type"
                         label="Định dạng Ads" hasLabel
                       />
@@ -329,7 +331,8 @@ InventoryAdsCreateForm.propTypes = {
   onComponentMounted: PropTypes.func.isRequired,
   resetAdsPreview: PropTypes.func.isRequired,
   navigateToList: PropTypes.func.isRequired,
-  resetMedia: PropTypes.func.isRequired
+  resetMedia: PropTypes.func.isRequired,
+  resetCampaign: PropTypes.func.isRequired
 };
 
 export default reduxForm({

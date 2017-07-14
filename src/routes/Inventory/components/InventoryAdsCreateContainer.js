@@ -59,7 +59,10 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     }
   },
   resetMedia: () => {
-    dispatch(change, 'fb-ads-create', 'selectedMedia', []);
+    dispatch(change('fb-ads-create', 'selectedMedia', []));
+  },
+  resetCampaign: () => {
+    dispatch(change('fb-ads-create', 'adcampaign', ''));
   }
 });
 

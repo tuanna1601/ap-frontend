@@ -7,6 +7,12 @@ class AdCampaignField extends React.Component {
     this.props.listOptions();
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props.account !== nextProps.account) {
+      this.props.listOptions(nextProps.account);
+    }
+  }
+
   componentWillUnmount() {
     this.props.resetOptions();
   }
@@ -23,6 +29,7 @@ class AdCampaignField extends React.Component {
 }
 
 AdCampaignField.propTypes = {
+  account: React.PropTypes.string.isRequired,
   options: React.PropTypes.array.isRequired,
   listOptions: React.PropTypes.func.isRequired,
   resetOptions: React.PropTypes.func.isRequired,

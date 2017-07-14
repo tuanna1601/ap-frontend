@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import * as _ from 'lodash';
-import { listAdSet } from '@/store/common';
+import { listAdSets, resetAdSets } from '@/store/common';
 import AdSetField from './AdSetField';
 
 const mapStateToProps = (state) => ({
@@ -15,8 +15,9 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  listOptions: () => dispatch(listAdSet(ownProps.account, ownProps.campaign)),
-  resetOptions: () => dispatch(listAdSet(ownProps.account, ownProps.campaign)),
+  listOptions: (account = ownProps.account, campaign = ownProps.campaign) =>
+    dispatch(listAdSets(account, campaign)),
+  resetOptions: () => dispatch(resetAdSets()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdSetField);
