@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Field, FieldArray } from 'redux-form';
 
-import { FormControl } from '@/components/FormControl';
+import { FormControlTextArea } from '@/components/FormControl';
 import ReviewFieldArray from './ReviewFieldArrayContainer';
 
 const TextField = ({ form, department, text, isUpdate }) => {
@@ -11,7 +11,7 @@ const TextField = ({ form, department, text, isUpdate }) => {
       <tr>
         <td>
           <Field
-            type="text" component={FormControl}
+            type="text" component={FormControlTextArea}
             id={'text.text'}
             name={'text.text'}
             group={`${form}.text`}

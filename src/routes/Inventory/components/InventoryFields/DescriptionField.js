@@ -14,7 +14,6 @@ class DescriptionField extends React.Component {
   renderDescription(fields, description, index) {
     const { department, form, descriptions, isUpdate, onFieldArrayRemove } = this.props;
     const reviews = descriptions && descriptions[index] ? descriptions[index].reviews : [];
-
     return (
       <tr key={description}>
         <td style={{ width: '90%' }}>
@@ -25,7 +24,7 @@ class DescriptionField extends React.Component {
             group={`${form}.descriptions`}
             index={index}
             label="Description"
-            readOnly={!isUpdate}
+            readOnly={!!(descriptions[index] && descriptions[index]._id)}
           />
           {!isUpdate &&
             <table className="table table-condensed table-striped table-bordered table-field-array">

@@ -25,7 +25,7 @@ class HeadlineField extends React.Component {
             group={`${form}.headlines`}
             index={index}
             label="Headline"
-            readOnly={!isUpdate}
+            readOnly={!!(headlines[index] && headlines[index]._id)}
           />
           {!isUpdate &&
             <table className="table table-condensed table-striped table-bordered table-field-array">

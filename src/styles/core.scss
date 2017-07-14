@@ -463,6 +463,12 @@
     font-style: italic;
   }
 
+  table.table {
+    .form-group {
+      margin-bottom: 0;
+    }
+  }
+
   .iframe {
     width: 100%;
     overflow-x: scroll;
