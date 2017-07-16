@@ -88,14 +88,14 @@ export function reloadAds(ads) {
   };
 }
 
-export function listDepartments() {
+export function listDepartments(params) {
   return (dispatch, getState) => {
     const auth = getState().auth;
     if (!auth) {
       return;
     }
 
-    HTTP.get(auth, `${__CONFIG__.API.SERVER_URL}/departments`, dispatch, (data) => {
+    HTTP.get(auth, `${__CONFIG__.API.SERVER_URL}/departments?${HTTP.param(params)}`, dispatch, (data) => {
       dispatch(reloadDeparments(data.rows));
     });
   };

@@ -122,7 +122,7 @@ export function updateDepartment(department, callback) {
 
     dispatch(onUpdateLoadingUpdate(true));
 
-    const formattedValue = _.pick(department, ['name', 'parent', 'reviewers', 'ordinators']);
+    const formattedValue = _.pick(department, ['name', 'parent', 'reviewers', 'ordinators', 'isHidden']);
     formattedValue.reviewers = _.map(formattedValue.reviewers, (reviewer) => {
       if (typeof reviewer === 'string') {
         return reviewer;

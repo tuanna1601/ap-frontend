@@ -51,6 +51,15 @@ class DepartmentTree extends React.Component {
           {node.id !== 0 &&
             <span style={btnStyle} className="button-list tree-button-list">
               <button
+                className={node.isHidden ? 'btn btn-xs btn-flat' : 'btn btn-xs btn-flat btn-success'}
+                onClick={() => this.props.onToggleHidden(node)}
+                title="Ẩn/Hiện đơn vị với Marketer"
+              >
+                <i
+                  className={node.isHidden ? 'fa fa-fw fa-eye-slash' : 'fa fa-fw fa-eye'}
+                />
+              </button>
+              <button
                 className="btn btn-xs btn-warning btn-flat"
                 onClick={() => this.props.onEdit(node)}
                 title="Sửa"
@@ -69,7 +78,7 @@ class DepartmentTree extends React.Component {
                 onClick={() => this.props.onEditReviewers(node)}
                 title="Phân quyền duyệt"
               >
-                <i className="fa fa-fw fa-eye" />
+                <i className="fa fa-fw fa-tasks" />
               </button>
             </span>
           }
@@ -100,6 +109,7 @@ DepartmentTree.propTypes = {
   tree: React.PropTypes.object.isRequired,
   listDepartments: React.PropTypes.func.isRequired,
   onEdit: React.PropTypes.func.isRequired,
+  onToggleHidden: React.PropTypes.func.isRequired,
   onEditReviewers: React.PropTypes.func.isRequired,
   onEditOrdinators: React.PropTypes.func.isRequired,
 };

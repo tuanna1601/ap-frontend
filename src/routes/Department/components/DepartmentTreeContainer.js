@@ -37,6 +37,10 @@ const mapDispatchToProps = (dispatch) => ({
       }))
     ));
   },
+  onToggleHidden: (department) => dispatch(updateDepartment({
+    ...department,
+    isHidden: !department.isHidden
+  })),
   onEditReviewers: (department) => {
     const updateForm = (
       <DepartmentUpdateUsersForm

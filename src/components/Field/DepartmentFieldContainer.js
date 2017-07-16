@@ -12,8 +12,8 @@ const mapStateToProps = (state, ownProps) => ({
     .value()
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  listDepartments: () => dispatch(listDepartments())
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  listDepartments: () => dispatch(listDepartments(ownProps.params))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DepartmentField);

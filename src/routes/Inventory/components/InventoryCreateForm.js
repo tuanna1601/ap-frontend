@@ -1,7 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { Field, FieldArray, reduxForm } from 'redux-form';
-import { FormControl, FormControlTextArea,
-  FormControlSelect, FormControlUpload } from '@/components/FormControl';
+import {
+  FormControl, FormControlTextArea,
+  FormControlSelect, FormControlUpload
+} from '@/components/FormControl';
 import { DepartmentField } from '@/components/Field';
 import Validator from '@/helpers/validator';
 import { Tab, Tabs } from '@/components/Tabs';
@@ -262,6 +264,7 @@ class InventoryForm extends Component {
                       <DepartmentField
                         id="department" name="department"
                         label="Đơn vị" hasLabel
+                        params={{ isHidden: false }}
                       />
                     </div>
                   </div>
