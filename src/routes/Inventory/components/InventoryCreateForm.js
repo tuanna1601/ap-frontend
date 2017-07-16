@@ -194,7 +194,7 @@ class InventoryForm extends Component {
       <tr key={index}>
         <td>
           <Field
-            type="text" component={FormControlTextArea}
+            type="text" component={FormControl}
             id={`${description}.value`}
             name={`${description}.value`}
             group={`${this.props.form}.descriptions`}
@@ -282,6 +282,7 @@ class InventoryForm extends Component {
                         type="text" component={FormControlTextArea}
                         id="text" name="text"
                         label="Text" hasLabel
+                        rows={20}
                       />
                     </div>
                   </div>

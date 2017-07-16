@@ -12,11 +12,9 @@ const TextField = ({ form, department, text, isUpdate }) => {
         <td>
           <Field
             type="text" component={FormControlTextArea}
-            id={'text.text'}
-            name={'text.text'}
-            group={`${form}.text`}
-            label="Text"
-            readOnly={!isUpdate}
+            id={'text.text'} name={'text.text'}
+            group={`${form}.text`} label="Text"
+            readOnly={!isUpdate} rows={20}
           />
           {!isUpdate &&
             <table className="table table-condensed table-striped table-bordered table-field-array">
