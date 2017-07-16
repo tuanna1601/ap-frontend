@@ -62,7 +62,7 @@ class HeadlineField extends React.Component {
           }
         </td>
         <td className="text-center">
-          {isUpdate &&
+          {isUpdate && !(headlines[index] && headlines[index]._id) &&
             <button
               className="btn btn-xs btn-flat btn-danger" type="button"
               onClick={() => onFieldArrayRemove(fields, index)}

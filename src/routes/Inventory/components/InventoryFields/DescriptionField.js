@@ -61,7 +61,7 @@ class DescriptionField extends React.Component {
           }
         </td>
         <td className="text-center">
-          {isUpdate &&
+          {isUpdate && !(descriptions[index] && descriptions[index]._id) &&
             <button
               className="btn btn-xs btn-flat btn-danger" type="button"
               onClick={() => onFieldArrayRemove(fields, index)}

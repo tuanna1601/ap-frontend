@@ -29,7 +29,7 @@ class MediaField extends React.Component {
     if (!isOldMedia) {
       return (
         <tr key={media}>
-          <td style={{ width: '30%' }}>
+          <td style={{ width: '45%' }}>
             <Field
               component={FormControlSelect}
               options={mediaTypeOptions}
@@ -40,7 +40,7 @@ class MediaField extends React.Component {
               autoSelect={false}
             />
           </td>
-          <td style={{ width: '60%' }}>
+          <td style={{ width: '45%' }}>
             {medias[index] &&
               medias[index].type === 'video' &&
               <div>
@@ -88,36 +88,32 @@ class MediaField extends React.Component {
 
     return (
       <tr key={media}>
-        <td colSpan={2}>
-          <div className="row">
-            <div className="col-md-6">
-              {medias[index].type === 'image' &&
-                <img
-                  src={`${__CONFIG__.API.SERVER_URL}/${medias[index].path}`}
-                  alt={medias[index].path}
-                  style={{ width: '100%' }}
-                  className="img-thumbnail"
-                />
-              }
-              {medias[index].type === 'video' &&
-                <video
-                  style={{ width: '100%' }}
-                  controls poster={`${__CONFIG__.API.SERVER_URL}/${medias[index].thumbnail}`}
-                >
-                  <source src={`${__CONFIG__.API.SERVER_URL}/${medias[index].path}`} />
-                </video>
-              }
-              <Field
-                type="hidden" component={FormControl}
-                id={`${media}.path`}
-                name={`${media}.path`}
-                group={`${form}.medias`}
-                index={index}
-                label="Media"
-                readOnly
-              />
-            </div>
-          </div>
+        <td style={{ width: '45%' }}>
+          {medias[index].type === 'image' &&
+            <img
+              src={`${__CONFIG__.API.SERVER_URL}/${medias[index].path}`}
+              alt={medias[index].path}
+              style={{ width: '100%' }}
+              className="img-thumbnail"
+            />
+          }
+          {medias[index].type === 'video' &&
+            <video
+              style={{ width: '100%' }}
+              controls poster={`${__CONFIG__.API.SERVER_URL}/${medias[index].thumbnail}`}
+            >
+              <source src={`${__CONFIG__.API.SERVER_URL}/${medias[index].path}`} />
+            </video>
+          }
+          <Field
+            type="hidden" component={FormControl}
+            id={`${media}.path`}
+            name={`${media}.path`}
+            group={`${form}.medias`}
+            index={index}
+            label="Media"
+            readOnly
+          />
           {!isUpdate &&
             <table className="table table-condensed table-striped table-bordered table-field-array">
               <thead>
@@ -152,15 +148,11 @@ class MediaField extends React.Component {
             </table>
           }
         </td>
+        <td style={{ width: '45%' }}>
+          &nbsp;
+        </td>
         <td className="text-center">
-          {isUpdate &&
-            <button
-              className="btn btn-xs btn-flat btn-danger" type="button"
-              onClick={() => onFieldArrayRemove(fields, index)}
-            >
-              <i className="fa fa-trash" />
-            </button>
-          }
+          &nbsp;
         </td>
       </tr>
     );
