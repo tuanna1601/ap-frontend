@@ -88,32 +88,36 @@ class MediaField extends React.Component {
 
     return (
       <tr key={media}>
-        <td style={{ width: '45%' }}>
-          {medias[index].type === 'image' &&
-            <img
-              src={`${__CONFIG__.API.SERVER_URL}/${medias[index].path}`}
-              alt={medias[index].path}
-              style={{ width: '100%' }}
-              className="img-thumbnail"
-            />
-          }
-          {medias[index].type === 'video' &&
-            <video
-              style={{ width: '100%' }}
-              controls poster={`${__CONFIG__.API.SERVER_URL}/${medias[index].thumbnail}`}
-            >
-              <source src={`${__CONFIG__.API.SERVER_URL}/${medias[index].path}`} />
-            </video>
-          }
-          <Field
-            type="hidden" component={FormControl}
-            id={`${media}.path`}
-            name={`${media}.path`}
-            group={`${form}.medias`}
-            index={index}
-            label="Media"
-            readOnly
-          />
+        <td colSpan={2}>
+          <div className="row">
+            <div className="col-md-6">
+              {medias[index].type === 'image' &&
+                <img
+                  src={`${__CONFIG__.API.SERVER_URL}/${medias[index].path}`}
+                  alt={medias[index].path}
+                  style={{ width: '100%' }}
+                  className="img-thumbnail"
+                />
+              }
+              {medias[index].type === 'video' &&
+                <video
+                  style={{ width: '100%' }}
+                  controls poster={`${__CONFIG__.API.SERVER_URL}/${medias[index].thumbnail}`}
+                >
+                  <source src={`${__CONFIG__.API.SERVER_URL}/${medias[index].path}`} />
+                </video>
+              }
+              <Field
+                type="hidden" component={FormControl}
+                id={`${media}.path`}
+                name={`${media}.path`}
+                group={`${form}.medias`}
+                index={index}
+                label="Media"
+                readOnly
+              />
+            </div>
+          </div>
           {!isUpdate &&
             <table className="table table-condensed table-striped table-bordered table-field-array">
               <thead>
@@ -150,10 +154,7 @@ class MediaField extends React.Component {
             </table>
           }
         </td>
-        <td style={{ width: '45%' }}>
-          &nbsp;
-        </td>
-        <td className="text-center">
+        <td style={{ width: '10%' }} className="text-center">
           &nbsp;
         </td>
       </tr>
