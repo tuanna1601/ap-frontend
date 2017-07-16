@@ -32,9 +32,14 @@ class Login extends React.Component {
                   }
                   <hr />
                   <GoogleLogin
-                    className="btn btn-success btn-flat"
+                    className="btn btn-block btn-social btn-google"
                     clientId="223830990877-7cae8v3l7pohk9q976m73qk56pu240e6.apps.googleusercontent.com"
                     buttonText="Đăng nhập bằng Google"
+                    children={[(
+                      <i key="icon" className="fa fa-google-plus" />
+                    ), (
+                      <span key="text">Đăng nhập bằng Google</span>
+                    )]}
                     onSuccess={(values) => this.props.onGoogleLogin(values, this.props.lastURL)}
                     onFailure={this.props.onGoogleLoginFailed}
                   />
