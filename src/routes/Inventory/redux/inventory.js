@@ -315,6 +315,17 @@ export function updateInventory(formValues, callback) {
     const formData = new FormData();
     let formattedData = _.pick(formValues, ['text', 'headlines', 'medias',
       'descriptions']);
+    if (formattedData.medias) {
+      formattedData.medias = _.map(formattedData.medias, media => {
+        if (media.type === 'video') {
+          return {
+            path: media.path,
+            _id: media._id
+          };
+        }
+        return media;
+      });
+    }
     if (formValues.newMedias) {
       const images = [];
       const videos = [];
