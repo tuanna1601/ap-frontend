@@ -202,16 +202,19 @@ export function listAdSets(accountId, campaignId) {
   };
 }
 
-export function listAds(keyword) {
+export function listAds(keyword, isRemoved) {
   return (dispatch, getState) => {
     const auth = getState().auth;
     if (!auth) {
       return;
     }
-
-    const query = {
-      text: keyword
-    };
+    const query = {};
+    if (keyword) {
+      query.text = keyword;
+    }
+    if (isRemoved !== undefined) {
+      query.isRemoved = isRemoved;
+    }
 
     const url = `${__CONFIG__.API.SERVER_URL}/ads?${HTTP.param(query)}`;
     HTTP.get(auth, url, dispatch, (data) => {

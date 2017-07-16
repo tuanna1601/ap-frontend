@@ -38,6 +38,7 @@ class AdsResolveReportForm extends React.Component {
             </div>
             <div className="col-md-6">
               <AdsSearchField
+                form={form}
                 id="ad" name="ad"
                 label="Ad vi phạm"
               />

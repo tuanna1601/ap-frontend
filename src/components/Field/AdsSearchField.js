@@ -1,6 +1,8 @@
 import React, { PropTypes } from 'react';
 import { Field } from 'redux-form';
 
+import { FormControl } from '@/components/FormControl';
+
 import { debounce } from 'lodash';
 
 class AdsSearchField extends React.Component {
@@ -32,6 +34,22 @@ class AdsSearchField extends React.Component {
         </div>
         <table className="table">
           <tbody>
+            <tr>
+              <td>
+                &nbsp;
+              </td>
+              <td className="text-right">
+                <input
+                  type="checkbox"
+                  id="selectAll"
+                  name="selectAll"
+                  onChange={(event) => {
+                    event.persist();
+                    this.props.onSelectAll(event, this.props.ads);
+                  }}
+                />
+              </td>
+            </tr>
             {this.props.ads.map((ad, index) => (
               <tr key={ad.id}>
                 <td>
@@ -59,6 +77,7 @@ AdsSearchField.propTypes = {
   ads: PropTypes.array.isRequired,
   id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
+  onSelectAll: PropTypes.func.isRequired,
   listOptions: PropTypes.func.isRequired,
   resetOptions: PropTypes.func.isRequired,
 };
