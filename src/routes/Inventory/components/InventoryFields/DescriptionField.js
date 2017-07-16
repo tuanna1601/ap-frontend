@@ -39,6 +39,7 @@ class DescriptionField extends React.Component {
                 department={department}
                 name={`${description}.reviews`}
                 component={ReviewFieldArray}
+                form={form} reviewed={descriptions[index].reviewed}
               />
             </table>
           }
@@ -56,6 +57,7 @@ class DescriptionField extends React.Component {
                 name={`${description}.reviews`}
                 component={ReviewFieldArray}
                 isUpdate={isUpdate}
+                form={form}
               />
             </table>
           }

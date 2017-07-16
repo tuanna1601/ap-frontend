@@ -37,9 +37,10 @@ class HeadlineField extends React.Component {
                 </tr>
               </thead>
               <FieldArray
-                department={department}
-                name={`${headline}.reviews`}
                 component={ReviewFieldArray}
+                name={`${headline}.reviews`}
+                department={department}
+                form={form} reviewed={headlines[index].reviewed}
               />
             </table>
           }
@@ -57,6 +58,7 @@ class HeadlineField extends React.Component {
                 name={`${headline}.reviews`}
                 component={ReviewFieldArray}
                 isUpdate={isUpdate}
+                form={form}
               />
             </table>
           }

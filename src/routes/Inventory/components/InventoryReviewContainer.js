@@ -1,20 +1,39 @@
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
-import { formValueSelector } from 'redux-form';
 import Alert from 'react-s-alert';
-import * as _ from 'lodash';
+import { cloneDeep, each, map, find } from 'lodash';
 import InventoryReviewForm from './InventoryReviewForm';
 import {
   reviewInventory, getInventory
 } from '../redux/inventory';
 
+const mapReviewedItems = (inventory) => {
+  const inv = cloneDeep(inventory);
+  if (inv && inv.latestReview) {
+    const review = inv.latestReview;
+    const latestReviewedVer = inv.versions[review.version];
+    const keys = ['headlines', 'descriptions', 'medias'];
+    each(keys, key => {
+      inv[key] = map(inv[key], item => {
+        const reviewed = find(latestReviewedVer[key], tmp => tmp._id === item._id);
+        if (reviewed) {
+          return {
+            ...item,
+            reviewed: true
+          };
+        }
+        return item;
+      });
+    });
+  }
+  return inv;
+};
+
 const mapStateToProps = (state, ownProps) => ({
   form: 'inventory-review',
   isLoadingCreate: state.inventory.isLoadingCreate,
   isLoadingList: state.inventory.isLoadingList,
-  initialValues: {
-    ...state.inventory.inventories[ownProps.id]
-  },
+  initialValues: mapReviewedItems(state.inventory.inventories[ownProps.id]),
   enableReinitialize: true,
   department: state.inventory.inventories[ownProps.id] ?
     state.inventory.inventories[ownProps.id].department.id : '',

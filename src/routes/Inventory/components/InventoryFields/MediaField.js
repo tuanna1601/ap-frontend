@@ -124,9 +124,10 @@ class MediaField extends React.Component {
                 </tr>
               </thead>
               <FieldArray
-                department={department}
-                name={`${media}.reviews`}
                 component={ReviewFieldArray}
+                name={`${media}.reviews`}
+                department={department}
+                form={form} reviewed={medias[index].reviewed}
               />
             </table>
           }
@@ -144,6 +145,7 @@ class MediaField extends React.Component {
                 name={`${media}.reviews`}
                 component={ReviewFieldArray}
                 isUpdate={isUpdate}
+                form={form}
               />
             </table>
           }

@@ -4,7 +4,7 @@ import { Field } from 'redux-form';
 import { FormControl } from '@/components/FormControl';
 import { CriteriaField } from '@/components/Field';
 
-const ReviewFieldArray = ({ fields, onFieldArrayRemove, department, isUpdate }) => (
+const ReviewFieldArray = ({ reviewed, fields, reviews, onFieldArrayRemove, department, isUpdate }) => (
   <tbody>
     {fields.map((review, index) =>
       <tr key={review}>
@@ -16,7 +16,7 @@ const ReviewFieldArray = ({ fields, onFieldArrayRemove, department, isUpdate }) 
             index={index}
             label="Tiêu chí"
             autoSelect={false}
-            disabled={isUpdate}
+            disabled={isUpdate || !!(reviews[index] && reviews[index]._id)}
           />
         </td>
         <td>
@@ -26,11 +26,11 @@ const ReviewFieldArray = ({ fields, onFieldArrayRemove, department, isUpdate }) 
             name={`${review}.comment`}
             index={index}
             label="Review"
-            readOnly={isUpdate}
+            readOnly={isUpdate || !!(reviews[index] && reviews[index]._id)}
           />
         </td>
         <td className="text-center">
-          {!isUpdate &&
+          {!isUpdate && !(reviews[index] && reviews[index]._id) &&
             <button
               className="btn btn-xs btn-flat btn-danger" type="button"
               onClick={() => onFieldArrayRemove(fields, index)}
@@ -41,7 +41,7 @@ const ReviewFieldArray = ({ fields, onFieldArrayRemove, department, isUpdate }) 
         </td>
       </tr>
     )}
-    {!isUpdate &&
+    {!isUpdate && !reviewed &&
       <tr className="button-list">
         <td colSpan={3}>
           <button
@@ -58,8 +58,10 @@ const ReviewFieldArray = ({ fields, onFieldArrayRemove, department, isUpdate }) 
 
 ReviewFieldArray.propTypes = {
   fields: PropTypes.object.isRequired,
+  reviews: PropTypes.array.isRequired,
   department: PropTypes.string.isRequired,
   isUpdate: PropTypes.bool,
+  reviewed: PropTypes.bool,
   onFieldArrayRemove: PropTypes.func.isRequired
 };
 

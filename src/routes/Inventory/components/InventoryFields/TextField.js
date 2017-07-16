@@ -27,8 +27,9 @@ const TextField = ({ form, department, text, isUpdate }) => {
               </thead>
               <FieldArray
                 department={department}
-                name={'text.reviews'}
                 component={ReviewFieldArray}
+                form={form}
+                name={'text.reviews'}
               />
             </table>
           }
@@ -43,8 +44,9 @@ const TextField = ({ form, department, text, isUpdate }) => {
               </thead>
               <FieldArray
                 department={department}
-                name={'text.reviews'}
                 component={ReviewFieldArray}
+                form={form}
+                name={'text.reviews'}
                 isUpdate={isUpdate}
               />
             </table>
