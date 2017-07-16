@@ -51,6 +51,8 @@ export function generateAdStatusLabel(status) {
       return 'Đã hậu kiểm';
     case 'flagged':
       return 'Bị gắn cờ vi phạm';
+    case 'removing':
+      return 'Yêu cầu gỡ bỏ';
     case 'removed':
       return 'Đã gỡ bỏ';
     default:
@@ -91,7 +93,7 @@ export function generateInventoryStatusOptions(isReviewer) {
 }
 
 export function generateAdsStatusOptions() {
-  const statuses = ['published', 'reviewed', 'flagged', 'removed'];
+  const statuses = ['published', 'reviewed', 'flagged', 'removing', 'removed'];
   return statuses.map(status => ({
     value: status,
     label: generateAdStatusLabel(status)

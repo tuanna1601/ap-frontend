@@ -21,7 +21,7 @@ class AdsList extends React.Component {
   }
 
   render() {
-    const { params, ads, isLoadingList, onReviewAds, hasFilter } = this.props;
+    const { params, ads, isLoadingList, onReviewAds, onRemoveAds, hasFilter } = this.props;
 
     return (
       <div className="box box-success">
@@ -66,6 +66,16 @@ class AdsList extends React.Component {
                         >
                           <i className="fa fa-fw fa-facebook" />
                         </button>
+                        {ad.status === 'removing' &&
+                          <button
+                            className="btn btn-xs btn-danger btn-flat"
+                            onClick={() => onRemoveAds(ad)}
+                            title="Gỡ bỏ Ad"
+                          >
+                            <i className="fa fa-fw fa-times" />
+                          </button>
+
+                        }
                       </div>
                     </Td>
                   </Tr>
@@ -92,6 +102,7 @@ AdsList.propTypes = {
 
   onComponentMounted: PropTypes.func.isRequired,
   onReviewAds: PropTypes.func.isRequired,
+  onRemoveAds: PropTypes.func.isRequired,
 };
 
 export default AdsList;

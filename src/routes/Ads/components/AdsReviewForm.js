@@ -30,7 +30,7 @@ class AdsReviewForm extends Component {
     return (
       <div className="box box-success">
         <div className="box-header with-border">
-          <h3 className="box-title">Duyệt kho</h3>
+          <h3 className="box-title">Hậu kiểm Ad</h3>
           <div className="box-tools pull-right">
             {isLoadingCreate && <i className="fa fa-refresh fa-spin" />}
           </div>
@@ -90,6 +90,7 @@ class AdsReviewForm extends Component {
                             component={FormControlSelect}
                             options={generateAdsStatusOptions()}
                             label="Trạng thái"
+                            disabled={initialValues.status === 'removed'}
                           />
                         </td>
                       </tr>
@@ -103,7 +104,7 @@ class AdsReviewForm extends Component {
                     type="text" component={FormControlTextArea}
                     id="noteFlag" name="noteFlag"
                     label="Chi tiết lỗi bị gắn cờ"
-                    hasLabel
+                    hasLabel readOnly
                   />
                 </div>
               </div>
@@ -130,6 +131,7 @@ class AdsReviewForm extends Component {
                     id="note" name="note"
                     label="Chi tiết lỗi sau hậu kiểm"
                     hasLabel
+                    readOnly={initialValues.status === 'removed'}
                   />
                 </div>
               </div>

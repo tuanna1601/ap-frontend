@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { reduxForm, Field } from 'redux-form';
-import { FormControlSelect } from '@/components/FormControl';
+import { FormControlMultiSelect } from '@/components/FormControl';
 
 import { generateAdsStatusOptions } from '@/helpers/helper';
 
@@ -15,7 +15,7 @@ class AdsFilter extends Component {
         <div className="row">
           <div className="col-md-6">
             <Field
-              component={FormControlSelect}
+              component={FormControlMultiSelect}
               options={generateAdsStatusOptions()}
               id="status" name="status"
               label="Trạng thái"

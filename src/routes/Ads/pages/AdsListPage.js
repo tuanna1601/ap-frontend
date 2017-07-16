@@ -11,9 +11,12 @@ class AdsListPage extends Component {
   }
 
   render() {
+    const query = {
+      status: ['published', 'reviewed', 'flagged', 'removing', 'removed']
+    };
     return (
       <section className="content">
-        <AdsList params={this.props.location.query} />
+        <AdsList params={query} />
       </section>
     );
   }

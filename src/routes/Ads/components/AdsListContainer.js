@@ -1,8 +1,9 @@
 import { push } from 'react-router-redux';
 import { connect } from 'react-redux';
+import Alert from 'react-s-alert';
 
 import {
-  listAds, setFilterQuery, goToPage
+  listAds, setFilterQuery, goToPage, updateAd
 } from '../redux/ads';
 import AdsList from './AdsList';
 
@@ -20,6 +21,15 @@ const mapDispatchToProps = (dispatch) => ({
   onComponentMounted: (params) => {
     dispatch(setFilterQuery(params));
     dispatch(listAds());
+  },
+  onRemoveAds: (ad) => {
+    const values = {
+      id: ad.id,
+      status: 'removed'
+    };
+    dispatch(updateAd(values, () => {
+      Alert.success(`${ad.name} đã được gỡ bỏ thành công`);
+    }));
   }
 });
 

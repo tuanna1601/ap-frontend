@@ -162,7 +162,7 @@ export function updateAd(values, callback) {
 
     const formattedValues = {
       note: values.note,
-      status: values.state
+      status: values.status
     };
     dispatch(onUpdateLoadingCreate(true));
     const url = `${__CONFIG__.API.SERVER_URL}/ads/${values.id}/review`;
@@ -170,6 +170,7 @@ export function updateAd(values, callback) {
       if (callback) {
         callback(data);
       }
+      dispatch(afterLoadAd(data));
     }).then(() => {
       dispatch(onUpdateLoadingCreate(false));
     });
