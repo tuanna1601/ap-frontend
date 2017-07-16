@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import { change, reset, formValueSelector, getFormValues } from 'redux-form';
 import { Parser } from 'html-to-react';
+import Alert from 'react-s-alert';
 
 import InventoryAdsCreateForm from './InventoryAdsCreateForm';
 
@@ -48,6 +49,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   },
   onSubmit: (values) => {
     dispatch(createFacebookAds(values, () => {
+      Alert.success('Tạo Ads thành công!');
       dispatch(reset('fb-ads-create'));
     }));
   },
