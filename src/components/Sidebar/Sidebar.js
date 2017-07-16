@@ -40,6 +40,10 @@ const Sidebar = ({ isLoggedIn, toggleMenu, tree }) => (
                 <i className="fa fa-list" />
                 <span>Danh sách Ads</span>
               </SidebarItem>
+              <SidebarItem treeId="ads.list-flagged" to="/ads/flagged">
+                <i className="fa fa-list" />
+                <span>Danh sách Ads Bị gắn cờ</span>
+              </SidebarItem>
               <SidebarItem treeId="ads.accounts" to="/ads/accounts">
                 <i className="fa fa-users" />
                 <span>Danh sách Ad Account</span>

@@ -7,6 +7,7 @@ import AdAccountListPage from './pages/AdAccountListPage';
 import AdsReportPage from './pages/AdsReportPage';
 import AdsReviewPage from './pages/AdsReviewPage';
 import AdsReportListPage from './pages/AdsReportListPage';
+import AdsFlaggedListPage from './pages/AdsFlaggedListPage';
 
 export default (store) => ({
   path: 'ads',
@@ -45,6 +46,11 @@ export default (store) => ({
       path: 'reports',
       component: AdsReportListPage,
       onEnter: (nextState, replace, callback) => checkPermission(['ads:report'], store, callback),
+    },
+    {
+      path: 'flagged',
+      component: AdsFlaggedListPage,
+      onEnter: (nextState, replace, callback) => checkPermission(['ads:list'], store, callback),
     }
   ]
 });
