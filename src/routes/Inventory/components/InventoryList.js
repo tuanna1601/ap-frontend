@@ -22,6 +22,7 @@ class InventoryList extends Component {
   }
 
   componentWillUnmount() {
+    this.props.resetInventories();
   }
 
   render() {
@@ -111,6 +112,7 @@ InventoryList.propTypes = {
   listOrdinatorInventories: PropTypes.func.isRequired,
   setFilterQuery: PropTypes.func.isRequired,
   resetCurrentPage: PropTypes.func.isRequired,
+  resetInventories: PropTypes.func.isRequired,
 
   params: PropTypes.object,
   isOrdinator: PropTypes.bool,

@@ -365,7 +365,6 @@ export function updateInventory(formValues, callback) {
         }
       } else {
         _.each(formValue, (file) => {
-          console.log(file);
           formData.append(key, file.value);
         });
       }
@@ -477,11 +476,13 @@ export function assignInventory(values, callback) {
   };
 }
 
-export function goToPage(page, isOrdinator) {
+export function goToPage(page, isOrdinator, isReviewer) {
   return (dispatch) => {
     dispatch(setCurrentPage(page));
     if (isOrdinator) {
       dispatch(listOrdinatorInventories());
+    } else if (isReviewer) {
+      dispatch(listReviewerInventories());
     } else {
       dispatch(listInventories());
     }

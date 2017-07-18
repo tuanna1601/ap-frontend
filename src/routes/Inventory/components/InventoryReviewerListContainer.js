@@ -2,8 +2,8 @@ import { push } from 'react-router-redux';
 import { connect } from 'react-redux';
 
 import {
-  listReviewerInventories, setFilterQuery,
-  goToPage, resetCurrentPage,
+  listReviewerInventories, reloadList,
+  setFilterQuery, goToPage, resetCurrentPage,
 } from '../redux/inventory';
 import InventoryReviewerList from './InventoryReviewerList';
 
@@ -16,6 +16,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   setFilterQuery: (query) => dispatch(setFilterQuery(query)),
   listInventories: () => dispatch(listReviewerInventories()),
+  resetInventories: () => dispatch(reloadList([])),
   goToPage: (page) => dispatch(goToPage(page)),
   resetCurrentPage: () => dispatch(resetCurrentPage()),
   onViewDetail: (inventory) => {

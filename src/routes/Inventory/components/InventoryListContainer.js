@@ -6,7 +6,7 @@ import { showForm } from '@/store/modal';
 
 import {
   listInventories, listOrdinatorInventories, setFilterQuery,
-  goToPage, resetCurrentPage, assignInventory
+  goToPage, resetCurrentPage, assignInventory, reloadList
 } from '../redux/inventory';
 import InventoryList from './InventoryList';
 import InventoryAssignForm from './InventoryAssignForm';
@@ -21,6 +21,7 @@ const mapDispatchToProps = (dispatch) => ({
   setFilterQuery: (query) => dispatch(setFilterQuery(query)),
   listInventories: () => dispatch(listInventories()),
   listOrdinatorInventories: () => dispatch(listOrdinatorInventories()),
+  resetInventories: () => dispatch(reloadList([])),
   goToPage: (page) => dispatch(goToPage(page)),
   resetCurrentPage: () => dispatch(resetCurrentPage()),
   onEdit: (inventory) => {

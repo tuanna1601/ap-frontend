@@ -18,6 +18,7 @@ class InventoryReviewerList extends Component {
   }
 
   componentWillUnmount() {
+    this.props.resetInventories();
   }
 
   render() {
@@ -37,6 +38,7 @@ class InventoryReviewerList extends Component {
                 <Th column="name">Tên kho</Th>
                 <Th column="version">Version</Th>
                 <Th column="created">Ngày tạo</Th>
+                <Th column="department">Đơn vị</Th>
                 <Th column="status">Trạng thái</Th>
                 <Th column="action">Thao tác</Th>
               </Thead>
@@ -48,6 +50,9 @@ class InventoryReviewerList extends Component {
                     <Td column="version" className="table-col text-right">{inventory.version}</Td>
                     <Td column="created" className="table-col text-right">
                       {moment(inventory.created).format('DD-MM-YYYY')}
+                    </Td>
+                    <Td column="department" className="table-col text-center">
+                      {inventory.department.name}
                     </Td>
                     <Td column="status" className="table-col text-right">
                       {generateInventoryStatusLabel(inventory.status)}
@@ -80,6 +85,7 @@ InventoryReviewerList.propTypes = {
   inventories: PropTypes.object.isRequired,
   pagination: PropTypes.object.isRequired,
   listInventories: PropTypes.func.isRequired,
+  resetInventories: PropTypes.func.isRequired,
   setFilterQuery: PropTypes.func.isRequired,
   resetCurrentPage: PropTypes.func.isRequired,
 

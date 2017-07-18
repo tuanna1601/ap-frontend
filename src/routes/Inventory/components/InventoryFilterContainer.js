@@ -15,17 +15,17 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
       if (ownProps.params.status) {
         dispatch(change('inventory-filter', 'status', [ownProps.params.status]));
         dispatch(setFilterQuery({ status: [ownProps.params.status] }));
-        dispatch(goToPage(1, ownProps.isOrdinator));
+        dispatch(goToPage(1, ownProps.isOrdinator, ownProps.isReviewer));
       }
     } else {
       dispatch(change('inventory-filter', 'status', ['unassigned', 'assigned', 'accepted', 'rejected']));
       dispatch(setFilterQuery({ status: ['unassigned', 'assigned', 'accepted', 'rejected'] }));
-      dispatch(goToPage(1, ownProps.isOrdinator));
+      dispatch(goToPage(1, ownProps.isOrdinator, ownProps.isReviewer));
     }
   },
   onSubmit: (values) => {
     dispatch(setFilterQuery(values));
-    dispatch(goToPage(1, ownProps.isOrdinator));
+    dispatch(goToPage(1, ownProps.isOrdinator, ownProps.isReviewer));
   }
 });
 
