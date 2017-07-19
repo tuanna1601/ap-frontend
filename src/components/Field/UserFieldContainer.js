@@ -8,9 +8,6 @@ const mapStateToProps = (state, ownProps) => ({
   options: _.chain(state.common.users)
     .filter((user) => (ownProps.filterOptions ? ownProps.filterOptions.indexOf(user.id) < 0 : true))
     .filter((user) => (ownProps.userRole ? user.roles.indexOf(ownProps.userRole) > -1 : true))
-    .filter((user) => (ownProps.department ?
-      ownProps.department.reviewers.indexOf(user.id) > -1 :
-      true))
     .map((user) => ({
       value: user.id,
       label: user.name,
@@ -19,9 +16,9 @@ const mapStateToProps = (state, ownProps) => ({
     .value()
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  listOptions: () => dispatch(listUsers()),
-  resetOptions: () => dispatch(listUsers()),
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  listOptions: () => dispatch(listUsers(ownProps.userRole, ownProps.department)),
+  resetOptions: () => dispatch(listUsers(ownProps.userRole, ownProps.department)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserField);

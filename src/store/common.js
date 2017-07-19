@@ -115,14 +115,19 @@ export function listInventories() {
   };
 }
 
-export function listUsers() {
+export function listUsers(userRole, { id }) {
   return (dispatch, getState) => {
     const auth = getState().auth;
     if (!auth) {
       return;
     }
 
-    const url = `${__CONFIG__.API.SERVER_URL}/users`;
+    let url = `${__CONFIG__.API.SERVER_URL}/users`;
+
+    if (userRole === 'reviewer') {
+      url = `${__CONFIG__.API.SERVER_URL}/departments/${id}/reviewers`;
+    }
+
     HTTP.get(auth, url, dispatch, (data) => {
       dispatch(reloadUsers(data));
     });
