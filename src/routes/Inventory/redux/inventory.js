@@ -196,10 +196,11 @@ export function getCriteria(inventory) {
       department: department.id
     };
 
+    dispatch(onUpdateLoadingList(true));
     const url = `${__CONFIG__.API.SERVER_URL}/criteria?${HTTP.param(query)}`;
     HTTP.get(auth, url, dispatch).then(data => {
-      dispatch(loadInventory(inventory));
       dispatch(loadCriteria(data.rows));
+    }).then(() => {
       dispatch(onUpdateLoadingList(false));
     });
   };
@@ -212,12 +213,16 @@ export function getLatestReview(inventory) {
       return;
     }
 
+    dispatch(onUpdateLoadingList(true));
     const url = `${__CONFIG__.API.SERVER_URL}/reviews/inventory/${inventory.id}`;
     HTTP.get(auth, url, dispatch).then(data => {
       const tmp = Object.assign({}, inventory, {
         latestReview: data
       });
+      dispatch(loadInventory(tmp));
       dispatch(getCriteria(tmp));
+    }).then(() => {
+      dispatch(onUpdateLoadingList(false));
     });
   };
 }
@@ -232,7 +237,10 @@ export function getInventory(inventoryId) {
     dispatch(onUpdateLoadingList(true));
     const url = `${__CONFIG__.API.SERVER_URL}/inventories/${inventoryId}`;
     HTTP.get(auth, url, dispatch).then(data => {
+      dispatch(loadInventory(data));
       dispatch(getLatestReview(data));
+    }).then(() => {
+      dispatch(onUpdateLoadingList(false));
     });
   };
 }
@@ -635,40 +643,42 @@ export function reducer(state = initialState, action) {
     case AFTER_CREATE: {
       const inventory = action.inventory;
 
-      if (inventory && inventory.latestReview) {
-        const groupReviews = _.groupBy(inventory.latestReview.comments, 'target');
-        // if (groupReviews.text) {
-        //   inventory.text.reviews = groupReviews.text;
-        // }
-        if (groupReviews.media) {
-          _.each(inventory.medias, (media, index) => {
-            inventory.medias[index].reviews = [];
-            _.each(groupReviews.media, review => {
-              if (media._id === review.targetId) {
-                inventory.medias[index].reviews.push(review);
-              }
+      if (inventory) {
+        if (inventory.latestReview) {
+          const groupReviews = _.groupBy(inventory.latestReview.comments, 'target');
+          // if (groupReviews.text) {
+          //   inventory.text.reviews = groupReviews.text;
+          // }
+          if (groupReviews.media) {
+            _.each(inventory.medias, (media, index) => {
+              inventory.medias[index].reviews = [];
+              _.each(groupReviews.media, review => {
+                if (media._id === review.targetId) {
+                  inventory.medias[index].reviews.push(review);
+                }
+              });
             });
-          });
-        }
-        if (groupReviews.headline) {
-          _.each(inventory.headlines, (headline, index) => {
-            inventory.headlines[index].reviews = [];
-            _.each(groupReviews.headline, review => {
-              if (headline._id === review.targetId) {
-                inventory.headlines[index].reviews.push(review);
-              }
+          }
+          if (groupReviews.headline) {
+            _.each(inventory.headlines, (headline, index) => {
+              inventory.headlines[index].reviews = [];
+              _.each(groupReviews.headline, review => {
+                if (headline._id === review.targetId) {
+                  inventory.headlines[index].reviews.push(review);
+                }
+              });
             });
-          });
-        }
-        if (groupReviews.description) {
-          _.each(inventory.descriptions, (description, index) => {
-            inventory.descriptions[index].reviews = [];
-            _.each(groupReviews.description, review => {
-              if (description._id === review.targetId) {
-                inventory.descriptions[index].reviews.push(review);
-              }
+          }
+          if (groupReviews.description) {
+            _.each(inventory.descriptions, (description, index) => {
+              inventory.descriptions[index].reviews = [];
+              _.each(groupReviews.description, review => {
+                if (description._id === review.targetId) {
+                  inventory.descriptions[index].reviews.push(review);
+                }
+              });
             });
-          });
+          }
         }
         return {
           ...state,
