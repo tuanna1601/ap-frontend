@@ -115,7 +115,7 @@ export function listInventories() {
   };
 }
 
-export function listUsers(userRole, { id }) {
+export function listUsers(userRole, department) {
   return (dispatch, getState) => {
     const auth = getState().auth;
     if (!auth) {
@@ -124,8 +124,8 @@ export function listUsers(userRole, { id }) {
 
     let url = `${__CONFIG__.API.SERVER_URL}/users`;
 
-    if (userRole === 'reviewer') {
-      url = `${__CONFIG__.API.SERVER_URL}/departments/${id}/reviewers`;
+    if (userRole === 'reviewer' && department) {
+      url = `${__CONFIG__.API.SERVER_URL}/departments/${department.id}/reviewers`;
     }
 
     HTTP.get(auth, url, dispatch, (data) => {
