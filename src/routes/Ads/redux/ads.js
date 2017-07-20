@@ -161,7 +161,7 @@ export function updateAd(values, callback) {
     }
 
     const formattedValues = {
-      note: values.note,
+      note: values.noteReview,
       status: values.status
     };
     dispatch(onUpdateLoadingCreate(true));

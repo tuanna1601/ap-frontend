@@ -128,7 +128,7 @@ class AdsReviewForm extends Component {
                 <div className="col-xs-12">
                   <Field
                     type="text" component={FormControlTextArea}
-                    id="note" name="note"
+                    id="noteReview" name="noteReview"
                     label="Chi tiết lỗi sau hậu kiểm"
                     hasLabel
                     readOnly={initialValues.status === 'removed'}
