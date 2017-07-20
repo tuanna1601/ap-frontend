@@ -336,7 +336,7 @@ InventoryAdsCreateForm.propTypes = {
 };
 
 export default reduxForm({
-  validate: (values) => ({
+  validate: (values = {}) => ({
     name: (new Validator(values.name))
       .validateRequired()
       .getMessage(),

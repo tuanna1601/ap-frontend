@@ -29,6 +29,7 @@ const mapStateToProps = (state, ownProps) => ({
     inventoryObj: state.inventory.inventories[ownProps.inventoryId],
   },
   formVal: getFormValues('fb-ads-create')(state),
+  enableReinitialize: true
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
