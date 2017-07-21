@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Alert from 'react-s-alert';
 
 import {
-  listAds, setFilterQuery, goToPage, updateAd
+  listAds, setFilterQuery, goToPage, removeAd
 } from '../redux/ads';
 import AdsList from './AdsList';
 
@@ -23,11 +23,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(listAds());
   },
   onRemoveAds: (ad) => {
-    const values = {
-      id: ad.id,
-      status: 'removed'
-    };
-    dispatch(updateAd(values, () => {
+    dispatch(removeAd(ad.id, () => {
       Alert.success(`${ad.name} đã được gỡ bỏ thành công`);
     }));
   }

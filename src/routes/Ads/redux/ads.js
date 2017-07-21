@@ -177,6 +177,26 @@ export function updateAd(values, callback) {
   };
 }
 
+export function removeAd(adId, callback) {
+  return (dispatch, getState) => {
+    const auth = getState().auth;
+    if (!auth) {
+      return;
+    }
+
+    dispatch(onUpdateLoadingCreate(true));
+    const url = `${__CONFIG__.API.SERVER_URL}/ads/${adId}`;
+    HTTP.delete(auth, url, dispatch, (data) => {
+      if (callback) {
+        callback(data);
+      }
+      dispatch(afterLoadAd(data));
+    }).then(() => {
+      dispatch(onUpdateLoadingCreate(false));
+    });
+  };
+}
+
 export function listAdsReports(query) {
   return (dispatch, getState) => {
     const auth = getState().auth;
