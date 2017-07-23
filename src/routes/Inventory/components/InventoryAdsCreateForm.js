@@ -62,7 +62,7 @@ class InventoryAdsCreateForm extends Component {
                   style={{ maxWidth: '50%' }}
                   poster={`${__CONFIG__.API.SERVER_URL}/${md.thumbnail}`}
                 >
-                  <source src={`${__CONFIG__.API.SERVER_URL}/${md.path}`} />
+                  <source src={md.path} />
                 </video>
               </label>
             </td>
@@ -86,7 +86,7 @@ class InventoryAdsCreateForm extends Component {
                 htmlFor={type !== 'slideshow' ? `media[${index}]` : `selectedMedia[${index}]`}
               >
                 <img
-                  src={`${__CONFIG__.API.SERVER_URL}/${md.path}`}
+                  src={md.path}
                   alt={md.path}
                   style={{ maxWidth: '50%' }}
                   className="img-thumbnail"
@@ -106,7 +106,8 @@ class InventoryAdsCreateForm extends Component {
 
   render() {
     const { handleSubmit, isLoadingCreate, isLoadingList, isLoadingPreview, submitting, onPreviewAd,
-      pristine, reset, inventory, adaccount, adcampaign, type, resetMedia, adsPreview, resetCampaign } = this.props;
+      pristine, reset, inventory, adaccount, adcampaign, type, resetMedia, adsPreview, resetCampaign,
+      callToAction } = this.props;
 
     let headlineOptions = [];
     let descriptionOptions = [];
@@ -122,6 +123,8 @@ class InventoryAdsCreateForm extends Component {
         label: des.text
       }));
     }
+
+    const isDescAvail = (type === 'image') || (type !== 'image' && callToAction !== 'LIKE_PAGE');
 
     return (
       <div className="row">
@@ -190,16 +193,24 @@ class InventoryAdsCreateForm extends Component {
                         label="Định dạng Ads" hasLabel
                       />
                     </div>
-                    {type !== 'slideshow' &&
-                      <div className="col-xs-12">
+                    <div className="col-xs-12">
+                      {type !== 'image' &&
                         <Field
                           component={FormControlSelect}
                           options={generateOptionsLabel(actionTypes)}
                           id="callToAction" name="callToAction"
                           label="Call to action" hasLabel
                         />
-                      </div>
-                    }
+                      }
+                      {type === 'image' &&
+                        <Field
+                          component={FormControlSelect}
+                          options={generateOptionsLabel(_.filter(actionTypes, action => action !== 'LIKE_PAGE'))}
+                          id="callToAction" name="callToAction"
+                          label="Call to action" hasLabel
+                        />
+                      }
+                    </div>
                     <div className="col-xs-12">
                       <div className="form-group">
                         <label htmlFor="message" className="control-label">
@@ -208,17 +219,15 @@ class InventoryAdsCreateForm extends Component {
                         <p>{inventory.text.text}</p>
                       </div>
                     </div>
-                    {type !== 'slideshow' &&
-                      <div className="col-xs-12">
-                        <Field
-                          type="text" component={FormControlSelect}
-                          id="headline" name="headline"
-                          options={headlineOptions}
-                          label="Headline" hasLabel
-                        />
-                      </div>
-                    }
-                    {type !== 'slideshow' &&
+                    <div className="col-xs-12">
+                      <Field
+                        type="text" component={FormControlSelect}
+                        id="headline" name="headline"
+                        options={headlineOptions}
+                        label="Headline" hasLabel
+                      />
+                    </div>
+                    {isDescAvail &&
                       <div className="col-xs-12">
                         <Field
                           type="text" component={FormControlSelect}
@@ -228,7 +237,7 @@ class InventoryAdsCreateForm extends Component {
                         />
                       </div>
                     }
-                    {type !== 'slideshow' &&
+                    {isDescAvail &&
                       <div className="col-xs-12">
                         <Field
                           type="text" component={FormControl}
@@ -237,7 +246,7 @@ class InventoryAdsCreateForm extends Component {
                         />
                       </div>
                     }
-                    {type !== 'slideshow' &&
+                    {isDescAvail &&
                       <div className="col-xs-12">
                         <Field
                           type="text" component={FormControl}
@@ -321,6 +330,7 @@ InventoryAdsCreateForm.propTypes = {
   adaccount: PropTypes.string,
   adcampaign: PropTypes.string,
   type: PropTypes.string,
+  callToAction: PropTypes.string,
   form: PropTypes.string.isRequired,
   adsPreview: PropTypes.element,
   inventory: PropTypes.object,

@@ -53,7 +53,7 @@ class MediaField extends React.Component {
                   label="Thumbnail" hasLabel
                 />
                 <Field
-                  component={FormControlUpload}
+                  component={FormControl}
                   id={`${media}.value`}
                   name={`${media}.value`}
                   group={`${this.props.form}.media`}
@@ -65,7 +65,7 @@ class MediaField extends React.Component {
             {medias[index] &&
               medias[index].type === 'image' &&
               <Field
-                component={FormControlUpload}
+                component={FormControl}
                 id={`${media}.value`}
                 name={`${media}.value`}
                 group={`${this.props.form}.media`}
@@ -93,7 +93,7 @@ class MediaField extends React.Component {
             <div className="col-md-6">
               {medias[index].type === 'image' &&
                 <img
-                  src={`${__CONFIG__.API.SERVER_URL}/${medias[index].path}`}
+                  src={medias[index].path}
                   alt={medias[index].path}
                   style={{ width: '100%' }}
                   className="img-thumbnail"
@@ -104,7 +104,7 @@ class MediaField extends React.Component {
                   style={{ width: '100%' }}
                   controls poster={`${__CONFIG__.API.SERVER_URL}/${medias[index].thumbnail}`}
                 >
-                  <source src={`${__CONFIG__.API.SERVER_URL}/${medias[index].path}`} />
+                  <source src={medias[index].path} />
                 </video>
               }
               <Field

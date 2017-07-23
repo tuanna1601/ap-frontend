@@ -124,7 +124,7 @@ class InventoryForm extends Component {
                 label="Thumbnail" hasLabel
               />
               <Field
-                component={FormControlUpload}
+                component={FormControl}
                 id={`${media}.value`}
                 name={`${media}.value`}
                 group={`${this.props.form}.media`}
@@ -136,7 +136,7 @@ class InventoryForm extends Component {
           {this.props.media[index] &&
             this.props.media[index].type === 'image' &&
             <Field
-              component={FormControlUpload}
+              component={FormControl}
               id={`${media}.value`}
               name={`${media}.value`}
               group={`${this.props.form}.media`}

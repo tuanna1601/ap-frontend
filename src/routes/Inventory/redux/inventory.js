@@ -516,7 +516,7 @@ export function createFacebookAds(values, callback) {
     formattedValues.message = values.inventoryObj.text.text;
 
     if (values.selectedMedia && values.selectedMedia.length) {
-      const medias = _.filter(values.inventoryObj.medias, (media) => media.type !== 'video');
+      const medias = values.inventoryObj.medias;
       formattedValues.media = _.chain(medias)
         .filter((media, index) => values.selectedMedia[index])
         .map(media => media.path)

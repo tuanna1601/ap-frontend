@@ -24,6 +24,7 @@ const mapStateToProps = (state, ownProps) => ({
   adcampaign: formValueSelector('fb-ads-create')(state, 'adcampaign'),
   media: formValueSelector('fb-ads-create')(state, 'media'),
   type: formValueSelector('fb-ads-create')(state, 'type'),
+  callToAction: formValueSelector('fb-ads-create')(state, 'callToAction'),
   initialValues: {
     inventory: ownProps.inventoryId,
     inventoryObj: state.inventory.inventories[ownProps.inventoryId],
