@@ -27,7 +27,6 @@ const mapDispatchToProps = (dispatch) => ({
       />
     );
     dispatch(showForm('Xử lý báo cáo vi phạm', resolveForm, ({ values, isAccepted }) => {
-      console.log(values);
       if (isAccepted) {
         dispatch(resolveReport(values, (data) => {
           Alert.success(`Ticket ${data.title} đã được gắn cờ thành công`);
