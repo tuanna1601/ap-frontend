@@ -129,7 +129,7 @@ class InventoryForm extends Component {
                 name={`${media}.value`}
                 group={`${this.props.form}.media`}
                 index={index}
-                label="Video" hasLabel
+                label="Link URL" hasLabel
               />
             </div>
           }
@@ -141,7 +141,7 @@ class InventoryForm extends Component {
               name={`${media}.value`}
               group={`${this.props.form}.media`}
               index={index}
-              label="Ảnh" hasLabel
+              label="Link URL" hasLabel
             />
           }
         </td>
