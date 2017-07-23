@@ -167,9 +167,9 @@ AdsReviewForm.propTypes = {
   id: PropTypes.string.isRequired,
   form: PropTypes.string.isRequired,
   preview: PropTypes.any,
-  department: PropTypes.string.isRequired,
+  department: PropTypes.string,
   initialValues: PropTypes.object.isRequired,
-  criteria: PropTypes.object.isRequired,
+  criteria: PropTypes.object,
 
   onComponentMounted: PropTypes.func.isRequired,
   onComponentUnmount: PropTypes.func.isRequired,
