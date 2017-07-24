@@ -53,9 +53,8 @@ class MediaField extends React.Component {
                   label="Thumbnail" hasLabel
                 />
                 <Field
-                  component={FormControl}
-                  id={`${media}.value`}
-                  name={`${media}.value`}
+                  type="text" component={FormControl}
+                  id={`${media}.value`} name={`${media}.value`}
                   group={`${this.props.form}.media`}
                   index={index}
                   label="Link URL" hasLabel
@@ -65,9 +64,8 @@ class MediaField extends React.Component {
             {medias[index] &&
               medias[index].type === 'image' &&
               <Field
-                component={FormControl}
-                id={`${media}.value`}
-                name={`${media}.value`}
+                type="text" component={FormControl}
+                id={`${media}.value`} name={`${media}.value`}
                 group={`${this.props.form}.media`}
                 index={index}
                 label="Link URL" hasLabel

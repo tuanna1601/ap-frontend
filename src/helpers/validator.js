@@ -110,6 +110,18 @@ export default class Validator {
     return this;
   }
 
+  validateURL(domain) {
+    if (!this.message && !this.hasError) {
+      const regex = new RegExp(`^https?://${domain}|^${domain}`, 'igm');
+      const matches = regex.exec(this.value);
+      if (!matches) {
+        this.message = `Hệ thống chỉ nhận file từ domain '${domain}'`;
+        this.hasError = true;
+      }
+    }
+    return this;
+  }
+
   getMessage() {
     return this.hasError && this.message;
   }

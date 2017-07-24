@@ -165,19 +165,26 @@ function validateHeadlines(headlines) {
   return false;
 }
 
-// function validateMedia(mediaArr) {
-//   if (mediaArr && mediaArr.length) {
-//     return mediaArr.map((media) => {
-//       if (media) {
-//         return (new Validator(media))
-//           .validateFile(['jpg', 'jpeg', 'png', 'gif'])
-//           .getMessage();
-//       }
-//     });
-//   }
+function validateMedia(mediaArr) {
+  if (mediaArr && mediaArr.length) {
+    return mediaArr.map((media) => {
+      if (media && media.value) {
+        return {
+          value: (new Validator(media.value))
+            .validateRequired()
+            .validateURL('files.topica.edu.vn')
+            .getMessage(),
+          thumbnail: (new Validator(media.thumbnail))
+            .validateRequired()
+            .getMessage(),
+        };
+      }
+      return 'Chưa chọn file';
+    });
+  }
 
-//   return false;
-// }
+  return false;
+}
 
 function validateDescriptions(descriptions) {
   if (descriptions && descriptions.length) {
@@ -198,6 +205,6 @@ export default reduxForm({
       .getMessage(),
     headlines: validateHeadlines(values ? values.headlines : null),
     descriptions: validateDescriptions(values ? values.descriptions : null),
-    // newMedias: validateMedia(values ? values.newMedias : null)
+    newMedias: validateMedia(values ? values.newMedias : null)
   }),
 })(InventoryUpdateForm);

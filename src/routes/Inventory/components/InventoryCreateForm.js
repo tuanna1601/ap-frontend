@@ -124,9 +124,8 @@ class InventoryForm extends Component {
                 label="Thumbnail" hasLabel
               />
               <Field
-                component={FormControl}
-                id={`${media}.value`}
-                name={`${media}.value`}
+                type="text" component={FormControl}
+                id={`${media}.value`} name={`${media}.value`}
                 group={`${this.props.form}.media`}
                 index={index}
                 label="Link URL" hasLabel
@@ -136,9 +135,8 @@ class InventoryForm extends Component {
           {this.props.media[index] &&
             this.props.media[index].type === 'image' &&
             <Field
-              component={FormControl}
-              id={`${media}.value`}
-              name={`${media}.value`}
+              type="text" component={FormControl}
+              id={`${media}.value`} name={`${media}.value`}
               group={`${this.props.form}.media`}
               index={index}
               label="Link URL" hasLabel
@@ -393,8 +391,9 @@ function validateMedia(mediaArr) {
     return mediaArr.map((media) => {
       if (media && media.value) {
         return {
-          value: (new Validator(media.value))
+          value: (new Validator(media.value ? media.value : ''))
             .validateRequired()
+            .validateURL('files.topica.edu.vn')
             .getMessage(),
           thumbnail: (new Validator(media.thumbnail))
             .validateRequired()
@@ -427,6 +426,6 @@ export default reduxForm({
       .getMessage(),
     headlines: validateHeadlines(values.headlines),
     descriptions: validateDescriptions(values.descriptions),
-    medias: validateMedia(values.media)
+    medias: validateMedia(values.medias)
   }),
 })(InventoryForm);
