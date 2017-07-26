@@ -565,6 +565,23 @@ export function loadFacebookAdsPreview(values, callback) {
     const formattedValues = _.omit(values, ['inventoryObj', 'inventory', 'type',
       'adcampaign', 'adset', 'name']);
     formattedValues.message = values.inventoryObj.text.text;
+
+    if (values.selectedMedia && values.selectedMedia.length) {
+      const medias = values.inventoryObj.medias;
+      formattedValues.media = _.chain(medias)
+        .filter((media, index) => values.selectedMedia[index])
+        .map(media => media.path)
+        .value();
+    }
+
+    if (values.media) {
+      const media = _.find(values.inventoryObj.medias, (md) => md._id === values.media);
+      formattedValues.media = media.path;
+      if (values.type === 'video') {
+        formattedValues.thumbnail = media.thumbnail;
+      }
+    }
+
     dispatch(onUpdateLoadingUpdate(true));
     const url = `${__CONFIG__.API.SERVER_URL}/ads/preview`;
     HTTP.post(formattedValues, auth, url, dispatch, (data) => {
