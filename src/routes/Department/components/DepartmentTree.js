@@ -1,5 +1,4 @@
 import React from 'react';
-import Tree from 'react-ui-tree';
 
 class DepartmentTree extends React.Component {
   constructor(props) {
@@ -45,45 +44,52 @@ class DepartmentTree extends React.Component {
       transform: 'translateY(-50%)'
     };
     return (
-      <span style={node.id !== 0 ? nodeStyle : {}} className="department-node">
-        <span className="node-inner">
-          {node.name}
-          {node.id !== 0 &&
-            <span style={btnStyle} className="button-list tree-button-list">
-              <button
-                className={node.isHidden ? 'btn btn-xs btn-flat' : 'btn btn-xs btn-flat btn-success'}
-                onClick={() => this.props.onToggleHidden(node)}
-                title="Ẩn/Hiện đơn vị với Marketer"
-              >
-                <i
-                  className={node.isHidden ? 'fa fa-fw fa-eye-slash' : 'fa fa-fw fa-eye'}
-                />
-              </button>
-              <button
-                className="btn btn-xs btn-warning btn-flat"
-                onClick={() => this.props.onEdit(node)}
-                title="Sửa"
-              >
-                <i className="fa fa-fw fa-pencil" />
-              </button>
-              <button
-                className="btn btn-xs btn-success btn-flat"
-                onClick={() => this.props.onEditOrdinators(node)}
-                title="Phân quyền điều phối"
-              >
-                <i className="fa fa-fw fa-random" />
-              </button>
-              <button
-                className="btn btn-xs btn-success btn-flat"
-                onClick={() => this.props.onEditReviewers(node)}
-                title="Phân quyền duyệt"
-              >
-                <i className="fa fa-fw fa-tasks" />
-              </button>
-            </span>
-          }
+      <li key={node.id}>
+        <span style={node.id !== 0 ? nodeStyle : {}} className="department-node">
+          <span className="node-inner">
+            {node.name}
+            {node.id !== 0 &&
+              <span style={btnStyle} className="button-list tree-button-list">
+                <button
+                  className={node.isHidden ? 'btn btn-xs btn-flat' : 'btn btn-xs btn-flat btn-success'}
+                  onClick={() => this.props.onToggleHidden(node)}
+                  title="Ẩn/Hiện đơn vị với Marketer"
+                >
+                  <i
+                    className={node.isHidden ? 'fa fa-fw fa-eye-slash' : 'fa fa-fw fa-eye'}
+                  />
+                </button>
+                <button
+                  className="btn btn-xs btn-warning btn-flat"
+                  onClick={() => this.props.onEdit(node)}
+                  title="Sửa"
+                >
+                  <i className="fa fa-fw fa-pencil" />
+                </button>
+                <button
+                  className="btn btn-xs btn-success btn-flat"
+                  onClick={() => this.props.onEditOrdinators(node)}
+                  title="Phân quyền điều phối"
+                >
+                  <i className="fa fa-fw fa-random" />
+                </button>
+                <button
+                  className="btn btn-xs btn-success btn-flat"
+                  onClick={() => this.props.onEditReviewers(node)}
+                  title="Phân quyền duyệt"
+                >
+                  <i className="fa fa-fw fa-tasks" />
+                </button>
+              </span>
+            }
+          </span>
         </span>
-      </span>
+        {node.children &&
+          <ul>
+            {node.children.map(child => this.renderNode(child))}
+          </ul>
+        }
+      </li>
     );
   }
 
@@ -94,11 +100,11 @@ class DepartmentTree extends React.Component {
           <h3 className="box-title">Cây đơn vị</h3>
         </div>
         <div className="box-body">
-          <Tree
-            paddingLeft={25}
-            tree={this.props.tree}
-            renderNode={this.renderNode}
-          />
+          <div className="department-tree">
+            <ul>
+              {this.props.tree.children.map(node => this.renderNode(node))}
+            </ul>
+          </div>
         </div>
       </div>
     );

@@ -1,7 +1,6 @@
 import React from 'react';
 import Alert from 'react-s-alert';
 import { connect } from 'react-redux';
-import 'react-ui-tree/dist/react-ui-tree.css';
 
 import { map } from 'lodash';
 
