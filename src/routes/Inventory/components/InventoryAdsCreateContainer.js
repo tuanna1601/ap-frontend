@@ -56,7 +56,10 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     }));
   },
   onPreviewAd: (props) => {
-    const { dirty, valid, formVal } = props;
+    const { dirty, valid, formVal, submit } = props;
+    if (!valid) {
+      submit();
+    }
     if (dirty && valid &&
       formVal.adaccount && formVal.type === 'image') {
       dispatch(loadFacebookAdsPreview(formVal));

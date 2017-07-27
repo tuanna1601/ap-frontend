@@ -1,8 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { Field, reduxForm } from 'redux-form';
-import * as _ from 'lodash';
+import { map, filter, each } from 'lodash';
 import {
-  FormControl, FormControlSelect
+  FormControl, FormControlSelect,
+  FormControlRadioGroup, FormControlCheckboxGroup
 } from '@/components/FormControl';
 import {
   AdAccountField, AdCampaignField, AdSetField
@@ -22,6 +23,27 @@ const actionTypes = [
   'REGISTER_NOW',
 ];
 
+const getImageLabel = (md) => (
+  <div>
+    <img
+      src={md.path}
+      alt={md.path}
+      style={{ maxWidth: '50%' }}
+      className="img-thumbnail"
+    />
+  </div>
+);
+
+const getVideoLabel = (md) => (
+  <video
+    controls
+    style={{ maxWidth: '50%' }}
+    poster={`${__CONFIG__.API.SERVER_URL}/${md.thumbnail}`}
+  >
+    <source src={md.path} />
+  </video>
+);
+
 class InventoryAdsCreateForm extends Component {
   componentWillMount() {
     if (!this.props.inventoryId) {
@@ -38,87 +60,56 @@ class InventoryAdsCreateForm extends Component {
   }
 
   renderMediaArr(media, type) {
-    const videoNodes = [];
-    const imageNodes = [];
-    _.each(media, (md, index) => {
-      if (md.type === 'video') {
-        const node = (
-          <tr key={md._id} className="form-group">
-            <td style={{ width: '10%' }} className="table-col">
-              <Field
-                type="radio" component={FormControl}
-                id={`media[${index}]`}
-                name="media"
-                value={md._id}
-              />
-            </td>
-            <td className="table-col">
-              <label
-                style={{ width: '100%', cursor: 'pointer' }}
-                htmlFor={type !== `media[${index}]`}
-              >
-                <video
-                  controls
-                  style={{ maxWidth: '50%' }}
-                  poster={`${__CONFIG__.API.SERVER_URL}/${md.thumbnail}`}
-                >
-                  <source src={md.path} />
-                </video>
-              </label>
-            </td>
-          </tr>
-        );
-        videoNodes.push(node);
-      } else {
-        const node = (
-          <tr key={md._id} className="form-group">
-            <td style={{ width: '10%' }} className="table-col">
-              <Field
-                type={type !== 'slideshow' ? 'radio' : 'checkbox'} component={FormControl}
-                id={type !== 'slideshow' ? `media[${index}]` : `selectedMedia[${index}]`}
-                name={type !== 'slideshow' ? 'media' : `selectedMedia[${index}]`}
-                value={md._id}
-              />
-            </td>
-            <td className="table-col">
-              <label
-                style={{ width: '100%', cursor: 'pointer' }}
-                htmlFor={type !== 'slideshow' ? `media[${index}]` : `selectedMedia[${index}]`}
-              >
-                <img
-                  src={md.path}
-                  alt={md.path}
-                  style={{ maxWidth: '50%' }}
-                  className="img-thumbnail"
-                />
-              </label>
-            </td>
-          </tr>
-        );
-        imageNodes.push(node);
+    const radioOptions = [];
+    const checkboxOptions = [];
+    each(media, (med) => {
+      if (med.type === type) {
+        radioOptions.push({
+          value: med._id,
+          label: type === 'image' ? getImageLabel(med) : getVideoLabel(med)
+        });
+      }
+      if (med.type === 'image') {
+        checkboxOptions.push({
+          value: med._id,
+          label: getImageLabel(med)
+        });
       }
     });
-    if (type === 'video') {
-      return videoNodes;
+    if (type !== 'slideshow') {
+      return (
+        <Field
+          component={FormControlRadioGroup}
+          name="media"
+          label="Media"
+          options={radioOptions}
+        />
+      );
     }
-    return imageNodes;
+    return (
+      <Field
+        component={FormControlCheckboxGroup}
+        name="mediaArr"
+        label="Media"
+        options={checkboxOptions}
+      />
+    );
   }
 
   render() {
     const { handleSubmit, isLoadingCreate, isLoadingList, isLoadingPreview, submitting, onPreviewAd,
-      pristine, reset, inventory, adaccount, adcampaign, type, resetMedia, adsPreview, resetCampaign,
-      callToAction } = this.props;
+      inventory, adaccount, adcampaign, type, resetMedia, adsPreview, resetCampaign, callToAction } = this.props;
 
     let headlineOptions = [];
     let descriptionOptions = [];
 
     if (inventory) {
-      headlineOptions = _.map(inventory.headlines, (headline) => ({
+      headlineOptions = map(inventory.headlines, (headline) => ({
         value: headline.text,
         label: headline.text
       }));
 
-      descriptionOptions = _.map(inventory.descriptions, (des) => ({
+      descriptionOptions = map(inventory.descriptions, (des) => ({
         value: des.text,
         label: des.text
       }));
@@ -205,7 +196,7 @@ class InventoryAdsCreateForm extends Component {
                       {type === 'image' &&
                         <Field
                           component={FormControlSelect}
-                          options={generateOptionsLabel(_.filter(actionTypes, action => action !== 'LIKE_PAGE'))}
+                          options={generateOptionsLabel(filter(actionTypes, action => action !== 'LIKE_PAGE'))}
                           id="callToAction" name="callToAction"
                           label="Call to action" hasLabel
                         />
@@ -257,12 +248,7 @@ class InventoryAdsCreateForm extends Component {
                     }
                     <div className="col-xs-12">
                       <div className="table-responsive">
-                        <label htmlFor="message" className="control-label">Media</label>
-                        <table className="table">
-                          <tbody>
-                            {this.renderMediaArr(inventory.medias, type)}
-                          </tbody>
-                        </table>
+                        {this.renderMediaArr(inventory.medias, type)}
                       </div>
                     </div>
                   </div>
@@ -277,17 +263,11 @@ class InventoryAdsCreateForm extends Component {
                       </button>
                       <button
                         className="btn btn-primary btn-flat"
-                        disabled={isLoadingPreview}
+                        disabled={isLoadingPreview || submitting || isLoadingCreate}
                         type="button"
                         onClick={() => onPreviewAd(this.props)}
                       >
                         {isLoadingPreview ? <i className="fa fa-refresh fa-spin" /> : <i className="fa fa-search" />}
-                      </button>
-                      <button
-                        className="btn btn-default btn-flat" type="button"
-                        disabled={pristine || submitting || isLoadingCreate} onClick={reset}
-                      >
-                        <i className="fa fa-undo" />
                       </button>
                     </div>
                   </div>
@@ -365,8 +345,9 @@ export default reduxForm({
     media: (new Validator(values.media))
       .validateRequired()
       .getMessage(),
-    selectedMedia: (new Validator(values.selectedMedia))
+    mediaArr: (new Validator(values.mediaArr))
       .validateRequired()
+      .validateArrayLength(3)
       .getMessage(),
     headline: (new Validator(values.headline))
       .validateRequired()

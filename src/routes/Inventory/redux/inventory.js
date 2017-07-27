@@ -515,15 +515,13 @@ export function createFacebookAds(values, callback) {
 
     formattedValues.message = values.inventoryObj.text.text;
 
-    if (values.selectedMedia && values.selectedMedia.length) {
+    if (values.mediaArr && values.mediaArr.length) {
       const medias = values.inventoryObj.medias;
       formattedValues.media = _.chain(medias)
-        .filter((media, index) => values.selectedMedia[index])
+        .filter((media) => values.mediaArr.indexOf(media._id) !== -1)
         .map(media => media.path)
         .value();
-    }
-
-    if (values.media) {
+    } else if (values.media) {
       const media = _.find(values.inventoryObj.medias, (md) => md._id === values.media);
       formattedValues.media = media.path;
       if (values.type === 'video') {
@@ -566,15 +564,13 @@ export function loadFacebookAdsPreview(values, callback) {
       'adcampaign', 'adset', 'name']);
     formattedValues.message = values.inventoryObj.text.text;
 
-    if (values.selectedMedia && values.selectedMedia.length) {
+    if (values.mediaArr && values.mediaArr.length) {
       const medias = values.inventoryObj.medias;
       formattedValues.media = _.chain(medias)
-        .filter((media, index) => values.selectedMedia[index])
+        .find((media) => values.mediaArr.indexOf(media._id) !== -1)
         .map(media => media.path)
         .value();
-    }
-
-    if (values.media) {
+    } else if (values.media) {
       const media = _.find(values.inventoryObj.medias, (md) => md._id === values.media);
       formattedValues.media = media.path;
       if (values.type === 'video') {
