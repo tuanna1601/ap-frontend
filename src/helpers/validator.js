@@ -122,6 +122,14 @@ export default class Validator {
     return this;
   }
 
+  validateArrayLength(length) {
+    if (!this.message && !this.hasError && this.value && this.value.length < length) {
+      this.message = `Cần ít nhất ${length} phần tử`;
+      this.hasError = true;
+    }
+    return this;
+  }
+
   getMessage() {
     return this.hasError && this.message;
   }
