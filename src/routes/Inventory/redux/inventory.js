@@ -659,9 +659,9 @@ export function reducer(state = initialState, action) {
       if (inventory) {
         if (inventory.latestReview) {
           const groupReviews = _.groupBy(inventory.latestReview.comments, 'target');
-          // if (groupReviews.text) {
-          //   inventory.text.reviews = groupReviews.text;
-          // }
+          if (groupReviews.text) {
+            inventory.text.oldReviews = groupReviews.text;
+          }
           if (groupReviews.media) {
             _.each(inventory.medias, (media, index) => {
               inventory.medias[index].reviews = [];

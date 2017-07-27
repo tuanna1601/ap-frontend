@@ -5,7 +5,7 @@ import { FormControlTextArea } from '@/components/FormControl';
 import ReviewFieldArray from './ReviewFieldArrayContainer';
 
 const TextField = ({ form, department, text, isUpdate }) => {
-  const reviews = text ? text.reviews : [];
+  const reviews = text ? text.oldReviews : [];
   return (
     <tbody>
       <tr>
@@ -29,6 +29,13 @@ const TextField = ({ form, department, text, isUpdate }) => {
                 department={department}
                 component={ReviewFieldArray}
                 form={form}
+                name={'text.oldReviews'}
+                isUpdate
+              />
+              <FieldArray
+                department={department}
+                component={ReviewFieldArray}
+                form={form}
                 name={'text.reviews'}
               />
             </table>
@@ -46,7 +53,7 @@ const TextField = ({ form, department, text, isUpdate }) => {
                 department={department}
                 component={ReviewFieldArray}
                 form={form}
-                name={'text.reviews'}
+                name={'text.oldReviews'}
                 isUpdate={isUpdate}
               />
             </table>
