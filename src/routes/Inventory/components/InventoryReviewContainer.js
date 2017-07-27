@@ -11,7 +11,8 @@ const mapReviewedItems = (inventory) => {
   const inv = cloneDeep(inventory);
   if (inv && inv.latestReview) {
     const review = inv.latestReview;
-    const latestReviewedVer = inv.versions[review.version];
+    // if latest reviewed is the current version, get the current inventory
+    const latestReviewedVer = inv.versions[review.version] || inv;
     const keys = ['headlines', 'descriptions', 'medias'];
     each(keys, key => {
       inv[key] = map(inv[key], item => {
