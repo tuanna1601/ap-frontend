@@ -362,6 +362,9 @@ export function updateInventory(formValues, callback) {
           if (formattedValue.reviews) {
             delete formattedValue.reviews;
           }
+          if (formattedValue.oldReviews) {
+            delete formattedValue.oldReviews;
+          }
           formData.append(key, JSON.stringify(formattedValue));
         } else {
           const formattedValue = _.map(formValue, value =>
