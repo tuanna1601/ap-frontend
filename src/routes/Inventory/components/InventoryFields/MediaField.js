@@ -88,6 +88,12 @@ class MediaField extends React.Component {
       <tr key={media}>
         <td colSpan={2}>
           <div className="row">
+            {medias[index].type === 'video' &&
+              <div className="col-xs-12">
+                <p>Đường link Video</p>
+                <a href={medias[index].path}>{medias[index].path}</a>
+              </div>
+            }
             <div className="col-md-6">
               {medias[index].type === 'image' &&
                 <img
@@ -98,12 +104,14 @@ class MediaField extends React.Component {
                 />
               }
               {medias[index].type === 'video' &&
-                <video
-                  style={{ width: '100%' }}
-                  controls poster={`${__CONFIG__.API.SERVER_URL}/${medias[index].thumbnail}`}
-                >
-                  <source src={medias[index].path} />
-                </video>
+                <div>
+                  <video
+                    style={{ width: '100%' }}
+                    controls poster={`${__CONFIG__.API.SERVER_URL}/${medias[index].thumbnail}`}
+                  >
+                    <source src={medias[index].path} />
+                  </video>
+                </div>
               }
               <Field
                 type="hidden" component={FormControl}

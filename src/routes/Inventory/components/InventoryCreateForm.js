@@ -157,6 +157,7 @@ class InventoryForm extends Component {
 
   renderMediaArr = (mediaArr) => {
     const fields = mediaArr.fields;
+    console.log(mediaArr);
 
     return (
       <tbody>
@@ -383,7 +384,7 @@ function validateHeadlines(headlines) {
     }));
   }
 
-  return false;
+  return 'Cần ít nhất 1 phần tử';
 }
 
 function validateMedia(mediaArr) {
@@ -404,7 +405,9 @@ function validateMedia(mediaArr) {
     });
   }
 
-  return false;
+  console.log(mediaArr);
+
+  return 'Cần ít nhất 1 phần từ';
 }
 
 function validateDescriptions(descriptions) {
@@ -416,12 +419,15 @@ function validateDescriptions(descriptions) {
     }));
   }
 
-  return false;
+  return 'Cần ít nhất 1 phần tử';
 }
 
 export default reduxForm({
   validate: (values) => ({
     name: (new Validator(values.name))
+      .validateRequired()
+      .getMessage(),
+    text: (new Validator(values.text))
       .validateRequired()
       .getMessage(),
     headlines: validateHeadlines(values.headlines),
