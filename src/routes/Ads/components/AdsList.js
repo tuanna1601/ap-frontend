@@ -24,7 +24,7 @@ class AdsList extends React.Component {
     const { params, ads, isLoadingList, onReviewAds, onRemoveAds, hasFilter } = this.props;
 
     return (
-      <div className="box box-success">
+      <div className="box box-warning">
         <div className="box-header with-header">
           <h3 className="box-title">Danh sách Ads</h3>
           <div className="box-tools pull-right">

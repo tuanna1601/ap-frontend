@@ -95,7 +95,7 @@ class DepartmentTree extends React.Component {
 
   render() {
     return (
-      <div className="box box-success">
+      <div className="box box-warning">
         <div className="box-header with-border">
           <h3 className="box-title">Cây đơn vị</h3>
         </div>

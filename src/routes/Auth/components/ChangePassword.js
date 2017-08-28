@@ -6,7 +6,7 @@ import Validator from '@/helpers/validator';
 const ChangePassword = ({ handleSubmit, submitting, isLoading }) => (
   <div className="content-wrapper">
     <section className="content">
-      <div className="box box-success">
+      <div className="box box-warning">
         <div className="box-header with-border">
           <h3 className="box-title">Đổi mật khẩu</h3>
           <div className="box-tools pull-right">

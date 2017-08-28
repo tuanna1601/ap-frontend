@@ -31,7 +31,7 @@ class InventoryReviewForm extends Component {
     return (
       <div className="row">
         <div className="col-md-8">
-          <div className="box box-success">
+          <div className="box box-warning">
             <div className="box-header with-border">
               <h3 className="box-title">Duyệt kho</h3>
               <div className="box-tools pull-right">

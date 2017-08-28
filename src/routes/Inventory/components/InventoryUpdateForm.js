@@ -30,7 +30,7 @@ class InventoryUpdateForm extends Component {
       submitting, pristine, reset, form, department, initialValues } = this.props;
 
     return (
-      <div className="box box-success">
+      <div className="box box-warning">
         <div className="box-header with-border">
           <h3 className="box-title">Sửa kho</h3>
           <div className="box-tools pull-right">
