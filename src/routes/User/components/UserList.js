@@ -24,7 +24,7 @@ class UserList extends React.Component {
     const { page, limit, count } = this.props.pagination;
 
     return (
-      <div className="box box-success">
+      <div className="box box-warning">
         <div className="box-header with-border">
           <h3 className="box-title">Danh sách nhân viên</h3>
           <div className="box-tools pull-right">

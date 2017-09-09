@@ -13,7 +13,7 @@ class Login extends React.Component {
         <section className="content">
           <div className="row">
             <div className="col-md-offset-4 col-md-4">
-              <div className="box box-success">
+              <div className="box box-warning">
                 <div className="box-header with-border">
                   <h3 className="box-title">
                     {this.props.mode === 'login' && <span>Đăng nhập</span>}

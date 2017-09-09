@@ -5,7 +5,7 @@ import { ConfirmModal, FormModal, InfoModal } from '@/components/Modal';
 import Alert from 'react-s-alert';
 import 'admin-lte/bootstrap/css/bootstrap.min.css';
 import 'admin-lte/dist/css/AdminLTE.min.css';
-import 'admin-lte/dist/css/skins/skin-green.min.css';
+import 'admin-lte/dist/css/skins/skin-yellow.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 import 'react-select/dist/react-select.css';
 import 'react-s-alert/dist/s-alert-default.css';
@@ -27,7 +27,7 @@ class CoreLayout extends React.Component {
 
   render() {
     const { isSidebarOpen, children, isLoggedIn } = this.props;
-    const bodyClass = `skin-green sidebar-mini ${isSidebarOpen ? 'sidebar-open' : 'sidebar-collapse'} ${isLoggedIn ? '' : 'auth-layout'}`;
+    const bodyClass = `skin-yellow sidebar-mini ${isSidebarOpen ? 'sidebar-open' : 'sidebar-collapse'} ${isLoggedIn ? '' : 'auth-layout'}`;
 
     return (
       <div className={bodyClass} style={{ height: '100%' }}>

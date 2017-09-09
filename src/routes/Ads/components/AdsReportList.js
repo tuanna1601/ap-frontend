@@ -19,7 +19,7 @@ class AdsReportList extends Component {
   render() {
     const { reports, isLoadingList, onReviewReport } = this.props;
     return (
-      <div className="box box-success">
+      <div className="box box-warning">
         <div className="box-header with-header">
           <h3 className="box-title">Danh sách lỗi vi phạm</h3>
           <div className="box-tools pull-right">

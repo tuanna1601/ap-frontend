@@ -14,7 +14,7 @@ class DepartmentIndexPage extends React.Component {
   render() {
     return (
       <section className="content">
-        <div className="box box-success">
+        <div className="box box-warning">
           <div className="box-header with-border">
             <h3 className="box-title">Tạo đơn vị mới</h3>
             <div className="box-tools pull-right">
