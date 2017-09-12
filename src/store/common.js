@@ -10,6 +10,7 @@ const RELOAD_AD_ACCOUNTS = 'COMMON_RELOAD_AD_ACCOUNTS';
 const RELOAD_AD_CAMPAIGNS = 'COMMON_RELOAD_AD_CAMPAIGNS';
 const RELOAD_AD_SETS = 'COMMON_RELOAD_AD_SETS';
 const RELOAD_ADS = 'COMMON_RELOAD_ADS';
+const RELOAD_PAGES = 'COMMON_RELOAD_PAGES';
 
 export function reloadDeparments(rows) {
   return {
@@ -85,6 +86,13 @@ export function reloadAds(ads) {
   return {
     type: RELOAD_ADS,
     ads
+  };
+}
+
+export function reloadPages(pages) {
+  return {
+    type: RELOAD_PAGES,
+    pages
   };
 }
 
@@ -228,6 +236,20 @@ export function listAds(keyword, isRemoved) {
   };
 }
 
+export function listPages() {
+  return (dispatch, getState) => {
+    const auth = getState().auth;
+    if (!auth) {
+      return;
+    }
+
+    const url = `${__CONFIG__.API.SERVER_URL}/businesses/pages`;
+    HTTP.get(auth, url, dispatch, (data) => {
+      dispatch(reloadPages(data.rows));
+    });
+  };
+}
+
 const initialState = {
   departments: [],
   criteria: [],
@@ -236,7 +258,8 @@ const initialState = {
   adAccounts: [],
   adCampaigns: [],
   adSets: [],
-  ads: []
+  ads: [],
+  pages: [],
 };
 
 export function reducer(state = initialState, action) {
@@ -291,6 +314,11 @@ export function reducer(state = initialState, action) {
     case RELOAD_ADS: {
       return Object.assign({}, state, {
         ads: action.ads
+      });
+    }
+    case RELOAD_PAGES: {
+      return Object.assign({}, state, {
+        pages: action.pages
       });
     }
     default:

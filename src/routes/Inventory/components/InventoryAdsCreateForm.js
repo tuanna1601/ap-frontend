@@ -6,7 +6,7 @@ import {
   FormControlRadioGroup, FormControlCheckboxGroup
 } from '@/components/FormControl';
 import {
-  AdAccountField, AdCampaignField, AdSetField
+  AdAccountField, AdCampaignField, AdSetField, PageField
 } from '@/components/Field';
 import Validator from '@/helpers/validator';
 import { generateOptionsLabel, generateAdFormatOptions } from '@/helpers/helper';
@@ -162,10 +162,11 @@ class InventoryAdsCreateForm extends Component {
                       </div>
                     }
                     <div className="col-xs-12">
-                      <Field
-                        type="text" component={FormControl}
+                      <PageField
                         id="page" name="page"
-                        label="Facebook Page ID" hasLabel
+                        label="Facebook Page ID"
+                        autoSelect={false}
+                        hasLabel
                       />
                     </div>
                     <div className="col-xs-12">
