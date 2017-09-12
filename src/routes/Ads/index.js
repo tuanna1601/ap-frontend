@@ -3,7 +3,7 @@ import { injectReducer } from '@/store/reducers';
 import { reducer } from './redux/ads';
 import AdsLayout from './layouts/AdsLayout';
 import AdsListPage from './pages/AdsListPage';
-import AdAccountListPage from './pages/AdAccountListPage';
+import BusinessListPage from './pages/BusinessListPage';
 import AdsReportPage from './pages/AdsReportPage';
 import AdsReviewPage from './pages/AdsReviewPage';
 import AdsReportListPage from './pages/AdsReportListPage';
@@ -29,8 +29,8 @@ export default (store) => ({
   childRoutes: [
     {
       path: 'accounts',
-      component: AdAccountListPage,
-      onEnter: (nextState, replace, callback) => checkPermission(['ads-account:list'], store, callback),
+      component: BusinessListPage,
+      onEnter: (nextState, replace, callback) => checkPermission(['businesses:list'], store, callback),
     },
     {
       path: 'review',

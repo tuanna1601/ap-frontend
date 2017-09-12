@@ -15,8 +15,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  listOptions: (account = ownProps.account, campaign = ownProps.campaign) =>
-    dispatch(listAdSets(account, campaign)),
+  listOptions: (campaign = ownProps.campaign) =>
+    dispatch(listAdSets(campaign)),
   resetOptions: () => dispatch(resetAdSets()),
 });
 

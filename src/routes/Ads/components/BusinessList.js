@@ -8,7 +8,7 @@ const Th = Reactable.Th;
 const Tr = Reactable.Tr;
 const Td = Reactable.Td;
 
-class AdAccountList extends Component {
+class BusinessList extends Component {
   componentDidMount() {
     this.props.onComponentMounted();
   }
@@ -17,7 +17,7 @@ class AdAccountList extends Component {
     return (
       <div className="box box-warning">
         <div className="box-header with-border">
-          <h3 className="box-title">Danh sách Ad Account</h3>
+          <h3 className="box-title">Danh sách Business</h3>
           <div className="box-tools pull-right">
             {this.props.isLoading && <i className="fa fa-refresh fa-spin" />}
           </div>
@@ -26,23 +26,23 @@ class AdAccountList extends Component {
           <div className="table-responsive">
             <Table className="table table-striped table-bordered" sortable>
               <Thead>
-                <Th style={{ width: '45%' }} column="name">Tên account</Th>
-                <Th style={{ width: '45%' }} column="accountId">Account ID</Th>
+                <Th style={{ width: '45%' }} column="name">Tên business</Th>
+                <Th style={{ width: '45%' }} column="businessId">Business ID</Th>
                 <Th style={{ width: '10%' }} column="action">Thao tác</Th>
               </Thead>
-              {_.chain(this.props.adAccounts)
+              {_.chain(this.props.businesses)
                 .orderBy(['isHighlighted', 'department.id'], ['asc', 'asc'])
-                .map((account) =>
-                  <Tr key={account.id} className={account.isHighlighted ? 'highlighted table-row' : 'table-row'}>
-                    <Td column="name" className="table-col">{account.name}</Td>
-                    <Td column="accountId" className="table-col">
-                      {account.accountId}
+                .map((business) =>
+                  <Tr key={business.id} className={business.isHighlighted ? 'highlighted table-row' : 'table-row'}>
+                    <Td column="name" className="table-col">{business.name}</Td>
+                    <Td column="businessId" className="table-col">
+                      {business.businessId}
                     </Td>
                     <Td column="action" className="table-col">
                       <div className="button-list">
                         <button
                           className="btn btn-xs btn-danger btn-flat"
-                          onClick={() => this.props.onDelete(account)}
+                          onClick={() => this.props.onDelete(business)}
                           title="Xoá"
                         >
                           <i className="fa fa-fw fa-trash" />
@@ -60,11 +60,11 @@ class AdAccountList extends Component {
   }
 }
 
-AdAccountList.propTypes = {
+BusinessList.propTypes = {
   isLoading: PropTypes.bool.isRequired,
-  adAccounts: PropTypes.object.isRequired,
+  businesses: PropTypes.object.isRequired,
   onComponentMounted: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
 };
 
-export default AdAccountList;
+export default BusinessList;

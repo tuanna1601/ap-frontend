@@ -2,20 +2,20 @@ import Alert from 'react-s-alert';
 import { connect } from 'react-redux';
 import { reset } from 'redux-form';
 
-import { createAdAccount } from '../redux/ads';
-import AdAccountForm from './AdAccountForm';
+import { createBusiness } from '../redux/ads';
+import BusinessForm from './BusinessForm';
 
 const mapStateToProps = () => ({
-  form: 'ad-account-create',
+  form: 'business-create',
 });
 
 const mapDispatchToProps = (dispatch) => ({
   onSubmit: (values) => {
-    dispatch(createAdAccount(values, (data) => {
+    dispatch(createBusiness(values, (data) => {
       Alert.success(`${data.name} đã được thêm thành công`);
-      dispatch(reset('ad-account-create'));
+      dispatch(reset('business-create'));
     }));
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(AdAccountForm);
+export default connect(mapStateToProps, mapDispatchToProps)(BusinessForm);

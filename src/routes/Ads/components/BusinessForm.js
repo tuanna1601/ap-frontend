@@ -11,15 +11,15 @@ const AdAccountForm = ({ handleSubmit, submitting, pristine, reset, form }) => (
         <Field
           type="text" component={FormControl}
           id={`${form}.name`} name="name"
-          label="Tên Ad Account"
+          label="Tên Business"
           hasLabel
         />
       </div>
       <div className="col-md-6">
         <Field
           type="text" component={FormControl}
-          id={`${form}.accountId`} name="accountId"
-          label="Ad Account ID"
+          id={`${form}.businessId`} name="businessId"
+          label="Business ID"
           hasLabel
         />
       </div>
@@ -60,7 +60,7 @@ export default reduxForm((values) => ({
   name: (new Validator(values.name))
     .validateRequired()
     .getMessage(),
-  accountId: (new Validator(values.accountId))
+  businessId: (new Validator(values.businessId))
     .validateRequired()
     .getMessage(),
   accessToken: (new Validator(values.accessToken))

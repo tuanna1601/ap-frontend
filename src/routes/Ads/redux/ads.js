@@ -9,9 +9,9 @@ const UPDATE_LOADING_CREATE = 'ADS_UPDATE_LOADING_CREATE';
 const UPDATE_LOADING_DELETE = 'ADS_UPDATE_LOADING_DELETE';
 const RELOAD_LIST = 'ADS_RELOAD_LIST';
 const AFTER_LOAD_AD = 'ADS_AFTER_LOAD_AD';
-const AFTER_DELETE_AD_ACCOUNT = 'ADS_AFTER_DELETE_AD_ACCOUNT';
-const AFTER_CREATE_AD_ACCOUNT = 'ADS_AFTER_CREATE_AD_ACCOUNT';
-const RELOAD_AD_ACCOUNT_LIST = 'ADS_RELOAD_AD_ACCOUNT_LIST';
+const AFTER_DELETE_BUSINESS = 'ADS_AFTER_DELETE_BUSINESS';
+const AFTER_CREATE_BUSINESS = 'ADS_AFTER_CREATE_BUSINESS';
+const RELOAD_BUSINESS_LIST = 'ADS_RELOAD_BUSINESS_LIST';
 const SET_FILTER_QUERY = 'ADS_SET_FILTER_QUERY';
 const SET_CURRENT_PAGE = 'ADS_SET_CURRENT_PAGE';
 const RELOAD_REPORTS = 'ADS_RELOAD_REPORTS';
@@ -42,23 +42,23 @@ export function onUpdateLoadingDelete(isLoading) {
   };
 }
 
-export function afterCreateAdAccount(account) {
+export function afterCreateBusiness(account) {
   return {
-    type: AFTER_CREATE_AD_ACCOUNT,
+    type: AFTER_CREATE_BUSINESS,
     account,
   };
 }
 
-export function afterDeleteAdAccount(account) {
+export function afterDeleteBusiness(account) {
   return {
-    type: AFTER_DELETE_AD_ACCOUNT,
+    type: AFTER_DELETE_BUSINESS,
     account,
   };
 }
 
-export function reloadAdAccountList(rows, count) {
+export function reloadBusinessList(rows, count) {
   return {
-    type: RELOAD_AD_ACCOUNT_LIST,
+    type: RELOAD_BUSINESS_LIST,
     accounts: rows,
     count
   };
@@ -288,7 +288,7 @@ export function resolveReport(values, callback) {
   };
 }
 
-export function createAdAccount(values, callback) {
+export function createBusiness(values, callback) {
   return (dispatch, getState) => {
     const auth = getState().auth;
     if (!auth) {
@@ -296,9 +296,9 @@ export function createAdAccount(values, callback) {
     }
 
     dispatch(onUpdateLoadingCreate(true));
-    const formattedValue = _.pick(values, 'name', 'accountId', 'accessToken');
-    HTTP.post(formattedValue, auth, `${__CONFIG__.API.SERVER_URL}/ad-accounts`, dispatch, (data) => {
-      dispatch(afterCreateAdAccount(data));
+    const formattedValue = _.pick(values, 'name', 'businessId', 'accessToken');
+    HTTP.post(formattedValue, auth, `${__CONFIG__.API.SERVER_URL}/businesses`, dispatch, (data) => {
+      dispatch(afterCreateBusiness(data));
       callback(data);
     }).then(() => {
       dispatch(onUpdateLoadingCreate(false));
@@ -306,17 +306,17 @@ export function createAdAccount(values, callback) {
   };
 }
 
-export function listAdAccount() {
+export function listBusiness() {
   return (dispatch, getState) => {
     const auth = getState().auth;
     if (!auth) {
       return;
     }
     dispatch(onUpdateLoadingList(true));
-    const url = `${__CONFIG__.API.SERVER_URL}/ad-accounts`;
+    const url = `${__CONFIG__.API.SERVER_URL}/businesses`;
 
     HTTP.get(auth, url, dispatch, (data) => {
-      dispatch(reloadAdAccountList(data.rows, data.count));
+      dispatch(reloadBusinessList(data.rows, data.count));
     }).then(() => {
       dispatch(onUpdateLoadingList(false));
     });
@@ -324,7 +324,7 @@ export function listAdAccount() {
 }
 
 
-export function deleteAdAccount(accountId, callback) {
+export function deleteBusiness(businessId, callback) {
   return (dispatch, getState) => {
     const auth = getState().auth;
     if (!auth) {
@@ -332,9 +332,9 @@ export function deleteAdAccount(accountId, callback) {
     }
 
     dispatch(onUpdateLoadingDelete(true));
-    HTTP.delete(auth, `${__CONFIG__.API.SERVER_URL}/ad-accounts/${accountId}`,
+    HTTP.delete(auth, `${__CONFIG__.API.SERVER_URL}/businesses/${businessId}`,
       dispatch, (data) => {
-        dispatch(afterDeleteAdAccount(data));
+        dispatch(afterDeleteBusiness(data));
         callback(data);
       }).then(() => {
         dispatch(onUpdateLoadingDelete(false));
@@ -359,7 +359,7 @@ export function setFilterQuery(values) {
 export function goToPage(page) {
   return (dispatch) => {
     dispatch(setCurrentPage(page));
-    dispatch(listAdAccount());
+    dispatch(listBusiness());
   };
 }
 
@@ -369,7 +369,7 @@ export function goToPage(page) {
  */
 const initialState = {
   ads: {},
-  adAccounts: {},
+  businesses: {},
   filterQuery: {},
   reports: {},
   isLoadingList: false,
@@ -414,10 +414,10 @@ export function reducer(state = initialState, action) {
           [action.ad.id]: action.ad
         })
       });
-    case RELOAD_AD_ACCOUNT_LIST:
+    case RELOAD_BUSINESS_LIST:
       return Object.assign({}, state, {
-        adAccounts: _.reduce(action.accounts, (hashAdAccount, account) =>
-          Object.assign({}, hashAdAccount, {
+        businesses: _.reduce(action.accounts, (hashBusiness, account) =>
+          Object.assign({}, hashBusiness, {
             [account.id]: account
           }), {})
       });
@@ -432,18 +432,18 @@ export function reducer(state = initialState, action) {
       return Object.assign({}, state, {
         preview: action.preview
       });
-    case AFTER_CREATE_AD_ACCOUNT: {
+    case AFTER_CREATE_BUSINESS: {
       return Object.assign({}, state, {
-        adAccounts: Object.assign({}, state.adAccounts, {
+        businesses: Object.assign({}, state.businesses, {
           [action.account.id]: action.account
         })
       });
     }
-    case AFTER_DELETE_AD_ACCOUNT: {
-      const newAdAccounts = _.cloneDeep(state.adAccounts);
-      delete newAdAccounts[action.account.id];
+    case AFTER_DELETE_BUSINESS: {
+      const newBusinesss = _.cloneDeep(state.businesses);
+      delete newBusinesss[action.account.id];
       return Object.assign({}, state, {
-        adAccounts: newAdAccounts
+        businesses: newBusinesss
       });
     }
     case SET_FILTER_QUERY: {

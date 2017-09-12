@@ -1,8 +1,8 @@
 import React from 'react';
-import AdAccountCreate from '../components/AdAccountCreateContainer';
-import AdAccountList from '../components/AdAccountListContainer';
+import BusinessCreate from '../components/BusinessCreateContainer';
+import BusinessList from '../components/BusinessListContainer';
 
-class AdAccountListPage extends React.Component {
+class BusinessListPage extends React.Component {
   constructor(props) {
     super(props);
 
@@ -16,7 +16,7 @@ class AdAccountListPage extends React.Component {
       <section className="content">
         <div className="box box-warning">
           <div className="box-header with-border">
-            <h3 className="box-title">Tạo Ad Account mới</h3>
+            <h3 className="box-title">Tạo Business mới</h3>
             <div className="box-tools pull-right">
               <button
                 type="button" className="btn btn-box-tool"
@@ -28,14 +28,14 @@ class AdAccountListPage extends React.Component {
           </div>
           <div className="box-body" hidden={this.state.createFormHidden}>
             <div className="form-create">
-              <AdAccountCreate />
+              <BusinessCreate />
             </div>
           </div>
         </div>
-        <AdAccountList />
+        <BusinessList />
       </section>
     );
   }
 }
 
-export default AdAccountListPage;
+export default BusinessListPage;

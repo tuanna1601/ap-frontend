@@ -164,7 +164,7 @@ export function listAdAccount(query) {
       return;
     }
 
-    const url = `${__CONFIG__.API.SERVER_URL}/ad-accounts?${HTTP.param(query)}`;
+    const url = `${__CONFIG__.API.SERVER_URL}/businesses/ad-accounts?${HTTP.param(query)}`;
     HTTP.get(auth, url, dispatch, (data) => {
       dispatch(reloadAdAccounts(data.rows));
     });
@@ -179,7 +179,7 @@ export function listAdCampaign(accountId) {
     }
 
     if (accountId) {
-      const url = `${__CONFIG__.API.SERVER_URL}/ad-accounts/${accountId}/campaigns`;
+      const url = `${__CONFIG__.API.SERVER_URL}/businesses/${accountId}/ad-campaigns`;
       HTTP.get(auth, url, dispatch, (data) => {
         dispatch(reloadAdCampaigns(data.data));
       }, () => {
@@ -189,15 +189,15 @@ export function listAdCampaign(accountId) {
   };
 }
 
-export function listAdSets(accountId, campaignId) {
+export function listAdSets(campaignId) {
   return (dispatch, getState) => {
     const auth = getState().auth;
     if (!auth) {
       return;
     }
 
-    if (accountId && campaignId) {
-      const url = `${__CONFIG__.API.SERVER_URL}/ad-accounts/${accountId}/${campaignId}/adsets`;
+    if (campaignId) {
+      const url = `${__CONFIG__.API.SERVER_URL}/businesses/${campaignId}/adsets`;
       HTTP.get(auth, url, dispatch, (data) => {
         dispatch(reloadAdSets(data.data));
       }, () => {

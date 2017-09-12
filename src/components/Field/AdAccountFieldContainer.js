@@ -7,7 +7,7 @@ const mapStateToProps = (state) => ({
   options: _.chain(state.common.adAccounts)
     .orderBy(['name'], ['asc'])
     .map((account) => ({
-      value: account.id,
+      value: account.accountId,
       label: `${account.name}`,
       account
     }))
