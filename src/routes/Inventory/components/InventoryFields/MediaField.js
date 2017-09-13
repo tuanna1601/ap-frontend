@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Field, FieldArray } from 'redux-form';
 
-import { FormControl, FormControlSelect, FormControlUpload } from '@/components/FormControl';
+import { FormControl, FormControlSelect } from '@/components/FormControl';
 import ReviewFieldArray from './ReviewFieldArrayContainer';
 
 const mediaTypeOptions = [
@@ -45,9 +45,8 @@ class MediaField extends React.Component {
               medias[index].type === 'video' &&
               <div>
                 <Field
-                  component={FormControlUpload}
-                  id={`${media}.thumbnail`}
-                  name={`${media}.thumbnail`}
+                  type="text" component={FormControl}
+                  id={`${media}.thumbnail`} name={`${media}.thumbnail`}
                   group={`${this.props.form}.media`}
                   index={index}
                   label="Thumbnail" hasLabel

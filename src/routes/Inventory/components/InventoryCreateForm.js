@@ -1,8 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Field, FieldArray, reduxForm } from 'redux-form';
 import {
-  FormControl, FormControlTextArea,
-  FormControlSelect, FormControlUpload
+  FormControl, FormControlTextArea, FormControlSelect
 } from '@/components/FormControl';
 import { DepartmentField } from '@/components/Field';
 import Validator from '@/helpers/validator';
@@ -116,9 +115,8 @@ class InventoryForm extends Component {
             this.props.media[index].type === 'video' &&
             <div>
               <Field
-                component={FormControlUpload}
-                id={`${media}.thumbnail`}
-                name={`${media}.thumbnail`}
+                type="text" component={FormControl}
+                id={`${media}.thumbnail`} name={`${media}.thumbnail`}
                 group={`${this.props.form}.media`}
                 index={index}
                 label="Thumbnail" hasLabel
@@ -157,7 +155,6 @@ class InventoryForm extends Component {
 
   renderMediaArr = (mediaArr) => {
     const fields = mediaArr.fields;
-    console.log(mediaArr);
 
     return (
       <tbody>
@@ -405,7 +402,6 @@ function validateMedia(mediaArr) {
     });
   }
 
-  console.log(mediaArr);
 
   return 'Cần ít nhất 1 phần từ';
 }
