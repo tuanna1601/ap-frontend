@@ -38,7 +38,7 @@ const getVideoLabel = (md) => (
   <video
     controls
     style={{ maxWidth: '50%' }}
-    poster={`${__CONFIG__.API.SERVER_URL}/${md.thumbnail}`}
+    poster={md.thumbnail}
   >
     <source src={md.path} />
   </video>

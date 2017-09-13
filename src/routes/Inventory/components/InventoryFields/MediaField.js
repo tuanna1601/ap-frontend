@@ -106,7 +106,7 @@ class MediaField extends React.Component {
                 <div>
                   <video
                     style={{ width: '100%' }}
-                    controls poster={`${__CONFIG__.API.SERVER_URL}/${medias[index].thumbnail}`}
+                    controls poster={medias[index].thumbnail}
                   >
                     <source src={medias[index].path} />
                   </video>
