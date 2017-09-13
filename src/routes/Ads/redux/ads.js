@@ -42,24 +42,24 @@ export function onUpdateLoadingDelete(isLoading) {
   };
 }
 
-export function afterCreateBusiness(account) {
+export function afterCreateBusiness(business) {
   return {
     type: AFTER_CREATE_BUSINESS,
-    account,
+    business,
   };
 }
 
-export function afterDeleteBusiness(account) {
+export function afterDeleteBusiness(business) {
   return {
     type: AFTER_DELETE_BUSINESS,
-    account,
+    business,
   };
 }
 
 export function reloadBusinessList(rows, count) {
   return {
     type: RELOAD_BUSINESS_LIST,
-    accounts: rows,
+    businesses: rows,
     count
   };
 }
@@ -323,6 +323,25 @@ export function listBusiness() {
   };
 }
 
+export function activateBusiness(businessId, callback) {
+  return (dispatch, getState) => {
+    const auth = getState().auth;
+    if (!auth) {
+      return;
+    }
+
+    dispatch(onUpdateLoadingList(true));
+    HTTP.get(auth, `${__CONFIG__.API.SERVER_URL}/businesses/${businessId}/activate`,
+      dispatch, (data) => {
+        dispatch(reloadBusinessList(data.rows));
+        if (callback) {
+          callback(data);
+        }
+      }).then(() => {
+        dispatch(onUpdateLoadingList(false));
+      });
+  };
+}
 
 export function deleteBusiness(businessId, callback) {
   return (dispatch, getState) => {
@@ -416,9 +435,9 @@ export function reducer(state = initialState, action) {
       });
     case RELOAD_BUSINESS_LIST:
       return Object.assign({}, state, {
-        businesses: _.reduce(action.accounts, (hashBusiness, account) =>
+        businesses: _.reduce(action.businesses, (hashBusiness, business) =>
           Object.assign({}, hashBusiness, {
-            [account.id]: account
+            [business.id]: business
           }), {})
       });
     case RELOAD_REPORTS:
@@ -435,13 +454,13 @@ export function reducer(state = initialState, action) {
     case AFTER_CREATE_BUSINESS: {
       return Object.assign({}, state, {
         businesses: Object.assign({}, state.businesses, {
-          [action.account.id]: action.account
+          [action.business.id]: action.business
         })
       });
     }
     case AFTER_DELETE_BUSINESS: {
       const newBusinesss = _.cloneDeep(state.businesses);
-      delete newBusinesss[action.account.id];
+      delete newBusinesss[action.business.id];
       return Object.assign({}, state, {
         businesses: newBusinesss
       });

@@ -26,8 +26,9 @@ class BusinessList extends Component {
           <div className="table-responsive">
             <Table className="table table-striped table-bordered" sortable>
               <Thead>
-                <Th style={{ width: '45%' }} column="name">Tên business</Th>
-                <Th style={{ width: '45%' }} column="businessId">Business ID</Th>
+                <Th style={{ width: '35%' }} column="name">Tên business</Th>
+                <Th style={{ width: '35%' }} column="businessId">Business ID</Th>
+                <Th style={{ width: '20%' }} column="activate">Kích hoạt</Th>
                 <Th style={{ width: '10%' }} column="action">Thao tác</Th>
               </Thead>
               {_.chain(this.props.businesses)
@@ -37,6 +38,18 @@ class BusinessList extends Component {
                     <Td column="name" className="table-col">{business.name}</Td>
                     <Td column="businessId" className="table-col">
                       {business.businessId}
+                    </Td>
+                    <Td column="activate" className="table-col text-center">
+                      <button
+                        className="btn btn-box-tool"
+                        onClick={() => this.props.onActivate(business)}
+                      >
+                        <i
+                          className={business.activated ?
+                            'fa fa-fw fa-check-square text-green' :
+                            'fa fa-fw fa-check-square'}
+                        />
+                      </button>
                     </Td>
                     <Td column="action" className="table-col">
                       <div className="button-list">
@@ -65,6 +78,7 @@ BusinessList.propTypes = {
   businesses: PropTypes.object.isRequired,
   onComponentMounted: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
+  onActivate: PropTypes.func.isRequired,
 };
 
 export default BusinessList;
