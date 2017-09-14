@@ -21,7 +21,7 @@ class FormControlSelect extends React.Component {
   }
 
   componentDidMount() {
-    const { input, options, onSelect, autoSelect = true, autoFocus } = this.props;
+    const { input, options, onSelect, autoSelect = false, autoFocus } = this.props;
 
     if (autoSelect && this.state.initialValue && options.length >= 1) {
       if (!input.value || options.length === 1) {
