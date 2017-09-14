@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import { withRouter } from 'react-router';
 import { Field, FieldArray, reduxForm } from 'redux-form';
 import { FormControl, FormControlSelect } from '@/components/FormControl';
 import { DepartmentField } from '@/components/Field';
@@ -7,8 +6,9 @@ import Validator from '@/helpers/validator';
 
 import {
   generateInventoryStatusOptions,
-  unloadConfirmation, routeLeaveConfirmation
 } from '@/helpers/helper';
+
+import navConfirm from '@/components/HighOrder/navConfirm';
 
 import TextField from './InventoryFields/TextField';
 import HeadlineField from './InventoryFields/HeadlineFieldContainer';
@@ -26,17 +26,6 @@ class InventoryUpdateForm extends Component {
     if (this.props.id) {
       this.props.onComponentMounted(this.props.id);
     }
-    window.onbeforeunload = (event) => unloadConfirmation(event, this.props.pristine);
-    const { router, route } = this.props;
-    this.leaveHook = router.setRouteLeaveHook(route,
-      () => routeLeaveConfirmation(this.props.pristine));
-  }
-
-  componentWillUnmount() {
-    if (this.leaveHook) {
-      this.leaveHook();
-    }
-    window.onbeforeunload = () => null;
   }
 
   render() {
@@ -225,4 +214,4 @@ export default reduxForm({
     descriptions: validateDescriptions(values ? values.descriptions : null),
     newMedias: validateMedia(values ? values.newMedias : null)
   }),
-})(withRouter(InventoryUpdateForm));
+})(navConfirm(InventoryUpdateForm));

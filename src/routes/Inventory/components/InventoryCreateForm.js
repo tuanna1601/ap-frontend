@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import { withRouter } from 'react-router';
 import { Field, FieldArray, reduxForm } from 'redux-form';
 import {
   FormControl, FormControlTextArea, FormControlSelect
@@ -7,8 +6,7 @@ import {
 import { DepartmentField } from '@/components/Field';
 import Validator from '@/helpers/validator';
 import { Tab, Tabs } from '@/components/Tabs';
-
-import { unloadConfirmation, routeLeaveConfirmation } from '@/helpers/helper';
+import navConfirm from '@/components/HighOrder/navConfirm';
 
 const mediaTypeOptions = [
   {
@@ -31,20 +29,6 @@ class InventoryForm extends Component {
     this.renderMedia = this.renderMedia.bind(this);
     this.renderDescriptions = this.renderDescriptions.bind(this);
     this.renderDescription = this.renderDescription.bind(this);
-  }
-
-  componentDidMount() {
-    window.onbeforeunload = (event) => unloadConfirmation(event, this.props.pristine);
-    const { router, route } = this.props;
-    this.leaveHook = router.setRouteLeaveHook(route,
-      () => routeLeaveConfirmation(this.props.pristine));
-  }
-
-  componentWillUnmount() {
-    if (this.leaveHook) {
-      this.leaveHook();
-    }
-    window.onbeforeunload = () => null;
   }
 
   renderHeadline = (fields, headline, index) => {
@@ -450,4 +434,4 @@ export default reduxForm({
     descriptions: validateDescriptions(values.descriptions),
     medias: validateMedia(values.medias)
   }),
-})(withRouter(InventoryForm));
+})(navConfirm(InventoryForm));

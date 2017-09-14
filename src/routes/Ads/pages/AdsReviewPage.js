@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import AdsReviewForm from '../components/AdsReviewContainer';
 
 class AdsReviewPage extends React.Component {
@@ -15,10 +15,14 @@ class AdsReviewPage extends React.Component {
     const adId = url.searchParams.get('id');
     return (
       <section className="content">
-        <AdsReviewForm id={adId} />
+        <AdsReviewForm route={this.props.route} id={adId} />
       </section>
     );
   }
 }
+
+AdsReviewPage.propTypes = {
+  route: PropTypes.object.isRequired
+};
 
 export default AdsReviewPage;

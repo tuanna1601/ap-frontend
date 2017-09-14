@@ -4,6 +4,7 @@ import moment from 'moment';
 
 import * as _ from 'lodash';
 import { FormControlTextArea, FormControlSelect } from '@/components/FormControl';
+import navConfirm from '@/components/HighOrder/navConfirm';
 import { generateAdsStatusOptions } from '@/helpers/helper';
 
 class AdsReviewForm extends Component {
@@ -176,4 +177,4 @@ AdsReviewForm.propTypes = {
   navigateToList: PropTypes.func.isRequired,
 };
 
-export default reduxForm()(AdsReviewForm);
+export default reduxForm()(navConfirm(AdsReviewForm));

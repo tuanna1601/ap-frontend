@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import InventoryReviewForm from '../components/InventoryReviewContainer';
 
 class InventoryReviewPage extends React.Component {
@@ -16,10 +16,14 @@ class InventoryReviewPage extends React.Component {
     const inventoryId = url.searchParams.get('id');
     return (
       <section className="content">
-        <InventoryReviewForm id={inventoryId} />
+        <InventoryReviewForm route={this.props.route} id={inventoryId} />
       </section>
     );
   }
 }
+
+InventoryReviewPage.propTypes = {
+  route: PropTypes.object.isRequired
+};
 
 export default InventoryReviewPage;

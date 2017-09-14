@@ -4,6 +4,7 @@ import { reduxForm, Field, FieldArray } from 'redux-form';
 import * as _ from 'lodash';
 import { FormControlSelect } from '@/components/FormControl';
 import { generateInventoryStatusOptions } from '@/helpers/helper';
+import navConfirm from '@/components/HighOrder/navConfirm';
 
 import TextField from './InventoryFields/TextField';
 import HeadlineField from './InventoryFields/HeadlineFieldContainer';
@@ -148,4 +149,4 @@ InventoryReviewForm.propTypes = {
   navigateToList: PropTypes.func.isRequired,
 };
 
-export default reduxForm()(InventoryReviewForm);
+export default reduxForm()(navConfirm(InventoryReviewForm));
