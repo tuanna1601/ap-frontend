@@ -132,6 +132,5 @@ export function unloadConfirmation(event, pristine) {
 }
 
 export function routeLeaveConfirmation(pristine) {
-  console.log(pristine);
   return pristine ? true : 'Bạn có muốn rời khỏi trang này?';
 }
