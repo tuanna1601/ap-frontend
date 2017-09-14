@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import InventoryAdsCreateForm from '../components/InventoryAdsCreateContainer';
 
 class InventoryAdsCreatePage extends React.Component {
@@ -16,10 +16,14 @@ class InventoryAdsCreatePage extends React.Component {
     const inventoryId = url.searchParams.get('inventoryId');
     return (
       <section className="content">
-        <InventoryAdsCreateForm inventoryId={inventoryId} />
+        <InventoryAdsCreateForm route={this.props.route} inventoryId={inventoryId} />
       </section>
     );
   }
 }
+
+InventoryAdsCreatePage.propTypes = {
+  route: PropTypes.object.isRequired
+};
 
 export default InventoryAdsCreatePage;

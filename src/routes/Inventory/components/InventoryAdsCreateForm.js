@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { withRouter } from 'react-router';
 import { Field, reduxForm } from 'redux-form';
 import { map, filter, each } from 'lodash';
 import {
@@ -9,7 +10,10 @@ import {
   AdAccountField, AdCampaignField, AdSetField, PageField
 } from '@/components/Field';
 import Validator from '@/helpers/validator';
-import { generateOptionsLabel, generateAdFormatOptions } from '@/helpers/helper';
+import {
+  generateOptionsLabel, generateAdFormatOptions,
+  unloadConfirmation, routeLeaveConfirmation
+} from '@/helpers/helper';
 
 const actionTypes = [
   'LEARN_MORE',
@@ -53,10 +57,18 @@ class InventoryAdsCreateForm extends Component {
 
   componentDidMount() {
     this.props.onComponentMounted();
+    window.onbeforeunload = (event) => unloadConfirmation(event, this.props.pristine);
+    const { router, route } = this.props;
+    this.leaveHook = router.setRouteLeaveHook(route,
+      () => routeLeaveConfirmation(this.props.pristine));
   }
 
   componentWillUnmount() {
     this.props.resetAdsPreview();
+    if (this.leaveHook) {
+      this.leaveHook();
+    }
+    window.onbeforeunload = () => null;
   }
 
   renderMediaArr(media, type) {
@@ -308,6 +320,9 @@ InventoryAdsCreateForm.propTypes = {
   isLoadingCreate: PropTypes.bool.isRequired,
   isLoadingList: PropTypes.bool.isRequired,
 
+  router: PropTypes.object.isRequired,
+  route: PropTypes.object.isRequired,
+
   adaccount: PropTypes.string,
   adcampaign: PropTypes.string,
   type: PropTypes.string,
@@ -363,4 +378,4 @@ export default reduxForm({
       .validateRequired()
       .getMessage()
   })
-})(InventoryAdsCreateForm);
+})(withRouter(InventoryAdsCreateForm));

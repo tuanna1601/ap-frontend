@@ -119,3 +119,19 @@ export function nestChildren(id, depts) {
   });
   return results;
 }
+
+export function unloadConfirmation(event, pristine) {
+  if (pristine) {
+    return undefined;
+  }
+  const text = 'Bạn có muốn rời khỏi trang này?';
+  Object.assign(event, {
+    returnValue: text
+  });
+  return text;
+}
+
+export function routeLeaveConfirmation(pristine) {
+  console.log(pristine);
+  return pristine ? true : 'Bạn có muốn rời khỏi trang này?';
+}
