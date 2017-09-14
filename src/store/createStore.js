@@ -1,7 +1,6 @@
 import { applyMiddleware, compose, createStore } from 'redux';
 import { routerMiddleware } from 'react-router-redux';
 import { createResponsiveStoreEnhancer } from 'redux-responsive';
-import persistState from 'redux-localstorage';
 import thunk from 'redux-thunk';
 import { makeRootReducer } from './reducers';
 
@@ -15,8 +14,6 @@ export default (initialState = {}, history) => {
   // Store Enhancers
   // ======================================================
   const enhancers = [];
-  // Persist State to LocalStorage
-  enhancers.push(persistState(['form']));
   if (__DEBUG__) {
     const devToolsExtension = window.devToolsExtension;
     if (typeof devToolsExtension === 'function') {
