@@ -323,25 +323,25 @@ export function listBusiness() {
   };
 }
 
-export function activateBusiness(businessId, callback) {
-  return (dispatch, getState) => {
-    const auth = getState().auth;
-    if (!auth) {
-      return;
-    }
+// export function activateBusiness(businessId, callback) {
+//   return (dispatch, getState) => {
+//     const auth = getState().auth;
+//     if (!auth) {
+//       return;
+//     }
 
-    dispatch(onUpdateLoadingList(true));
-    HTTP.get(auth, `${__CONFIG__.API.SERVER_URL}/businesses/${businessId}/activate`,
-      dispatch, (data) => {
-        dispatch(reloadBusinessList(data.rows));
-        if (callback) {
-          callback(data);
-        }
-      }).then(() => {
-        dispatch(onUpdateLoadingList(false));
-      });
-  };
-}
+//     dispatch(onUpdateLoadingList(true));
+//     HTTP.get(auth, `${__CONFIG__.API.SERVER_URL}/businesses/${businessId}/activate`,
+//       dispatch, (data) => {
+//         dispatch(reloadBusinessList(data.rows));
+//         if (callback) {
+//           callback(data);
+//         }
+//       }).then(() => {
+//         dispatch(onUpdateLoadingList(false));
+//       });
+//   };
+// }
 
 export function deleteBusiness(businessId, callback) {
   return (dispatch, getState) => {

@@ -28,7 +28,7 @@ class BusinessList extends Component {
               <Thead>
                 <Th style={{ width: '35%' }} column="name">Tên business</Th>
                 <Th style={{ width: '35%' }} column="businessId">Business ID</Th>
-                <Th style={{ width: '20%' }} column="activate">Kích hoạt</Th>
+                {/* <Th style={{ width: '20%' }} column="activate">Kích hoạt</Th> */}
                 <Th style={{ width: '10%' }} column="action">Thao tác</Th>
               </Thead>
               {_.chain(this.props.businesses)
@@ -39,7 +39,7 @@ class BusinessList extends Component {
                     <Td column="businessId" className="table-col">
                       {business.businessId}
                     </Td>
-                    <Td column="activate" className="table-col text-center">
+                    {/* <Td column="activate" className="table-col text-center">
                       <button
                         className="btn btn-box-tool"
                         onClick={() => this.props.onActivate(business)}
@@ -50,7 +50,7 @@ class BusinessList extends Component {
                             'fa fa-fw fa-check-square'}
                         />
                       </button>
-                    </Td>
+                    </Td> */}
                     <Td column="action" className="table-col">
                       <div className="button-list">
                         <button
@@ -78,7 +78,7 @@ BusinessList.propTypes = {
   businesses: PropTypes.object.isRequired,
   onComponentMounted: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
-  onActivate: PropTypes.func.isRequired,
+  // onActivate: PropTypes.func.isRequired,
 };
 
 export default BusinessList;
