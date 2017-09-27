@@ -6,7 +6,7 @@ import {
   FormControlRadioGroup, FormControlCheckboxGroup
 } from '@/components/FormControl';
 import {
-  AdAccountField, AdCampaignField, AdSetField, PageField
+  AdAccountField, BusinessField, AdCampaignField, AdSetField, PageField
 } from '@/components/Field';
 import navConfirm from '@/components/HighOrder/navConfirm';
 import Validator from '@/helpers/validator';
@@ -101,7 +101,8 @@ class InventoryAdsCreateForm extends Component {
 
   render() {
     const { handleSubmit, isLoadingCreate, isLoadingList, isLoadingPreview, submitting, onPreviewAd,
-      inventory, adaccount, adcampaign, type, resetMedia, adsPreview, resetCampaign, callToAction } = this.props;
+      inventory, businessId, adaccount, adcampaign, type, resetMedia, adsPreview, resetCampaign,
+      resetAdAccount, callToAction } = this.props;
 
     let headlineOptions = [];
     let descriptionOptions = [];
@@ -135,43 +136,59 @@ class InventoryAdsCreateForm extends Component {
                 <form className="table-row" onSubmit={handleSubmit}>
                   <div className="row">
                     <div className="col-xs-12">
-                      <AdAccountField
-                        id="adaccount" name="adaccount"
-                        label="Ad account" hasLabel
-                        onSelect={resetCampaign}
+                      <BusinessField
+                        id="businessId" name="businessId"
+                        label="Business Manager" hasLabel
+                        onSelect={resetAdAccount}
                         autoSelect={false}
                       />
                     </div>
-                    {adaccount &&
+                    {businessId &&
+                      <div className="col-xs-12">
+                        <AdAccountField
+                          id="adaccount" name="adaccount"
+                          label="Ad account" hasLabel
+                          business={businessId}
+                          onSelect={resetCampaign}
+                          autoSelect={false}
+                        />
+                      </div>
+                    }
+                    {businessId && adaccount &&
                       <div className="col-xs-12">
                         <AdCampaignField
                           id="adcampaign" name="adcampaign"
                           label="Ad Campaign" hasLabel
+                          business={businessId}
                           account={adaccount}
                           autoSelect={false}
                         />
                       </div>
                     }
-                    {adaccount && adcampaign &&
+                    {businessId && adaccount && adcampaign &&
                       adcampaign !== '' &&
                       <div className="col-xs-12">
                         <AdSetField
                           id="adset" name="adset"
                           label="Ad Set" hasLabel
+                          business={businessId}
                           account={adaccount}
                           campaign={adcampaign}
                           autoSelect={false}
                         />
                       </div>
                     }
-                    <div className="col-xs-12">
-                      <PageField
-                        id="page" name="page"
-                        label="Facebook Page ID"
-                        autoSelect={false}
-                        hasLabel
-                      />
-                    </div>
+                    {businessId &&
+                      <div className="col-xs-12">
+                        <PageField
+                          id="page" name="page"
+                          label="Facebook Page ID"
+                          business={businessId}
+                          autoSelect={false}
+                          hasLabel
+                        />
+                      </div>
+                    }
                     <div className="col-xs-12">
                       <Field
                         type="text" component={FormControl}
@@ -312,6 +329,7 @@ InventoryAdsCreateForm.propTypes = {
   isLoadingList: PropTypes.bool.isRequired,
 
   adaccount: PropTypes.string,
+  businessId: PropTypes.string,
   adcampaign: PropTypes.string,
   type: PropTypes.string,
   callToAction: PropTypes.string,
@@ -326,12 +344,16 @@ InventoryAdsCreateForm.propTypes = {
   resetAdsPreview: PropTypes.func.isRequired,
   navigateToList: PropTypes.func.isRequired,
   resetMedia: PropTypes.func.isRequired,
-  resetCampaign: PropTypes.func.isRequired
+  resetCampaign: PropTypes.func.isRequired,
+  resetAdAccount: PropTypes.func.isRequired,
 };
 
 export default reduxForm({
   validate: (values = {}) => ({
     name: (new Validator(values.name))
+      .validateRequired()
+      .getMessage(),
+    businessId: (new Validator(values.businessId))
       .validateRequired()
       .getMessage(),
     adaccount: (new Validator(values.adaccount))

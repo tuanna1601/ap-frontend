@@ -4,7 +4,15 @@ import { FormControlSelect } from '@/components/FormControl';
 
 class AdAccountField extends React.Component {
   componentDidMount() {
-    this.props.listOptions();
+    if (this.props.business) {
+      this.props.listOptions();
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.business !== nextProps.business) {
+      this.props.listOptions(nextProps.business);
+    }
   }
 
   componentWillUnmount() {
@@ -23,6 +31,7 @@ class AdAccountField extends React.Component {
 }
 
 AdAccountField.propTypes = {
+  business: React.PropTypes.string,
   options: React.PropTypes.array.isRequired,
   listOptions: React.PropTypes.func.isRequired,
   resetOptions: React.PropTypes.func.isRequired,

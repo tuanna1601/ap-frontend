@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import * as _ from 'lodash';
-import { listPages } from '@/store/common';
+import { listPages, resetPages } from '@/store/common';
 import PageField from './PageField';
 
 const mapStateToProps = (state) => ({
@@ -14,9 +14,9 @@ const mapStateToProps = (state) => ({
     .value(),
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  listOptions: () => dispatch(listPages()),
-  resetOptions: () => dispatch(listPages()),
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  listOptions: (business = ownProps.business) => dispatch(listPages(business)),
+  resetOptions: () => dispatch(resetPages()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PageField);

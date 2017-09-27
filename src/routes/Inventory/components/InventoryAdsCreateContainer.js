@@ -20,6 +20,7 @@ const mapStateToProps = (state, ownProps) => ({
   form: 'fb-ads-create',
   adsPreview: htmlParser.parse(state.inventory.adsPreview),
   inventory: state.inventory.inventories[ownProps.inventoryId],
+  businessId: formValueSelector('fb-ads-create')(state, 'businessId'),
   adaccount: formValueSelector('fb-ads-create')(state, 'adaccount'),
   adcampaign: formValueSelector('fb-ads-create')(state, 'adcampaign'),
   media: formValueSelector('fb-ads-create')(state, 'media'),
@@ -70,7 +71,10 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   },
   resetCampaign: () => {
     dispatch(change('fb-ads-create', 'adcampaign', ''));
-  }
+  },
+  resetAdAccount: () => {
+    dispatch(change('fb-ads-create', 'adaccount', ''));
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(InventoryAdsCreateForm);

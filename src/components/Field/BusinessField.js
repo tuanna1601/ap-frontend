@@ -2,17 +2,9 @@ import React from 'react';
 import { Field } from 'redux-form';
 import { FormControlSelect } from '@/components/FormControl';
 
-class PageField extends React.Component {
+class BusinessField extends React.Component {
   componentDidMount() {
-    if (this.props.business) {
-      this.props.listOptions();
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.business !== nextProps.business) {
-      this.props.listOptions(nextProps.business);
-    }
+    this.props.listOptions();
   }
 
   componentWillUnmount() {
@@ -30,11 +22,10 @@ class PageField extends React.Component {
   }
 }
 
-PageField.propTypes = {
-  business: React.PropTypes.string,
+BusinessField.propTypes = {
   options: React.PropTypes.array.isRequired,
   listOptions: React.PropTypes.func.isRequired,
   resetOptions: React.PropTypes.func.isRequired,
 };
 
-export default PageField;
+export default BusinessField;

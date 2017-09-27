@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import * as _ from 'lodash';
-import { listAdCampaign, resetAdCampaigns } from '@/store/common';
+import { listAdCampaigns, resetAdCampaigns } from '@/store/common';
 import AdCampaignField from './AdCampaignField';
 
 const mapStateToProps = (state) => ({
@@ -15,7 +15,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  listOptions: (account = ownProps.account) => dispatch(listAdCampaign(account)),
+  listOptions: (account = ownProps.account, business = ownProps.business) =>
+    dispatch(listAdCampaigns(account, business)),
   resetOptions: () => dispatch(resetAdCampaigns()),
 });
 

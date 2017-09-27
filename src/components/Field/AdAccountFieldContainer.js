@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import * as _ from 'lodash';
-import { listAdAccount } from '@/store/common';
+import { listAdAccounts, resetAdAccounts } from '@/store/common';
 import AdAccountField from './AdAccountField';
 
 const mapStateToProps = (state) => ({
@@ -14,9 +14,9 @@ const mapStateToProps = (state) => ({
     .value(),
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  listOptions: () => dispatch(listAdAccount()),
-  resetOptions: () => dispatch(listAdAccount()),
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  listOptions: (business = ownProps.business) => dispatch(listAdAccounts(business)),
+  resetOptions: () => dispatch(resetAdAccounts()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdAccountField);

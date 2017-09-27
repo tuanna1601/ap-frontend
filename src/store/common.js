@@ -11,6 +11,7 @@ const RELOAD_AD_CAMPAIGNS = 'COMMON_RELOAD_AD_CAMPAIGNS';
 const RELOAD_AD_SETS = 'COMMON_RELOAD_AD_SETS';
 const RELOAD_ADS = 'COMMON_RELOAD_ADS';
 const RELOAD_PAGES = 'COMMON_RELOAD_PAGES';
+const RELOAD_BUSINESSES = 'COMMON_RELOAD_BUSINESSES';
 
 export function reloadDeparments(rows) {
   return {
@@ -47,17 +48,24 @@ export function reloadCriteria(rows) {
   };
 }
 
-export function reloadAdAccounts(rows) {
+export function reloadAdAccounts(accounts) {
   return {
     type: RELOAD_AD_ACCOUNTS,
-    accounts: rows
+    accounts
   };
 }
 
-export function reloadAdCampaigns(rows) {
+export function resetAdAccounts() {
+  return {
+    type: RELOAD_AD_ACCOUNTS,
+    accounts: []
+  };
+}
+
+export function reloadAdCampaigns(campaigns) {
   return {
     type: RELOAD_AD_CAMPAIGNS,
-    campaigns: rows
+    campaigns
   };
 }
 
@@ -68,10 +76,10 @@ export function resetAdCampaigns() {
   };
 }
 
-export function reloadAdSets(rows) {
+export function reloadAdSets(sets) {
   return {
     type: RELOAD_AD_SETS,
-    sets: rows
+    sets
   };
 }
 
@@ -93,6 +101,20 @@ export function reloadPages(pages) {
   return {
     type: RELOAD_PAGES,
     pages
+  };
+}
+
+export function resetPages() {
+  return {
+    type: RELOAD_PAGES,
+    pages: []
+  };
+}
+
+export function reloadBusinesses(businesses) {
+  return {
+    type: RELOAD_BUSINESSES,
+    businesses
   };
 }
 
@@ -165,13 +187,16 @@ export function listCriteria(department) {
   };
 }
 
-export function listAdAccount(query) {
+export function listAdAccounts(businessId) {
   return (dispatch, getState) => {
     const auth = getState().auth;
     if (!auth) {
       return;
     }
 
+    const query = {
+      businessId,
+    };
     const url = `${__CONFIG__.API.SERVER_URL}/businesses/ad-accounts?${HTTP.param(query)}`;
     HTTP.get(auth, url, dispatch, (data) => {
       dispatch(reloadAdAccounts(data.rows));
@@ -179,15 +204,18 @@ export function listAdAccount(query) {
   };
 }
 
-export function listAdCampaign(accountId) {
+export function listAdCampaigns(accountId, businessId) {
   return (dispatch, getState) => {
     const auth = getState().auth;
     if (!auth) {
       return;
     }
 
+    const query = {
+      businessId
+    };
     if (accountId) {
-      const url = `${__CONFIG__.API.SERVER_URL}/businesses/${accountId}/ad-campaigns`;
+      const url = `${__CONFIG__.API.SERVER_URL}/businesses/${accountId}/ad-campaigns?${HTTP.param(query)}`;
       HTTP.get(auth, url, dispatch, (data) => {
         dispatch(reloadAdCampaigns(data.data));
       }, () => {
@@ -197,15 +225,18 @@ export function listAdCampaign(accountId) {
   };
 }
 
-export function listAdSets(campaignId) {
+export function listAdSets(campaignId, businessId) {
   return (dispatch, getState) => {
     const auth = getState().auth;
     if (!auth) {
       return;
     }
 
+    const query = {
+      businessId
+    };
     if (campaignId) {
-      const url = `${__CONFIG__.API.SERVER_URL}/businesses/${campaignId}/adsets`;
+      const url = `${__CONFIG__.API.SERVER_URL}/businesses/${campaignId}/adsets?${HTTP.param(query)}`;
       HTTP.get(auth, url, dispatch, (data) => {
         dispatch(reloadAdSets(data.data));
       }, () => {
@@ -236,16 +267,31 @@ export function listAds(keyword, isRemoved) {
   };
 }
 
-export function listPages() {
+export function listPages(businessId) {
   return (dispatch, getState) => {
     const auth = getState().auth;
     if (!auth) {
       return;
     }
 
-    const url = `${__CONFIG__.API.SERVER_URL}/businesses/pages`;
+    const query = { businessId };
+    const url = `${__CONFIG__.API.SERVER_URL}/businesses/pages?${HTTP.param(query)}`;
     HTTP.get(auth, url, dispatch, (data) => {
       dispatch(reloadPages(data.rows));
+    });
+  };
+}
+
+export function listBusinesses() {
+  return (dispatch, getState) => {
+    const auth = getState().auth;
+    if (!auth) {
+      return;
+    }
+
+    const url = `${__CONFIG__.API.SERVER_URL}/businesses`;
+    HTTP.get(auth, url, dispatch, (data) => {
+      dispatch(reloadBusinesses(data.rows));
     });
   };
 }
@@ -260,6 +306,7 @@ const initialState = {
   adSets: [],
   ads: [],
   pages: [],
+  businesses: [],
 };
 
 export function reducer(state = initialState, action) {
@@ -319,6 +366,11 @@ export function reducer(state = initialState, action) {
     case RELOAD_PAGES: {
       return Object.assign({}, state, {
         pages: action.pages
+      });
+    }
+    case RELOAD_BUSINESSES: {
+      return Object.assign({}, state, {
+        businesses: action.businesses
       });
     }
     default:

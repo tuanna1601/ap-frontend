@@ -9,7 +9,7 @@ class AdCampaignField extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.account !== nextProps.account) {
-      this.props.listOptions(nextProps.account);
+      this.props.listOptions(nextProps.account, nextProps.business);
     }
   }
 
@@ -30,6 +30,7 @@ class AdCampaignField extends React.Component {
 
 AdCampaignField.propTypes = {
   account: React.PropTypes.string.isRequired,
+  business: React.PropTypes.string.isRequired,
   options: React.PropTypes.array.isRequired,
   listOptions: React.PropTypes.func.isRequired,
   resetOptions: React.PropTypes.func.isRequired,

@@ -8,6 +8,7 @@ import AdSetField from './AdSetFieldContainer';
 import AdsField from './AdsFieldContainer';
 import AdsSearchField from './AdsSearchFieldContainer';
 import PageField from './PageFieldContainer';
+import BusinessField from './BusinessFieldContainer';
 
 export {
   DepartmentField,
@@ -20,4 +21,5 @@ export {
   AdsField,
   AdsSearchField,
   PageField,
+  BusinessField,
 };
