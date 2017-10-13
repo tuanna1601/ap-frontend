@@ -533,7 +533,7 @@ export function createFacebookAds(values, callback) {
     }
 
     formattedValues = _.pick(formattedValues,
-      ['name', 'inventory', 'adaccount', 'adset', 'message',
+      ['businessId', 'name', 'inventory', 'adaccount', 'adset', 'message',
         'headline', 'description', 'type', 'media', 'thumbnail',
         'callToAction', 'websiteUrl', 'page', 'displayLink']);
 
