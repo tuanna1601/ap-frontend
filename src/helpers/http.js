@@ -167,13 +167,18 @@ function formatParamValue(value) {
 function param(obj) {
   if (obj) {
     const nestedObj = flatnest.nest(obj);
-    return _.map(nestedObj, (value, key) => {
+    return _.reduce(nestedObj, (arr, value, key) => {
+      if (!value) {
+        return arr;
+      }
       const formattedValue = formatParamValue(value);
       if (_.isArray(formattedValue) || _.isObject(formattedValue)) {
-        return `${encodeURIComponent(key)}=${encodeURIComponent(JSON.stringify(formattedValue))}`;
+        arr.push(`${encodeURIComponent(key)}=${encodeURIComponent(JSON.stringify(formattedValue))}`);
+      } else {
+        arr.push(`${encodeURIComponent(key)}=${encodeURIComponent(formattedValue)}`);
       }
-      return `${encodeURIComponent(key)}=${encodeURIComponent(formattedValue)}`;
-    }).join('&');
+      return arr;
+    }, []).join('&');
   }
   return '';
 }
