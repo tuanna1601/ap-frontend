@@ -9,6 +9,7 @@ import AdsField from './AdsFieldContainer';
 import AdsSearchField from './AdsSearchFieldContainer';
 import PageField from './PageFieldContainer';
 import BusinessField from './BusinessFieldContainer';
+import CriteriaListField from './CriteriaListFieldContainer';
 
 export {
   DepartmentField,
@@ -22,4 +23,5 @@ export {
   AdsSearchField,
   PageField,
   BusinessField,
+  CriteriaListField,
 };
