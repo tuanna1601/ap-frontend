@@ -3,6 +3,7 @@ import { injectReducer } from '@/store/reducers';
 import { reducer } from './redux/department';
 import DepartmentLayout from './layouts/DepartmentLayout';
 import DepartmentIndexPage from './pages/DepartmentIndexPage';
+import DepartmentStepPage from './pages/DepartmentStepPage';
 import DepartmentTree from './components/DepartmentTreeContainer';
 
 export default (store) => ({
@@ -28,5 +29,9 @@ export default (store) => ({
       component: DepartmentTree,
       onEnter: (nextState, replace, callback) => checkPermission(['department:update'], store, callback),
     },
+    {
+      path: 'steps',
+      component: DepartmentStepPage,
+    }
   ],
 });

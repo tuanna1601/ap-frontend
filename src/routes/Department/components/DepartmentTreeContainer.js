@@ -1,4 +1,5 @@
 import React from 'react';
+import { push } from 'react-router-redux';
 import Alert from 'react-s-alert';
 import { connect } from 'react-redux';
 
@@ -40,25 +41,8 @@ const mapDispatchToProps = (dispatch) => ({
     ...department,
     isHidden: !department.isHidden
   })),
-  onEditReviewers: (department) => {
-    const updateForm = (
-      <DepartmentUpdateUsersForm
-        form={`department-reviewers-${department.id}`}
-        department={department}
-        userRole="reviewers"
-        filterRole="reviewer"
-      />
-    );
-    dispatch(showForm('Phân quyền duyệt', updateForm,
-      values => {
-        const formattedValues = Object.assign({}, values, {
-          reviewers: map(values.reviewers, (reviewer) => reviewer.id)
-        });
-        dispatch(updateDepartment(formattedValues, (data) => {
-          Alert.success(`${data.name} đã được sửa thành công`);
-        }));
-      }
-    ));
+  onEditSteps: (department) => {
+    dispatch(push(`/department/steps?id=${department.id}`));
   },
   onEditOrdinators: (department) => {
     const updateForm = (

@@ -75,8 +75,8 @@ class DepartmentTree extends React.Component {
                 </button>
                 <button
                   className="btn btn-xs btn-success btn-flat"
-                  onClick={() => this.props.onEditReviewers(node)}
-                  title="Phân quyền duyệt"
+                  onClick={() => this.props.onEditSteps(node)}
+                  title="Cấu hình bước duyệt"
                 >
                   <i className="fa fa-fw fa-tasks" />
                 </button>
@@ -116,7 +116,7 @@ DepartmentTree.propTypes = {
   listDepartments: React.PropTypes.func.isRequired,
   onEdit: React.PropTypes.func.isRequired,
   onToggleHidden: React.PropTypes.func.isRequired,
-  onEditReviewers: React.PropTypes.func.isRequired,
+  onEditSteps: React.PropTypes.func.isRequired,
   onEditOrdinators: React.PropTypes.func.isRequired,
 };
 
