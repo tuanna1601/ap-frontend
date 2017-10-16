@@ -1,8 +1,24 @@
 import React, { Component, PropTypes } from 'react';
+import { map } from 'lodash';
 
 class FormControlCheckboxGroup extends Component {
+  constructor(props) {
+    super(props);
 
-  field = ({ input, meta, options, label }) => {
+    this.handleSelectAll = this.handleSelectAll.bind(this);
+  }
+
+  handleSelectAll(event) {
+    const { input: { onBlur }, options } = this.props;
+    if (event.target.checked) {
+      const arr = map(options, option => option.value);
+      onBlur(arr);
+    } else {
+      onBlur([]);
+    }
+  }
+
+  field = ({ input, meta, options, label, hasLabel, hasSelectAll }) => {
     const { name, onChange, onBlur, onFocus } = input;
     const { touched, error } = meta;
     const inputValue = input.value;
@@ -39,9 +55,24 @@ class FormControlCheckboxGroup extends Component {
 
     return (
       <div className={formGroupClass}>
-        <label htmlFor={name}>
-          {label}
-        </label>
+        {hasLabel &&
+          <label htmlFor={name}>
+            {label}
+          </label>
+        }
+        {hasSelectAll &&
+          <div className="checkbox">
+            <label htmlFor={`${name}.selectAll`}>
+              <input
+                type="checkbox"
+                name={`${name}.selectAll`}
+                id={`${name}.selectAll`}
+                onChange={this.handleSelectAll}
+              />
+              Chọn tất cả
+            </label>
+          </div>
+        }
         <div>{checkboxes}</div>
         {touched && error && <span className="help-block">{error}</span>}
       </div>
@@ -63,6 +94,7 @@ FormControlCheckboxGroup.propTypes = {
   prefix: PropTypes.element,
   suffix: PropTypes.element,
   hasLabel: PropTypes.bool,
+  hasSelectAll: PropTypes.bool,
   readOnly: PropTypes.bool,
   autoFocus: PropTypes.bool,
   onKeyPress: PropTypes.func,
