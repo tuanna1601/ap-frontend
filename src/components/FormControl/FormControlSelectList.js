@@ -59,7 +59,7 @@ class FormControlSelectList extends Component {
   }
 
   renderOptionField() {
-    const { options, input } = this.props;
+    const { options, input, id } = this.props;
     const { name } = input;
     const isChecked = (option) => {
       const index = findIndex(this.state.selectedOptions, item => isEqual(item, option));
@@ -69,12 +69,12 @@ class FormControlSelectList extends Component {
       return false;
     };
     const checkboxes = map(options, (option, index) => (
-      <div className="checkbox">
-        <label htmlFor={`${name}-option-${index}`}>
+      <div key={index} className="checkbox">
+        <label htmlFor={`${id}-option-${index}`}>
           <input
             type="checkbox"
             name={`${name}-option-${index}`}
-            id={`${name}-option-${index}`}
+            id={`${id}-option-${index}`}
             onChange={(event) => this.handleSelectOption(event, option)}
             checked={isChecked(option)}
           />
@@ -86,13 +86,14 @@ class FormControlSelectList extends Component {
     return (
       <div>
         <div className="checkbox">
-          <label htmlFor={`${name}-option-all`}>
+          <label htmlFor={`${id}-option-all`}>
             <input
               type="checkbox"
               name={`${name}-option-all`}
-              id={`${name}-option-all`}
+              id={`${id}-option-all`}
               onChange={event => this.handleSelectAll(event)}
-              checked={this.state.selectedOptions.length === options.length}
+              checked={options.length
+                && this.state.selectedOptions.length === options.length}
             />
             <span>Chọn tất cả</span>
           </label>
@@ -108,7 +109,7 @@ class FormControlSelectList extends Component {
       <table style={{ width: '100%' }}>
         <tbody>
           {map(value, (option, index) => (
-            <tr>
+            <tr key={index}>
               <td style={{ width: '90%' }}>
                 {option.label}
               </td>
@@ -150,6 +151,7 @@ class FormControlSelectList extends Component {
 }
 
 FormControlSelectList.propTypes = {
+  id: PropTypes.string.isRequired,
   input: PropTypes.object.isRequired,
   options: PropTypes.array.isRequired,
 };
