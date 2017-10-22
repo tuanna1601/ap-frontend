@@ -1,21 +1,45 @@
 import React from 'react';
 import { Field } from 'redux-form';
+import { chain } from 'lodash';
 import { FormControlSelect } from '@/components/FormControl';
 
 class UserField extends React.Component {
-  componentDidMount() {
-    this.props.listOptions();
+  constructor(props) {
+    super(props);
+
+    this.listUsersCallback = this.listUsersCallback.bind(this);
+
+    this.state = {
+      options: [],
+    };
   }
 
-  componentWillUnmount() {
-    this.props.resetOptions();
+
+  componentDidMount() {
+    this.props.listOptions((data) => this.listUsersCallback(data));
+  }
+
+  listUsersCallback(users) {
+    const { filterOptions, userRole } = this.props;
+    const options = chain(users)
+      .filter(user => (filterOptions ? filterOptions.indexOf(user.id) < 0 : true))
+      .filter(user => (userRole ? user.roles.indexOf(userRole) > -1 : true))
+      .map((user) => ({
+        value: user.id,
+        label: user.name,
+        user
+      }))
+      .value();
+    this.setState({
+      options,
+    });
   }
 
   render() {
     return (
       <Field
         component={FormControlSelect}
-        options={this.props.options}
+        options={this.state.options}
         {...this.props}
       />
     );
@@ -23,9 +47,10 @@ class UserField extends React.Component {
 }
 
 UserField.propTypes = {
-  options: React.PropTypes.array.isRequired,
   listOptions: React.PropTypes.func.isRequired,
-  resetOptions: React.PropTypes.func.isRequired,
+
+  filterOptions: React.PropTypes.array,
+  userRole: React.PropTypes.string,
 };
 
 export default UserField;

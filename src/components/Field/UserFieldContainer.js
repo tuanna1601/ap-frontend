@@ -1,24 +1,43 @@
 import { connect } from 'react-redux';
-import * as _ from 'lodash';
+import axios from 'axios';
+import Alert from 'react-s-alert';
 
-import { listUsers } from '@/store/common';
 import UserField from './UserField';
 
+const listUsers = (userRole, department, auth, callback) => {
+  if (!auth) {
+    return;
+  }
+
+  let url = `${__CONFIG__.API.SERVER_URL}/users`;
+
+  if (userRole === 'reviewer' && department) {
+    url = `${__CONFIG__.API.SERVER_URL}/departments/${department.id}/reviewers`;
+  }
+
+  const authStr = `Bearer ${auth.token}`;
+
+  axios.get(url, {
+    headers: {
+      Authorization: authStr,
+    },
+  }).then((res) => {
+    if (callback) {
+      callback(res.data);
+    }
+  }).catch(error => {
+    if (typeof error !== 'string') {
+      Alert.error(error.message);
+    } else {
+      Alert.error(error);
+    }
+  });
+};
+
 const mapStateToProps = (state, ownProps) => ({
-  options: _.chain(state.common.users)
-    .filter((user) => (ownProps.filterOptions ? ownProps.filterOptions.indexOf(user.id) < 0 : true))
-    .filter((user) => (ownProps.userRole ? user.roles.indexOf(ownProps.userRole) > -1 : true))
-    .map((user) => ({
-      value: user.id,
-      label: user.name,
-      user
-    }))
-    .value()
+  listOptions: (callback) => listUsers(ownProps.userRole, ownProps.department, state.auth, callback),
 });
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  listOptions: () => dispatch(listUsers(ownProps.userRole, ownProps.department)),
-  resetOptions: () => dispatch(listUsers(ownProps.userRole, ownProps.department)),
-});
+const mapDispatchToProps = () => ({});
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserField);
