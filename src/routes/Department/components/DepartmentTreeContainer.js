@@ -44,6 +44,26 @@ const mapDispatchToProps = (dispatch) => ({
   onEditSteps: (department) => {
     dispatch(push(`/department/steps?id=${department.id}`));
   },
+  onEditReviewers: (department) => {
+    const updateForm = (
+      <DepartmentUpdateUsersForm
+        form={`department-reviewers-${department.id}`}
+        department={department}
+        userRole="reviewers"
+        filterRole="reviewer"
+      />
+    );
+    dispatch(showForm('Phân quyền duyệt', updateForm,
+      values => {
+        const formattedValues = Object.assign({}, values, {
+          reviewers: map(values.reviewers, (reviewer) => reviewer.id)
+        });
+        dispatch(updateDepartment(formattedValues, (data) => {
+          Alert.success(`${data.name} đã được sửa thành công`);
+        }));
+      }
+    ));
+  },
   onEditOrdinators: (department) => {
     const updateForm = (
       <DepartmentUpdateUsersForm
