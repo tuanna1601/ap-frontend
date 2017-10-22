@@ -473,7 +473,12 @@ export function assignInventory(values, callback) {
 
     dispatch(onUpdateLoadingUpdate(true));
 
-    const formattedValues = _.pick(values, ['userId', 'inventory']);
+    const formattedValues = _.pick(values, ['inventory']);
+
+    formattedValues.steps = _.map(values.steps, step => ({
+      _id: step._id,
+      reviewer: step.reviewer,
+    }));
 
     const url = `${__CONFIG__.API.SERVER_URL}/inventories/assign/reviewer`;
     HTTP.post(formattedValues, auth, url, dispatch, (data) => {

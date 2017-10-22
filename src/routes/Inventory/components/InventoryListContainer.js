@@ -9,7 +9,7 @@ import {
   goToPage, resetCurrentPage, assignInventory, reloadList
 } from '../redux/inventory';
 import InventoryList from './InventoryList';
-import InventoryAssignForm from './InventoryAssignForm';
+import InventoryAssignForm from './InventoryAssignFormContainer';
 
 const mapStateToProps = (state) => ({
   inventories: state.inventory.inventories,
@@ -34,13 +34,13 @@ const mapDispatchToProps = (dispatch) => ({
     const initialValues = {
       inventory: inventory.id,
       name: inventory.name,
-      reviewer: inventory.reviewer
+      steps: inventory.steps,
     };
     const AssignForm = (
       <InventoryAssignForm
-        form="inventory-assign"
-        department={inventory.department}
+        steps={inventory.steps}
         initialValues={initialValues}
+        department={inventory.department}
       />
     );
     dispatch(showForm('Phân công duyệt kho', AssignForm, (values) => {
