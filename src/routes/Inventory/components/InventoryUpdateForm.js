@@ -30,7 +30,7 @@ class InventoryUpdateForm extends Component {
 
   render() {
     const { handleSubmit, isLoadingCreate, isLoadingList,
-      newMedias, headlines, text, descriptions,
+      newMedias, headlines, descriptions, criteria,
       submitting, pristine, reset, form, department, initialValues } = this.props;
 
     return (
@@ -71,7 +71,7 @@ class InventoryUpdateForm extends Component {
                 <TextField
                   form={form}
                   department={department}
-                  text={text}
+                  criteria={criteria}
                   isUpdate
                 />
               </table>
@@ -82,6 +82,7 @@ class InventoryUpdateForm extends Component {
                   name="headlines"
                   headlines={headlines}
                   department={department}
+                  criteria={criteria}
                   component={HeadlineField}
                   isUpdate
                 />
@@ -93,6 +94,7 @@ class InventoryUpdateForm extends Component {
                   name="descriptions"
                   descriptions={descriptions}
                   department={department}
+                  criteria={criteria}
                   component={DescriptionField}
                   isUpdate
                 />
@@ -104,6 +106,7 @@ class InventoryUpdateForm extends Component {
                   name="medias"
                   component={MediaField}
                   department={department}
+                  criteria={criteria}
                   medias={initialValues.medias}
                   isOldMedia
                   isUpdate
@@ -154,6 +157,7 @@ InventoryUpdateForm.propTypes = {
   headlines: PropTypes.array,
   descriptions: PropTypes.array,
   text: PropTypes.object,
+  criteria: PropTypes.array,
 
   onFieldArrayRemoved: PropTypes.func.isRequired,
   onComponentMounted: PropTypes.func.isRequired,

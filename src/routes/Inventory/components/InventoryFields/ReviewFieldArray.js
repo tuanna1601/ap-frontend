@@ -4,7 +4,7 @@ import { Field } from 'redux-form';
 import { FormControl } from '@/components/FormControl';
 import { CriteriaField } from '@/components/Field';
 
-const ReviewFieldArray = ({ reviewed, fields, reviews, onFieldArrayRemove, department, isUpdate }) => (
+const ReviewFieldArray = ({ reviewed, fields, reviews, onFieldArrayRemove, isUpdate, criteria }) => (
   <tbody>
     {fields.map((review, index) =>
       <tr key={review}>
@@ -12,7 +12,7 @@ const ReviewFieldArray = ({ reviewed, fields, reviews, onFieldArrayRemove, depar
           <CriteriaField
             id={`${review}.criteria`}
             name={`${review}.criteria`}
-            department={department}
+            criteria={criteria}
             index={index}
             label="Tiêu chí"
             autoSelect={false}
@@ -59,7 +59,7 @@ const ReviewFieldArray = ({ reviewed, fields, reviews, onFieldArrayRemove, depar
 ReviewFieldArray.propTypes = {
   fields: PropTypes.object.isRequired,
   reviews: PropTypes.array.isRequired,
-  department: PropTypes.string.isRequired,
+  criteria: PropTypes.array,
   isUpdate: PropTypes.bool,
   reviewed: PropTypes.bool,
   onFieldArrayRemove: PropTypes.func.isRequired

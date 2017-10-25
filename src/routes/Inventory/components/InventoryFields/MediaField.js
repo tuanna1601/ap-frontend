@@ -24,7 +24,8 @@ class MediaField extends React.Component {
   }
 
   renderMedia(fields, media, index) {
-    const { department, form, medias, isUpdate, onFieldArrayRemove, isOldMedia } = this.props;
+    const { department, form, criteria,
+      medias, isUpdate, onFieldArrayRemove, isOldMedia } = this.props;
     const reviews = medias && medias[index] ? medias[index].reviews : [];
     if (!isOldMedia) {
       return (
@@ -133,9 +134,10 @@ class MediaField extends React.Component {
                 </tr>
               </thead>
               <FieldArray
+                department={department}
+                criteria={criteria}
                 component={ReviewFieldArray}
                 name={`${media}.reviews`}
-                department={department}
                 form={form} reviewed={medias[index].reviewed}
               />
             </table>
@@ -151,6 +153,7 @@ class MediaField extends React.Component {
               </thead>
               <FieldArray
                 department={department}
+                criteria={criteria}
                 name={`${media}.reviews`}
                 component={ReviewFieldArray}
                 isUpdate={isUpdate}
@@ -196,6 +199,7 @@ MediaField.defaultProps = {
 MediaField.propTypes = {
   form: PropTypes.string.isRequired,
   medias: PropTypes.array,
+  criteria: PropTypes.array,
   fields: PropTypes.object.isRequired,
   department: PropTypes.string,
   isUpdate: PropTypes.bool,

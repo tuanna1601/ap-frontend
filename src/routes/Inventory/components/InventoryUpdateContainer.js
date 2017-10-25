@@ -2,7 +2,8 @@ import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import { formValueSelector } from 'redux-form';
 import Alert from 'react-s-alert';
-import * as _ from 'lodash';
+
+import { getCurrentStepCriteria, getCurrentStepDepartment } from '@/helpers/helper';
 import InventoryUpdateForm from './InventoryUpdateForm';
 import {
   updateInventory, getInventory
@@ -22,8 +23,8 @@ const mapStateToProps = (state, ownProps) => ({
     department: state.inventory.inventories[ownProps.id] ?
       state.inventory.inventories[ownProps.id].department.id : ''
   },
-  department: state.inventory.inventories[ownProps.id] ?
-    state.inventory.inventories[ownProps.id].department.id : '',
+  criteria: getCurrentStepCriteria(state.inventory.inventories[ownProps.id]),
+  department: getCurrentStepDepartment(state.inventory.inventories[ownProps.id]),
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react';
-import * as _ from 'lodash';
+import { chain } from 'lodash';
 import moment from 'moment';
 import Reactable from 'reactable';
-import { generateInventoryStatusLabel } from '@/helpers/helper';
+import { generateInventoryStatusLabel, generateInventoryStatus } from '@/helpers/helper';
 
 import InventoryFilter from './InventoryFilterContainer';
 
@@ -46,7 +46,7 @@ class InventoryList extends Component {
                 <Th column="status">Trạng thái</Th>
                 <Th column="action">Thao tác</Th>
               </Thead>
-              {_.chain(this.props.inventories)
+              {chain(this.props.inventories)
                 .orderBy(['isHighlighted', 'created'], ['asc', 'asc'])
                 .map((inventory) =>
                   <Tr key={inventory.id} className={inventory.isHighlighted ? 'highlighted table-row' : 'table-row'}>
@@ -58,8 +58,30 @@ class InventoryList extends Component {
                     <Td column="department" className="table-col text-center">
                       {inventory.department.name}
                     </Td>
-                    <Td column="status" className="table-col text-right">
-                      {generateInventoryStatusLabel(inventory.status)}
+                    <Td column="status" className="table-col">
+                      <div>
+                        <table className="table table-condensed">
+                          <thead>
+                            <tr>
+                              <th style={{ width: '15%' }}>STT</th>
+                              <th>Tên bước</th>
+                              <th>Trạng thái</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {chain(inventory.steps)
+                              .orderBy(['order', 'asc'])
+                              .map((step, index) => (
+                                <tr key={index}>
+                                  <td>{index + 1}</td>
+                                  <td>{step.title}</td>
+                                  <td>{generateInventoryStatusLabel(step.status)}</td>
+                                </tr>
+                              ))
+                              .value()}
+                          </tbody>
+                        </table>
+                      </div>
                     </Td>
                     <Td column="action" className="table-col button-list">
                       <div className="button-list">
@@ -73,8 +95,7 @@ class InventoryList extends Component {
                           </button>
                         }
                         {!this.props.isOrdinator &&
-                          inventory.status !== 'rejected' &&
-                          inventory.status !== 'unassigned' &&
+                          generateInventoryStatus(inventory) !== 'rejected' &&
                           <button
                             className="btn btn-xs btn-primary btn-flat"
                             onClick={() => this.props.onCreateAds(inventory)}

@@ -134,3 +134,43 @@ export function unloadConfirmation(event, pristine) {
 export function routeLeaveConfirmation(pristine) {
   return pristine ? true : 'Bạn có muốn rời khỏi trang này?';
 }
+
+export function getCurrentStepDepartment(inventory) {
+  if (!inventory) {
+    return '';
+  }
+  const { steps, currentStep } = inventory;
+  if (steps && steps.length) {
+    return steps[currentStep].reviewingDepartment.id;
+  }
+  return '';
+}
+
+export function getCurrentStepCriteria(inventory) {
+  if (!inventory) {
+    return [];
+  }
+  const { steps, currentStep } = inventory;
+  if (steps && steps.length) {
+    return steps[currentStep].criteria;
+  }
+  return [];
+}
+
+export function generateInventoryStatus(inventory) {
+  const status = 'rejected';
+  const { steps, currentStep } = inventory;
+  const stepIndex = _.findIndex(steps, step => step.order === currentStep);
+  if (stepIndex === -1) {
+    return status;
+  } else if (currentStep + 1 === steps.length
+    && steps[stepIndex].status === 'accepted') {
+    return 'accepted';
+  }
+  for (const step of steps) {
+    if (step.status === status) {
+      return status;
+    }
+  }
+  return status;
+}

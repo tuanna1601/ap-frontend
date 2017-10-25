@@ -17,7 +17,7 @@ class InventoryAssignForm extends Component {
   renderStep(step, index) {
     const { reviewingDepartment } = step;
     const department = {
-      id: reviewingDepartment._id,
+      id: reviewingDepartment.id,
     };
     return (
       <tr key={index}>

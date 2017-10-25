@@ -183,29 +183,6 @@ export function listReviewerInventories() {
   };
 }
 
-export function getCriteria(inventory) {
-  return (dispatch, getState) => {
-    const auth = getState().auth;
-    if (!auth) {
-      return;
-    }
-    const { department } = inventory;
-
-
-    const query = {
-      department: department.id
-    };
-
-    dispatch(onUpdateLoadingList(true));
-    const url = `${__CONFIG__.API.SERVER_URL}/criteria?${HTTP.param(query)}`;
-    HTTP.get(auth, url, dispatch).then(data => {
-      dispatch(loadCriteria(data.rows));
-    }).then(() => {
-      dispatch(onUpdateLoadingList(false));
-    });
-  };
-}
-
 export function getLatestReview(inventory) {
   return (dispatch, getState) => {
     const auth = getState().auth;
@@ -220,7 +197,6 @@ export function getLatestReview(inventory) {
         latestReview: data
       });
       dispatch(loadInventory(tmp));
-      dispatch(getCriteria(tmp));
     }).then(() => {
       dispatch(onUpdateLoadingList(false));
     });

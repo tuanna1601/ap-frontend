@@ -12,7 +12,8 @@ class HeadlineField extends React.Component {
   }
 
   renderHeadline(fields, headline, index) {
-    const { department, form, headlines, isUpdate, onFieldArrayRemove } = this.props;
+    const { department, form, criteria,
+      headlines, isUpdate, onFieldArrayRemove } = this.props;
     const reviews = headlines && headlines[index] ? headlines[index].reviews : [];
 
     return (
@@ -40,6 +41,7 @@ class HeadlineField extends React.Component {
                 component={ReviewFieldArray}
                 name={`${headline}.reviews`}
                 department={department}
+                criteria={criteria}
                 form={form} reviewed={headlines[index].reviewed}
               />
             </table>
@@ -55,6 +57,7 @@ class HeadlineField extends React.Component {
               </thead>
               <FieldArray
                 department={department}
+                criteria={criteria}
                 name={`${headline}.reviews`}
                 component={ReviewFieldArray}
                 isUpdate={isUpdate}
@@ -102,6 +105,7 @@ class HeadlineField extends React.Component {
 HeadlineField.propTypes = {
   form: PropTypes.string.isRequired,
   headlines: PropTypes.array,
+  criteria: PropTypes.array,
   fields: PropTypes.object.isRequired,
   department: PropTypes.string.isRequired,
   isUpdate: PropTypes.bool,

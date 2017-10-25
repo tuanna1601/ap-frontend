@@ -1,22 +1,19 @@
 import { connect } from 'react-redux';
-import * as _ from 'lodash';
-import { listCriteria } from '@/store/common';
+import { chain } from 'lodash';
 import CriteriaField from './CriteriaField';
 
-const mapStateToProps = (state) => ({
-  options: _.chain(state.common.criteria)
+const mapStateToProps = (state, ownProps) => ({
+  options: chain(ownProps.criteria)
     .orderBy(['name'], ['asc'])
     .map((criteria) => ({
-      value: criteria.id,
+      value: criteria._id || criteria.id,
       label: `${criteria.name}`,
       data: criteria
     }))
     .value(),
 });
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  listOptions: () => dispatch(listCriteria(ownProps.department)),
-  resetOptions: () => dispatch(listCriteria()),
+const mapDispatchToProps = () => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CriteriaField);

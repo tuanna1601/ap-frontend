@@ -62,6 +62,7 @@ class InventoryReviewForm extends Component {
                       department={department}
                       form={form}
                       text={initialValues.text}
+                      criteria={criteria}
                     />
                   </table>
                   <h3>Headline</h3>
@@ -69,8 +70,9 @@ class InventoryReviewForm extends Component {
                     <FieldArray
                       name="headlines"
                       form={form}
-                      department={department}
                       component={HeadlineField}
+                      department={department}
+                      criteria={criteria}
                       headlines={initialValues.headlines}
                     />
                   </table>
@@ -79,8 +81,9 @@ class InventoryReviewForm extends Component {
                     <FieldArray
                       name="descriptions"
                       form={form}
-                      department={department}
                       component={DescriptionField}
+                      department={department}
+                      criteria={criteria}
                       descriptions={initialValues.descriptions}
                     />
                   </table>
@@ -91,6 +94,7 @@ class InventoryReviewForm extends Component {
                       name="medias"
                       component={MediaField}
                       department={department}
+                      criteria={criteria}
                       medias={initialValues.medias}
                       isOldMedia
                     />
@@ -119,8 +123,8 @@ class InventoryReviewForm extends Component {
             <div className="box-body">
               {criteria &&
                 <ul>
-                  {_.map(criteria, (criterion) => (
-                    <li key={criterion.id}>{criterion.name}</li>
+                  {_.map(criteria, (criterion, index) => (
+                    <li key={index}>{criterion.name}</li>
                   ))}
                 </ul>}
             </div>
@@ -143,7 +147,7 @@ InventoryReviewForm.propTypes = {
   form: PropTypes.string.isRequired,
   department: PropTypes.string.isRequired,
   initialValues: PropTypes.object,
-  criteria: PropTypes.object.isRequired,
+  criteria: PropTypes.array.isRequired,
 
   onComponentMounted: PropTypes.func.isRequired,
   navigateToList: PropTypes.func.isRequired,

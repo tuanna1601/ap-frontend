@@ -1,7 +1,9 @@
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
+import { reset } from 'redux-form';
 import Alert from 'react-s-alert';
 import { cloneDeep, each, map, find } from 'lodash';
+import { getCurrentStepCriteria, getCurrentStepDepartment } from '@/helpers/helper';
 import InventoryReviewForm from './InventoryReviewForm';
 import {
   reviewInventory, getInventory
@@ -35,10 +37,9 @@ const mapStateToProps = (state, ownProps) => ({
   isLoadingCreate: state.inventory.isLoadingCreate,
   isLoadingList: state.inventory.isLoadingList,
   initialValues: mapReviewedItems(state.inventory.inventories[ownProps.id]),
+  department: getCurrentStepDepartment(state.inventory.inventories[ownProps.id]),
+  criteria: getCurrentStepCriteria(state.inventory.inventories[ownProps.id]),
   enableReinitialize: true,
-  department: state.inventory.inventories[ownProps.id] ?
-    state.inventory.inventories[ownProps.id].department.id : '',
-  criteria: state.inventory.criteria,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -53,6 +54,7 @@ const mapDispatchToProps = (dispatch) => ({
   },
   onSubmit: (values) => dispatch(reviewInventory(values, (data) => {
     Alert.success(`${data.name} đã được duyệt thành công`);
+    dispatch(reset('inventory-review'));
   }))
 });
 

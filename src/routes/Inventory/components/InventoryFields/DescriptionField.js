@@ -12,7 +12,8 @@ class DescriptionField extends React.Component {
   }
 
   renderDescription(fields, description, index) {
-    const { department, form, descriptions, isUpdate, onFieldArrayRemove } = this.props;
+    const { department, form, descriptions, criteria,
+      isUpdate, onFieldArrayRemove } = this.props;
     const reviews = descriptions && descriptions[index] ? descriptions[index].reviews : [];
     return (
       <tr key={description}>
@@ -37,9 +38,11 @@ class DescriptionField extends React.Component {
               </thead>
               <FieldArray
                 department={department}
+                criteria={criteria}
                 name={`${description}.reviews`}
                 component={ReviewFieldArray}
-                form={form} reviewed={descriptions[index].reviewed}
+                reviewed={descriptions[index].reviewed}
+                form={form}
               />
             </table>
           }
@@ -54,6 +57,7 @@ class DescriptionField extends React.Component {
               </thead>
               <FieldArray
                 department={department}
+                criteria={criteria}
                 name={`${description}.reviews`}
                 component={ReviewFieldArray}
                 isUpdate={isUpdate}
@@ -101,6 +105,7 @@ class DescriptionField extends React.Component {
 DescriptionField.propTypes = {
   form: PropTypes.string.isRequired,
   descriptions: PropTypes.array,
+  criteria: PropTypes.array,
   fields: PropTypes.object.isRequired,
   department: PropTypes.string.isRequired,
   isUpdate: PropTypes.bool,
