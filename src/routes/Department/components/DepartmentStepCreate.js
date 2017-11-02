@@ -8,10 +8,10 @@ import Validator from '@/helpers/validator';
 import DepartmentCriteriaFilter from './DepartmentCriteriaFilterContainer';
 
 const clearanceTypes = [{
-  value: 'accept',
+  value: 'accepted',
   label: 'Chấp nhận',
 }, {
-  value: 'reject',
+  value: 'rejected',
   label: 'Từ chối',
 }];
 

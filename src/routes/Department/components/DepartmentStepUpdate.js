@@ -9,10 +9,10 @@ import { FormControl, FormControlSelect } from '@/components/FormControl';
 import DepartmentCriteriaFilter from './DepartmentCriteriaFilterContainer';
 
 const clearanceTypes = [{
-  value: 'accept',
+  value: 'accepted',
   label: 'Chấp nhận',
 }, {
-  value: 'reject',
+  value: 'rejected',
   label: 'Từ chối',
 }];
 
