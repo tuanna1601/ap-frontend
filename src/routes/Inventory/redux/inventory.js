@@ -7,7 +7,6 @@ import * as _ from 'lodash';
 const UPDATE_LOADING_LIST = 'INVENTORY_UPDATE_LOADING_LIST';
 const UPDATE_LOADING_CREATE = 'INVENTORY_UPDATE_LOADING_CREATE';
 const UPDATE_LOADING_UPDATE = 'INVENTORY_UPDATE_LOADING_UPDATE';
-const EDIT = 'INVENTORY_EDIT';
 const RELOAD_LIST = 'INVENTORY_RELOAD_LIST';
 const LOAD = 'INVENTORY_LOAD';
 const LOAD_LATEST_ACCEPTED = 'INVENTORY_LOAD_LATEST_ACCEPTED';
@@ -15,8 +14,12 @@ const LOAD_CRITERIA = 'INVENTORY_LOAD_CRITERIA';
 const SET_CURRENT_PAGE = 'INVENTORY_SET_CURRENT_PAGE';
 const RESET_CURRENT_PAGE = 'INVENTORY_RESET_CURRENT_PAGE';
 const SET_FILTER_QUERY = 'INVENTORY_SET_FILTER_QUERY';
-const AFTER_CREATE = 'INVENTORY_AFTER_CREATE';
-const AFTER_EDIT = 'INVENTORY_AFTER_EDIT';
+const CREATE = 'INVENTORY_CREATE';
+const CREATE_SUCCESS = 'INVENTORY_CREATE_SUCCESS';
+const CREATE_FAIL = 'INVENTORY_CREATE_FAIL';
+const EDIT = 'INVENTORY_EDIT';
+const EDIT_SUCCESS = 'INVENTORY_EDIT_SUCCESS';
+const EDIT_FAIL = 'INVENTORY_EDIT_FAIL';
 const SET_ADS_PREVIEW = 'INVENTORY_SET_ADS_PREVIEW';
 const RESET_ADS_PREVIEW = 'INVENTORY_RESET_ADS_PREVIEW';
 /*
@@ -64,17 +67,12 @@ export function onUpdateLoadingUpdate(isLoading) {
   };
 }
 
-export function afterCreateInventory(inventory) {
+export function afterEditInventory(data) {
   return {
-    type: AFTER_CREATE,
-    inventory
-  };
-}
-
-export function afterEditInventory(inventory) {
-  return {
-    type: AFTER_EDIT,
-    inventory,
+    type: EDIT_SUCCESS,
+    payload: {
+      data,
+    },
   };
 }
 
@@ -241,130 +239,112 @@ export function getLatestAcceptedInventory(inventoryId, callback) {
   };
 }
 
-export function createInventory(formValues, callback) {
-  return (dispatch, getState) => {
-    const auth = getState().auth;
-    if (!auth) {
-      return;
-    }
-
-    dispatch(onUpdateLoadingCreate(true));
-    const formData = new FormData();
-    _.each(formValues, (formValue, key) => {
-      if (formValue instanceof Array) {
-        if (key !== 'medias') {
-          _.each(formValue, (val) => {
-            formData.append(key, val.value);
-          });
-        } else {
-          _.each(formValue, (val) => {
-            if (val.thumbnail) {
-              formData.append('videos', val.value);
-              formData.append('thumbnails', val.thumbnail);
-            } else {
-              formData.append('images', val.value);
-            }
-          });
-        }
+export function createInventory(formValues) {
+  const formData = new FormData();
+  _.each(formValues, (formValue, key) => {
+    if (formValue instanceof Array) {
+      if (key !== 'medias') {
+        _.each(formValue, (val) => {
+          formData.append(key, val.value);
+        });
       } else {
-        formData.append(key, formValue);
+        _.each(formValue, (val) => {
+          if (val.thumbnail) {
+            formData.append('videos', val.value);
+            formData.append('thumbnails', val.thumbnail);
+          } else {
+            formData.append('images', val.value);
+          }
+        });
       }
-    });
-
-    HTTP.postForm(formData, auth, `${__CONFIG__.API.SERVER_URL}/inventories`, dispatch, (data) => {
-      if (callback) {
-        callback(data);
-      }
-      dispatch(afterCreateInventory(data));
-    }).then(() => dispatch(onUpdateLoadingCreate(false)));
-  };
-}
-
-export function editInventory(id) {
+    } else {
+      formData.append(key, formValue);
+    }
+  });
+  const url = '/inventories';
   return {
-    type: EDIT,
-    id,
+    type: CREATE,
+    payload: {
+      request: {
+        url,
+        method: 'POST',
+        data: formData,
+      },
+    },
   };
 }
 
-export function updateInventory(formValues, callback) {
-  return (dispatch, getState) => {
-    const auth = getState().auth;
-    if (!auth) {
-      return;
-    }
-
-    dispatch(onUpdateLoadingUpdate(true));
-
-    const formData = new FormData();
-    let formattedData = _.pick(formValues, ['text', 'headlines', 'medias',
-      'descriptions']);
-    if (formattedData.medias) {
-      formattedData.medias = _.map(formattedData.medias, media => {
-        if (media.type === 'video') {
-          return {
-            path: media.path,
-            _id: media._id
-          };
-        }
-        return media;
-      });
-    }
-    if (formValues.newMedias) {
-      const images = [];
-      const videos = [];
-      const thumbnails = [];
-      _.each(formValues.newMedias, (media) => {
-        if (media.type === 'image') {
-          images.push(media);
-        } else {
-          videos.push(media);
-          thumbnails.push({
-            value: media.thumbnail
-          });
-        }
-      });
-      formattedData = {
-        ...formattedData,
-        images: images.length ? images : undefined,
-        videos: videos.length ? videos : undefined,
-        thumbnails: thumbnails.length ? thumbnails : undefined
-      };
-    }
-    _.each(formattedData, (formValue, key) => {
-      if (key !== 'images' && key !== 'videos' && key !== 'thumbnails') {
-        if (key === 'text') {
-          const formattedValue = _.cloneDeep(formValue);
-          if (formattedValue.reviews) {
-            delete formattedValue.reviews;
-          }
-          if (formattedValue.oldReviews) {
-            delete formattedValue.oldReviews;
-          }
-          formData.append(key, JSON.stringify(formattedValue));
-        } else {
-          const formattedValue = _.map(formValue, value =>
-            Object.assign({}, value, {
-              reviews: undefined,
-              type: undefined
-            }));
-          formData.append(key, JSON.stringify(formattedValue));
-        }
+export function updateInventory(formValues) {
+  const formData = new FormData();
+  let formattedData = _.pick(formValues, ['text', 'headlines', 'medias',
+    'descriptions']);
+  if (formattedData.medias) {
+    formattedData.medias = _.map(formattedData.medias, media => {
+      if (media.type === 'video') {
+        return {
+          path: media.path,
+          _id: media._id
+        };
+      }
+      return media;
+    });
+  }
+  if (formValues.newMedias) {
+    const images = [];
+    const videos = [];
+    const thumbnails = [];
+    _.each(formValues.newMedias, (media) => {
+      if (media.type === 'image') {
+        images.push(media);
       } else {
-        _.each(formValue, (file) => {
-          formData.append(key, file.value);
+        videos.push(media);
+        thumbnails.push({
+          value: media.thumbnail
         });
       }
     });
-    const url = `${__CONFIG__.API.SERVER_URL}/inventories/${formValues.id}`;
-    HTTP.putForm(formData, auth, url, dispatch, (data) => {
-      if (callback) {
-        callback(data);
+    formattedData = {
+      ...formattedData,
+      images: images.length ? images : undefined,
+      videos: videos.length ? videos : undefined,
+      thumbnails: thumbnails.length ? thumbnails : undefined
+    };
+  }
+  _.each(formattedData, (formValue, key) => {
+    if (key !== 'images' && key !== 'videos' && key !== 'thumbnails') {
+      if (key === 'text') {
+        const formattedValue = _.cloneDeep(formValue);
+        if (formattedValue.reviews) {
+          delete formattedValue.reviews;
+        }
+        if (formattedValue.oldReviews) {
+          delete formattedValue.oldReviews;
+        }
+        formData.append(key, JSON.stringify(formattedValue));
+      } else {
+        const formattedValue = _.map(formValue, value =>
+          Object.assign({}, value, {
+            reviews: undefined,
+            type: undefined
+          }));
+        formData.append(key, JSON.stringify(formattedValue));
       }
-      dispatch(afterEditInventory(data));
-    }).then(() => {
-      dispatch(onUpdateLoadingUpdate(false));
-    });
+    } else {
+      _.each(formValue, (file) => {
+        formData.append(key, file.value);
+      });
+    }
+  });
+  const url = `/inventories/${formValues.id}`;
+  return {
+    type: EDIT,
+    payload: {
+      request: {
+        url,
+        method: 'PUT',
+        data: formData,
+      },
+    },
   };
 }
 
@@ -636,9 +616,14 @@ export function reducer(state = initialState, action) {
         inventories,
       });
     }
+    case CREATE:
+      return {
+        ...state,
+        isLoadingCreate: true,
+      };
     case LOAD:
-    case AFTER_CREATE: {
-      const inventory = action.inventory;
+    case CREATE_SUCCESS: {
+      const inventory = action.payload ? action.payload.data : undefined;
 
       if (inventory) {
         if (inventory.latestReview) {
@@ -682,11 +667,17 @@ export function reducer(state = initialState, action) {
           inventories: {
             ...state.inventories,
             [inventory.id]: inventory
-          }
+          },
+          isLoadingCreate: false,
         };
       }
       return state;
     }
+    case CREATE_FAIL:
+      return {
+        ...state,
+        isLoadingCreate: false,
+      };
     case LOAD_LATEST_ACCEPTED: {
       const inventory = action.inventory;
       return {
@@ -698,29 +689,35 @@ export function reducer(state = initialState, action) {
       };
     }
     case EDIT: {
-      const editedInventory = Object.assign({}, state.inventories[action.id], {
-        permissions: state.inventories[action.id].permissions ? state.inventories[action.id].permissions : [],
-      });
-      const inventories = Object.assign({}, state.inventories, {
-        [action.id]: editedInventory,
-      });
-      return Object.assign({}, state, {
-        inventories,
-      });
+      return {
+        ...state,
+        isLoadingUpdate: true,
+      };
     }
-    case AFTER_EDIT: {
+    case EDIT_SUCCESS: {
+      const inventory = action.payload ? action.payload.data : undefined;
       // break if not in current view
-      if (!state.inventories[action.inventory.id]) {
+      if (!state.inventories[inventory.id] || !inventory) {
         return state;
       }
-      const inventories = Object.assign({}, state.inventories, {
-        [action.inventory.id]: Object.assign({}, action.inventory, {
+      const inventories = {
+        ...state.inventories,
+        [action.inventory.id]: {
+          ...action.inventory,
           isHighlighted: true,
-        }),
-      });
-      return Object.assign({}, state, {
+        },
+      };
+      return {
+        ...state,
         inventories,
-      });
+        isLoadingUpdate: false,
+      };
+    }
+    case EDIT_FAIL: {
+      return {
+        ...state,
+        isLoadingUpdate: false,
+      };
     }
     case LOAD_CRITERIA:
       return Object.assign({}, state, {

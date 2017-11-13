@@ -167,7 +167,7 @@ InventoryUpdateForm.propTypes = {
 function validateHeadlines(headlines) {
   if (headlines && headlines.length) {
     return headlines.map((headline) => ({
-      value: (new Validator(headline ? headline.value : ''))
+      text: (new Validator(headline ? headline.text : ''))
         .validateRequired()
         .getMessage()
     }));
@@ -200,7 +200,7 @@ function validateMedia(mediaArr) {
 function validateDescriptions(descriptions) {
   if (descriptions && descriptions.length) {
     return descriptions.map((description) => ({
-      value: (new Validator(description ? description.value : ''))
+      text: (new Validator(description ? description.text : ''))
         .validateRequired()
         .getMessage()
     }));

@@ -253,93 +253,71 @@ class InventoryForm extends Component {
         </div>
         <div className="box-body">
           <form className="table-row" onSubmit={handleSubmit}>
-            <Tabs>
-              <Tab title="Kho nguyên liệu quảng cáo">
-                <div className="row">
-                  <div className="col-md-4">
-                    <div className="form-group">
-                      <DepartmentField
-                        id="department" name="department"
-                        label="Đơn vị" hasLabel
-                        params={{ isHidden: false }}
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-4">
-                    <div className="form-group">
-                      <Field
-                        type="text" component={FormControl}
-                        id="name" name="name"
-                        label="Tên kho" hasLabel
-                      />
-                    </div>
-                  </div>
+            <div className="row">
+              <div className="col-md-4">
+                <div className="form-group">
+                  <DepartmentField
+                    id="department" name="department"
+                    label="Đơn vị" hasLabel
+                    params={{ isHidden: false }}
+                  />
                 </div>
-                <div className="row">
-                  <div className="col-xs-12">
-                    <div className="form-group">
-                      <Field
-                        type="text" component={FormControlTextArea}
-                        id="text" name="text"
-                        label="Text" hasLabel
-                        rows={20}
-                      />
-                    </div>
-                  </div>
+              </div>
+              <div className="col-md-4">
+                <div className="form-group">
+                  <Field
+                    type="text" component={FormControl}
+                    id="name" name="name"
+                    label="Tên kho" hasLabel
+                  />
                 </div>
-              </Tab>
-              <Tab title="Headline">
-                <div className="table-repsonsive">
-                  <table className="table table-condensed table-striped table-bordered table-field-array">
-                    <thead>
-                      <tr>
-                        <th style={{ width: '90%' }}>
-                          Headline
-                        </th>
-                        <th style={{ width: '10%' }}>
-                          &nbsp;
-                        </th>
-                      </tr>
-                    </thead>
-                    <FieldArray name="headlines" component={this.renderHeadlines} />
-                  </table>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-xs-12">
+                <div className="form-group">
+                  <Field
+                    type="text" component={FormControlTextArea}
+                    id="text" name="text"
+                    label="Text" hasLabel
+                    rows={20}
+                  />
                 </div>
-              </Tab>
-              <Tab title="Media">
-                <div className="table-repsonsive">
-                  <table className="table table-condensed table-striped table-bordered table-field-array">
-                    <thead>
-                      <tr>
-                        <th colSpan={2} style={{ width: '90%' }}>
-                          Media
-                        </th>
-                        <th style={{ width: '10%' }}>
-                          &nbsp;
-                        </th>
-                      </tr>
-                    </thead>
-                    <FieldArray name="medias" component={this.renderMediaArr} />
-                  </table>
-                </div>
-              </Tab>
-              <Tab title="Description">
-                <div className="table-repsonsive">
-                  <table className="table table-condensed table-striped table-bordered table-field-array">
-                    <thead>
-                      <tr>
-                        <th style={{ width: '90%' }}>
-                          Description
-                        </th>
-                        <th style={{ width: '10%' }}>
-                          &nbsp;
-                        </th>
-                      </tr>
-                    </thead>
-                    <FieldArray name="descriptions" component={this.renderDescriptions} />
-                  </table>
-                </div>
-              </Tab>
-            </Tabs>
+              </div>
+            </div>
+            <div className="table-repsonsive">
+              <table className="table table-condensed table-striped table-bordered table-field-array">
+                <thead>
+                  <tr>
+                    <th style={{ width: '90%' }}>Headline</th>
+                    <th style={{ width: '10%' }}>&nbsp;</th>
+                  </tr>
+                </thead>
+                <FieldArray name="headlines" component={this.renderHeadlines} />
+              </table>
+            </div>
+            <div className="table-repsonsive">
+              <table className="table table-condensed table-striped table-bordered table-field-array">
+                <thead>
+                  <tr>
+                    <th colSpan={2} style={{ width: '90%' }}>Media</th>
+                    <th style={{ width: '10%' }}>&nbsp;</th>
+                  </tr>
+                </thead>
+                <FieldArray name="medias" component={this.renderMediaArr} />
+              </table>
+            </div>
+            <div className="table-repsonsive">
+              <table className="table table-condensed table-striped table-bordered table-field-array">
+                <thead>
+                  <tr>
+                    <th style={{ width: '90%' }}>Description</th>
+                    <th style={{ width: '10%' }}>&nbsp;</th>
+                  </tr>
+                </thead>
+                <FieldArray name="descriptions" component={this.renderDescriptions} />
+              </table>
+            </div>
             <div className="col-xs-12">
               <button className="btn btn-success btn-flat" type="submit" disabled={submitting || isLoading}>
                 {isLoading ? <i className="fa fa-refresh fa-spin" /> : <i className="fa fa-save" />}
