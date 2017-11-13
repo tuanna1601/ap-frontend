@@ -2,13 +2,14 @@ import { applyMiddleware, compose, createStore } from 'redux';
 import { routerMiddleware } from 'react-router-redux';
 import { createResponsiveStoreEnhancer } from 'redux-responsive';
 import thunk from 'redux-thunk';
+import axios from '@/helpers/axios';
 import { makeRootReducer } from './reducers';
 
 export default (initialState = {}, history) => {
   // ======================================================
   // Middleware Configuration
   // ======================================================
-  const middleware = [thunk, routerMiddleware(history)];
+  const middleware = [thunk, routerMiddleware(history), axios];
 
   // ======================================================
   // Store Enhancers
@@ -38,6 +39,7 @@ export default (initialState = {}, history) => {
   if (module.hot) {
     module.hot.accept('./reducers', () => {
       const reducers = require('./reducers').default;
+
       store.replaceReducer(reducers(store.asyncReducers));
     });
   }
