@@ -98,6 +98,10 @@ const Sidebar = ({ isLoggedIn, toggleMenu, tree }) => (
                 <i className="fa fa-pencil" />
                 <span>Tạo kho</span>
               </SidebarItem>
+              <SidebarItem treeId="inventory.taboo" to="/taboo">
+                <i className="fa fa-ban" />
+                <span>Quản lý từ cấm</span>
+              </SidebarItem>
             </ul>
           </SidebarTree>
           <SidebarTree treeId="ordinate" className={tree.ordinate ? 'treeview active' : 'treeview'}>
