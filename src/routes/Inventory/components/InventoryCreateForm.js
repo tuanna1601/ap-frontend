@@ -373,7 +373,7 @@ function validateMedia(mediaArr) {
         return {
           value: (new Validator(media.value ? media.value : ''))
             .validateRequired()
-            .validateURL('files.topica.edu.vn')
+            .validateURL(['files.topica.edu.vn', 'files.topica.asia'])
             .getMessage(),
           thumbnail: (new Validator(media.thumbnail))
             .validateRequired()
