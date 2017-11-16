@@ -621,7 +621,56 @@ export function reducer(state = initialState, action) {
         ...state,
         isLoadingCreate: true,
       };
-    case LOAD:
+    case LOAD: {
+      const inventory = action.inventory;
+
+      if (inventory) {
+        if (inventory.latestReview) {
+          const groupReviews = _.groupBy(inventory.latestReview.comments, 'target');
+          if (groupReviews.text) {
+            inventory.text.oldReviews = groupReviews.text;
+          }
+          if (groupReviews.media) {
+            _.each(inventory.medias, (media, index) => {
+              inventory.medias[index].reviews = [];
+              _.each(groupReviews.media, review => {
+                if (media._id === review.targetId) {
+                  inventory.medias[index].reviews.push(review);
+                }
+              });
+            });
+          }
+          if (groupReviews.headline) {
+            _.each(inventory.headlines, (headline, index) => {
+              inventory.headlines[index].reviews = [];
+              _.each(groupReviews.headline, review => {
+                if (headline._id === review.targetId) {
+                  inventory.headlines[index].reviews.push(review);
+                }
+              });
+            });
+          }
+          if (groupReviews.description) {
+            _.each(inventory.descriptions, (description, index) => {
+              inventory.descriptions[index].reviews = [];
+              _.each(groupReviews.description, review => {
+                if (description._id === review.targetId) {
+                  inventory.descriptions[index].reviews.push(review);
+                }
+              });
+            });
+          }
+        }
+        return {
+          ...state,
+          inventories: {
+            ...state.inventories,
+            [inventory.id]: inventory
+          }
+        };
+      }
+      return state;
+    }
     case CREATE_SUCCESS: {
       const inventory = action.payload ? action.payload.data : undefined;
 
