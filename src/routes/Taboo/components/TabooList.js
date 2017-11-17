@@ -39,9 +39,6 @@ class TabooList extends Component {
                 .map((taboo) =>
                   <Tr key={taboo.id} className={taboo.isHighlighted ? 'highlighted table-row' : 'table-row'}>
                     <Td column="name" className="table-col">{taboo.name}</Td>
-                    <Td column="department" className="table-col text-center">
-                      {taboo.department ? taboo.department.name : 'N/A'}
-                    </Td>
                     <Td column="action" className="table-col">
                       <div className="button-list">
                         <button
