@@ -751,8 +751,8 @@ export function reducer(state = initialState, action) {
       }
       const inventories = {
         ...state.inventories,
-        [action.inventory.id]: {
-          ...action.inventory,
+        [inventory.id]: {
+          ...inventory,
           isHighlighted: true,
         },
       };
