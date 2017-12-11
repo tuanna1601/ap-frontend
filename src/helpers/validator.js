@@ -103,7 +103,7 @@ export default class Validator {
     if (!this.value) {
       this.message = 'Chưa chọn file';
       this.hasError = true;
-    } else if (ext.indexOf(this.value.name.split('.').pop()) < 0) {
+    } else if (ext.indexOf(this.value.name.split('.').pop().toLowerCase()) < 0) {
       this.message = 'Sai định dạng file';
       this.hasError = true;
     }
