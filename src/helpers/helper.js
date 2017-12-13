@@ -140,8 +140,9 @@ export function getCurrentStepDepartment(inventory) {
     return '';
   }
   const { steps, currentStep } = inventory;
-  if (steps && steps.length) {
-    return steps[currentStep].reviewingDepartment.id;
+  const step = _.find(steps, st => st.order === currentStep);
+  if (step) {
+    return step.reviewingDepartment.id;
   }
   return '';
 }
@@ -151,8 +152,9 @@ export function getCurrentStepCriteria(inventory) {
     return [];
   }
   const { steps, currentStep } = inventory;
-  if (steps && steps.length) {
-    return steps[currentStep].criteria;
+  const step = _.find(steps, st => st.order === currentStep);
+  if (step) {
+    return step.criteria;
   }
   return [];
 }
