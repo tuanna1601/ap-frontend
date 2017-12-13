@@ -138,6 +138,27 @@ const Sidebar = ({ isLoggedIn, toggleMenu, tree }) => (
               </SidebarItem>
             </ul>
           </SidebarTree>
+          <SidebarTree treeId="report" className={tree.report ? 'treeview active' : 'treeview'}>
+            <a onClick={() => toggleMenu('report')}>
+              <i className="fa fa-book" />
+              <span>
+                Báo cáo
+              </span>
+              <span className="pull-right-container">
+                <i className="fa fa-angle-left pull-right" />
+              </span>
+            </a>
+            <ul className="treeview-menu">
+              <SidebarItem treeId="report.inventory" to="/report">
+                <i className="fa fa-cubes" />
+                <span>Báo cáo kho</span>
+              </SidebarItem>
+              <SidebarItem treeId="report.ads" to="/report/ads">
+                <i className="fa fa-facebook-square" />
+                <span>Báo cáo Ads</span>
+              </SidebarItem>
+            </ul>
+          </SidebarTree>
         </ul>
       }
     </div>
