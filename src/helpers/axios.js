@@ -24,11 +24,18 @@ const options = {
     ],
     response: [
       {
-        success: ({ dispatch }, response) => response,
+        success: ({ dispatch }, response) => {
+          // Return JSON data
+          if (response.data) {
+            return response.data;
+          }
+          return response;
+        },
         error: ({ dispatch }, error) => {
+          // console.log(error.response);
           const err = typeof error === 'string' ? { message: error } : error.response.data;
           Alert.error(err.message);
-          return Promise.reject(error);
+          Promise.reject(error);
         },
       },
     ],
