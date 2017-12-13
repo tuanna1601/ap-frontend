@@ -16,7 +16,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   setFilterQuery: (query) => dispatch(setFilterQuery(query)),
   listInventories: () => dispatch(listReviewerInventories()),
-  resetInventories: () => dispatch(reloadList([])),
+  resetInventories: () => dispatch(reloadList([], 0)),
   goToPage: (page) => dispatch(goToPage(page)),
   resetCurrentPage: () => dispatch(resetCurrentPage()),
   onViewDetail: (inventory) => {

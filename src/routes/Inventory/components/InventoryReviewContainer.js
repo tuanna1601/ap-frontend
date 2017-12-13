@@ -6,7 +6,7 @@ import { cloneDeep, each, map, find } from 'lodash';
 import { getCurrentStepCriteria, getCurrentStepDepartment } from '@/helpers/helper';
 import InventoryReviewForm from './InventoryReviewForm';
 import {
-  reviewInventory, getInventory
+  reviewInventory, getInventory, reloadList,
 } from '../redux/inventory';
 
 const mapReviewedItems = (inventory) => {
@@ -46,6 +46,7 @@ const mapDispatchToProps = (dispatch) => ({
   navigateToList: () => {
     dispatch(push('/inventory/reviewer?status=assigned'));
   },
+  resetInventories: () => dispatch(reloadList([], 0)),
   onComponentMounted: (id) => {
     dispatch(getInventory(id));
   },
@@ -55,7 +56,8 @@ const mapDispatchToProps = (dispatch) => ({
   onSubmit: (values) => dispatch(reviewInventory(values, (data) => {
     Alert.success(`${data.name} đã được duyệt thành công`);
     dispatch(reset('inventory-review'));
-  }))
+    dispatch(push('/inventory/reviewer?status=assigned'));
+  })),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(InventoryReviewForm);

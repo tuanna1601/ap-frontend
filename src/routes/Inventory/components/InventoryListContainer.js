@@ -43,10 +43,15 @@ const mapDispatchToProps = (dispatch) => ({
         department={inventory.department}
       />
     );
-    dispatch(showForm('Phân công duyệt kho', AssignForm, (values) => {
-      dispatch(assignInventory(values), (data) => {
-        Alert.success(`${data.name} đã được phân công`);
-      });
+    dispatch(showForm('Phân công duyệt kho', AssignForm, async (values) => {
+      try {
+        const data = await dispatch(assignInventory(values));
+        if (data && data.payload && data.payload.name) {
+          Alert.success(`${data.payload.name} đã được phân công`);
+        }
+      } catch (err) {
+        Alert.danger(JSON.stringify(err));
+      }
     }));
   }
 });

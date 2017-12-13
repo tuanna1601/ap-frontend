@@ -43,7 +43,7 @@ class InventoryAssignForm extends Component {
         </td>
         <td>
           <UserField
-            id={`steps[${index}].reviewer`} name={`steps[${index}].reviewer`}
+            id={`steps[${index}].reviewer`} name={`steps[${index}].reviewer.id`}
             label="Người duyệt"
             userRole="reviewer"
             department={department}

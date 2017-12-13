@@ -5,7 +5,6 @@ import {
 } from '@/components/FormControl';
 import { DepartmentField } from '@/components/Field';
 import Validator from '@/helpers/validator';
-import { Tab, Tabs } from '@/components/Tabs';
 import navConfirm from '@/components/HighOrder/navConfirm';
 
 const mediaTypeOptions = [
@@ -108,7 +107,6 @@ class InventoryForm extends Component {
             group={`${this.props.form}.media`}
             index={index}
             label="Loại Media" hasLabel
-            autoSelect={false}
           />
         </td>
         <td style={{ width: '60%' }}>
@@ -369,21 +367,21 @@ function validateHeadlines(headlines) {
 function validateMedia(mediaArr) {
   if (mediaArr && mediaArr.length) {
     return mediaArr.map((media) => {
-      if (media && media.value) {
+      if (media) {
         return {
-          value: (new Validator(media.value ? media.value : ''))
+          value: (new Validator(media.value))
             .validateRequired()
             .validateURL(['files.topica.edu.vn', 'files.topica.asia'])
             .getMessage(),
           thumbnail: (new Validator(media.thumbnail))
             .validateRequired()
+            .validateURL(['files.topica.edu.vn', 'files.topica.asia'])
             .getMessage(),
         };
       }
       return 'Chưa chọn file';
     });
   }
-
 
   return 'Cần ít nhất 1 phần từ';
 }

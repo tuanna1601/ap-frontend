@@ -41,43 +41,54 @@ const mapDispatchToProps = (dispatch) => ({
   onSubmit: async (values) => {
     try {
       const data = await dispatch(updateInventory(values));
-      if (data) {
-        Alert.success(`${data.name} đã được sửa thành công`);
+      if (data && data.payload && data.payload.name) {
+        Alert.success(`${data.payload.name} đã được sửa thành công`);
+        dispatch(push('/inventory'));
+      }
+      if (data && data.payload && typeof data.payload === 'string') {
+        Alert.warning(data.payload);
       }
     } catch (err) {
-      const errData = err.error.response.data.data;
-      const error = {};
-      const groupData = groupBy(errData, 'name');
+      if (err && err.error &&
+        err.error.response &&
+        err.error.response.data &&
+        err.error.response.data.dta) {
+        const errData = err.error.response.data.data;
+        const error = {};
+        const groupData = groupBy(errData, 'name');
 
-      each(groupData, (group, key) => {
-        if (key === 'text') {
-          const taboos = chain(group)
-            .map((item) => item.text)
-            .uniq()
-            .value()
-            .join(', ');
-          error.text = {
-            text: `Không được chứa các từ "${taboos}"`,
-          };
-        } else {
-          const groupByIndex = groupBy(group, 'index');
-          each(groupByIndex, (items, index) => {
-            const taboos = chain(items)
-              .map(item => item.text)
+        each(groupData, (group, key) => {
+          if (key === 'text') {
+            const taboos = chain(group)
+              .map((item) => item.text)
               .uniq()
               .value()
               .join(', ');
-            if (!error[key]) {
-              error[key] = [];
-            }
-            error[key][index] = {
+            error.text = {
               text: `Không được chứa các từ "${taboos}"`,
             };
-          });
-        }
-        return group;
-      });
-      throw new SubmissionError(error);
+          } else {
+            const groupByIndex = groupBy(group, 'index');
+            each(groupByIndex, (items, index) => {
+              const taboos = chain(items)
+                .map(item => item.text)
+                .uniq()
+                .value()
+                .join(', ');
+              if (!error[key]) {
+                error[key] = [];
+              }
+              error[key][index] = {
+                text: `Không được chứa các từ "${taboos}"`,
+              };
+            });
+          }
+          return group;
+        });
+        throw new SubmissionError(error);
+      } else {
+        Alert.danger(JSON.stringify(err));
+      }
     }
   }
 });

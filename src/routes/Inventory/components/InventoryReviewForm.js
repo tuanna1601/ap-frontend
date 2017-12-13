@@ -1,9 +1,8 @@
 import React, { Component, PropTypes } from 'react';
-import { reduxForm, Field, FieldArray } from 'redux-form';
+import { reduxForm, FieldArray } from 'redux-form';
 
 import * as _ from 'lodash';
-import { FormControlSelect } from '@/components/FormControl';
-import { generateInventoryStatusOptions } from '@/helpers/helper';
+import { generateInventoryStatusLabel } from '@/helpers/helper';
 import navConfirm from '@/components/HighOrder/navConfirm';
 
 import TextField from './InventoryFields/TextField';
@@ -25,6 +24,16 @@ class InventoryReviewForm extends Component {
     }
   }
 
+  componentWillUnmount() {
+    this.props.resetInventories();
+  }
+
+  getCurrentStep(inventory) {
+    const { currentStep } = inventory;
+    const step = _.find(inventory.steps, st => st.order === currentStep);
+    return step;
+  }
+
   render() {
     const { handleSubmit, isLoadingCreate, isLoadingList, submitting,
       pristine, reset, criteria, initialValues, form, department } = this.props;
@@ -44,16 +53,11 @@ class InventoryReviewForm extends Component {
                 <form className="table-row" onSubmit={handleSubmit}>
                   <div className="row">
                     <div className="col-md-6">
-                      <b>Tên kho:</b> {initialValues.name}
-                    </div>
-                    <div className="col-md-6">
-                      <Field
-                        component={FormControlSelect}
-                        options={generateInventoryStatusOptions()}
-                        id="status" name="status"
-                        label="Trạng thái"
-                        disabled
-                      />
+                      <p><b>Tên kho:</b> {initialValues.name}</p>
+                      <p><b>Đơn vị:</b> {initialValues.department.name}</p>
+                      <p><b>Bước duyệt:</b> {initialValues.currentStep + 1}</p>
+                      <p><b>Trạng thái bước duyệt:</b>
+                        {generateInventoryStatusLabel(this.getCurrentStep(initialValues).status)}</p>
                     </div>
                   </div>
                   <h3>Text</h3>
@@ -151,6 +155,7 @@ InventoryReviewForm.propTypes = {
 
   onComponentMounted: PropTypes.func.isRequired,
   navigateToList: PropTypes.func.isRequired,
+  resetInventories: PropTypes.func.isRequired,
 };
 
 export default reduxForm()(navConfirm(InventoryReviewForm));

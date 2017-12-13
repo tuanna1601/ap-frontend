@@ -179,7 +179,7 @@ function validateHeadlines(headlines) {
 function validateMedia(mediaArr) {
   if (mediaArr && mediaArr.length) {
     return mediaArr.map((media) => {
-      if (media && media.value) {
+      if (media) {
         return {
           value: (new Validator(media.value))
             .validateRequired()
@@ -187,6 +187,7 @@ function validateMedia(mediaArr) {
             .getMessage(),
           thumbnail: (new Validator(media.thumbnail))
             .validateRequired()
+            .validateURL(['files.topica.edu.vn', 'files.topica.asia'])
             .getMessage(),
         };
       }

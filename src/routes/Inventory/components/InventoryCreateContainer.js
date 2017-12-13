@@ -21,8 +21,8 @@ const mapDispatchToProps = (dispatch) => ({
   onSubmit: async (values) => {
     try {
       const res = await dispatch(createInventory(values));
-      const inventory = res.payload ? res.payload.data : undefined;
-      if (inventory) {
+      const inventory = res.payload ? res.payload : undefined;
+      if (inventory && inventory.name) {
         Alert.success(`${inventory.name} đã được tạo thành công`);
         dispatch(reset('inventory-create'));
       }

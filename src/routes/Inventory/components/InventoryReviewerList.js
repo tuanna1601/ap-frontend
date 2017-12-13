@@ -39,6 +39,7 @@ class InventoryReviewerList extends Component {
                 <Th column="version">Version</Th>
                 <Th column="created">Ngày tạo</Th>
                 <Th column="department">Đơn vị</Th>
+                <Th column="currentStep">Bước duyệt hiện tại</Th>
                 <Th column="status">Trạng thái</Th>
                 <Th column="action">Thao tác</Th>
               </Thead>
@@ -54,6 +55,9 @@ class InventoryReviewerList extends Component {
                     <Td column="department" className="table-col text-center">
                       {inventory.department.name}
                     </Td>
+                    <Td column="currentStep" className="table-col text-center">
+                      {inventory.currentStep + 1}
+                    </Td>
                     <Td column="status" className="table-col">
                       <table className="table table-condensed">
                         <thead>
@@ -61,6 +65,7 @@ class InventoryReviewerList extends Component {
                             <th style={{ width: '15%' }}>STT</th>
                             <th>Tên bước</th>
                             <th>Trạng thái</th>
+                            <th>Người duyệt</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -68,9 +73,13 @@ class InventoryReviewerList extends Component {
                             .orderBy(['order', 'asc'])
                             .map((step, index) => (
                               <tr key={index}>
-                                <td>{index + 1}</td>
-                                <td>{step.title}</td>
-                                <td>{generateInventoryStatusLabel(step.status)}</td>
+                                <td className="text-center">{index + 1}</td>
+                                <td className="text-center">{step.title}</td>
+                                <td className="text-center">{generateInventoryStatusLabel(step.status)}</td>
+                                <td className="text-center">
+                                  {step.reviewer && step.reviewer.name}
+                                  {!step.reviewer && 'N/A'}
+                                </td>
                               </tr>
                             ))
                             .value()}

@@ -420,33 +420,53 @@ export function reviewInventory(formValues, callback) {
   };
 }
 
-export function assignInventory(values, callback) {
-  return (dispatch, getState) => {
-    const auth = getState().auth;
-    if (!auth) {
-      return;
-    }
+export function assignInventory(values) {
+  const formattedValues = _.pick(values, ['inventory']);
 
-    dispatch(onUpdateLoadingUpdate(true));
-
-    const formattedValues = _.pick(values, ['inventory']);
-
-    formattedValues.steps = _.map(values.steps, step => ({
-      _id: step._id,
-      reviewer: step.reviewer,
-    }));
-
-    const url = `${__CONFIG__.API.SERVER_URL}/inventories/assign/reviewer`;
-    HTTP.post(formattedValues, auth, url, dispatch, (data) => {
-      if (callback) {
-        callback(data);
-      }
-      dispatch(afterEditInventory(data));
-    }).then(() => {
-      dispatch(onUpdateLoadingUpdate(false));
-    });
+  formattedValues.steps = _.map(values.steps, step => ({
+    _id: step._id,
+    reviewer: step.reviewer ? step.reviewer.id : undefined,
+  }));
+  const url = `${__CONFIG__.API.SERVER_URL}/inventories/assign/reviewer`;
+  return {
+    type: EDIT,
+    payload: {
+      request: {
+        url,
+        method: 'POST',
+        data: formattedValues,
+      },
+    },
   };
 }
+
+// export function assignInventory(values, callback) {
+//   return (dispatch, getState) => {
+//     const auth = getState().auth;
+//     if (!auth) {
+//       return;
+//     }
+
+//     dispatch(onUpdateLoadingUpdate(true));
+
+//     const formattedValues = _.pick(values, ['inventory']);
+
+//     formattedValues.steps = _.map(values.steps, step => ({
+//       _id: step._id,
+//       reviewer: step.reviewer ? step.reviewer.id : undefined,
+//     }));
+
+//     const url = `${__CONFIG__.API.SERVER_URL}/inventories/assign/reviewer`;
+//     HTTP.post(formattedValues, auth, url, dispatch, (data) => {
+//       if (callback) {
+//         callback(data);
+//       }
+//       dispatch(afterEditInventory(data));
+//     }).then(() => {
+//       dispatch(onUpdateLoadingUpdate(false));
+//     });
+//   };
+// }
 
 export function goToPage(page, isOrdinator, isReviewer) {
   return (dispatch) => {
@@ -672,7 +692,7 @@ export function reducer(state = initialState, action) {
       return state;
     }
     case CREATE_SUCCESS: {
-      const inventory = action.payload ? action.payload.data : undefined;
+      const inventory = action.payload;
 
       if (inventory) {
         if (inventory.latestReview) {
@@ -720,7 +740,10 @@ export function reducer(state = initialState, action) {
           isLoadingCreate: false,
         };
       }
-      return state;
+      return {
+        ...state,
+        isLoadingCreate: false,
+      };
     }
     case CREATE_FAIL:
       return {
@@ -744,10 +767,13 @@ export function reducer(state = initialState, action) {
       };
     }
     case EDIT_SUCCESS: {
-      const inventory = action.payload ? action.payload.data : undefined;
+      const inventory = action.payload ? action.payload : undefined;
       // break if not in current view
-      if (!state.inventories[inventory.id] || !inventory) {
-        return state;
+      if (!inventory || !state.inventories[inventory.id]) {
+        return {
+          ...state,
+          isLoadingUpdate: false,
+        };
       }
       const inventories = {
         ...state.inventories,
