@@ -76,7 +76,7 @@ export function afterEditInventory(data) {
   };
 }
 
-export function reloadList(inventories, count) {
+export function reloadList(inventories, count = 0) {
   return {
     type: RELOAD_LIST,
     inventories,
@@ -632,9 +632,14 @@ export function reducer(state = initialState, action) {
         Object.assign({}, hashInventories, {
           [inventory.id]: inventory,
         }), {});
-      return Object.assign({}, state, {
+      return {
+        ...state,
         inventories,
-      });
+        pagination: {
+          ...state.pagination,
+          count: action.count,
+        },
+      };
     }
     case CREATE:
       return {

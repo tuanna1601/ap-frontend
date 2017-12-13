@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { chain } from 'lodash';
 import moment from 'moment';
 import Reactable from 'reactable';
+import renderPagination from '@/helpers/pagination';
 import { generateInventoryStatusLabel } from '@/helpers/helper';
 
 import InventoryFilter from './InventoryFilterContainer';
@@ -22,6 +23,8 @@ class InventoryReviewerList extends Component {
   }
 
   render() {
+    const { pagination, goToPage } = this.props;
+    const { count, limit, page } = pagination;
     return (
       <div className="box box-warning">
         <div className="box-header with-border">
@@ -105,6 +108,9 @@ class InventoryReviewerList extends Component {
             </Table>
           </div>
         </div>
+        <div className="box-footer clearfix">
+          {renderPagination(count, limit, page, goToPage)}
+        </div>
       </div>
     );
   }
@@ -122,6 +128,7 @@ InventoryReviewerList.propTypes = {
   isOrdinator: PropTypes.bool,
   isLoadingList: PropTypes.bool.isRequired,
   onReview: PropTypes.func.isRequired,
+  goToPage: PropTypes.func.isRequired,
 };
 
 export default InventoryReviewerList;

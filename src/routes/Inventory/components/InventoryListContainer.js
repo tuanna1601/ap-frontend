@@ -17,12 +17,12 @@ const mapStateToProps = (state) => ({
   pagination: state.inventory.pagination,
 });
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = (dispatch, ownProps) => ({
   setFilterQuery: (query) => dispatch(setFilterQuery(query)),
   listInventories: () => dispatch(listInventories()),
   listOrdinatorInventories: () => dispatch(listOrdinatorInventories()),
   resetInventories: () => dispatch(reloadList([])),
-  goToPage: (page) => dispatch(goToPage(page)),
+  goToPage: (page) => dispatch(goToPage(page, ownProps.isOrdinator)),
   resetCurrentPage: () => dispatch(resetCurrentPage()),
   onEdit: (inventory) => {
     dispatch(push(`/inventory/update?id=${inventory.id}`));

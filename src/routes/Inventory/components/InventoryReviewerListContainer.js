@@ -17,7 +17,7 @@ const mapDispatchToProps = (dispatch) => ({
   setFilterQuery: (query) => dispatch(setFilterQuery(query)),
   listInventories: () => dispatch(listReviewerInventories()),
   resetInventories: () => dispatch(reloadList([], 0)),
-  goToPage: (page) => dispatch(goToPage(page)),
+  goToPage: (page) => dispatch(goToPage(page, false, true)),
   resetCurrentPage: () => dispatch(resetCurrentPage()),
   onViewDetail: (inventory) => {
     dispatch(push(`/inventory/detail?id=${inventory.id}`));
