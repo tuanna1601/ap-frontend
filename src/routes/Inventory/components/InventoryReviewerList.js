@@ -3,7 +3,7 @@ import { chain } from 'lodash';
 import moment from 'moment';
 import Reactable from 'reactable';
 import renderPagination from '@/helpers/pagination';
-import { generateInventoryStatusLabel } from '@/helpers/helper';
+import { generateInventoryStatusLabel, generateInventoryStatus } from '@/helpers/helper';
 
 import InventoryFilter from './InventoryFilterContainer';
 
@@ -91,7 +91,7 @@ class InventoryReviewerList extends Component {
                     </Td>
                     <Td column="action" className="table-col button-list">
                       <div className="button-list">
-                        {inventory.status !== 'accepted' &&
+                        {generateInventoryStatus(inventory) !== 'accepted' &&
                           <button
                             className="btn btn-xs btn-success btn-flat"
                             onClick={() => this.props.onReview(inventory)}
