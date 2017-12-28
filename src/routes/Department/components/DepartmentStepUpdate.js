@@ -16,6 +16,14 @@ const clearanceTypes = [{
   label: 'Từ chối',
 }];
 
+const clearanceAfterTypes = [{
+  value: 'd',
+  label: 'Ngày',
+}, {
+  value: 'h',
+  label: 'Giờ',
+}];
+
 const generateCriteriaOptions = (criteria) => map(criteria, item => ({
   value: item.id,
   label: item.name,
@@ -47,15 +55,29 @@ const DepartmentStepUpdate = ({ form, handleSubmit, submitting, criteria }) => (
           label="Đơn vị duyệt"
           hasLabel
         />
-        <Field
-          type="number"
-          component={FormControl}
-          name="autoClearanceAfter"
-          id="autoClearanceAfter"
-          suffix={<span className="input-group-addon">ngày</span>}
-          label="Tự động xử lý sau"
-          hasLabel
-        />
+        <div className="row">
+          <div className="col-md-8">
+            <Field
+              type="number"
+              component={FormControl}
+              name="autoClearanceAfter"
+              id="autoClearanceAfter"
+              label="Tự động xử lý sau"
+              hasLabel
+            />
+          </div>
+          <div className="col-md-4">
+            <Field
+              component={FormControlSelect}
+              name="autoClearanceAfterType"
+              id="autoClearanceAfterType"
+              options={clearanceAfterTypes}
+              label="Ngày/Giờ"
+              hasLabel
+              autoSelect
+            />
+          </div>
+        </div>
         <Field
           component={FormControlSelect}
           name="autoClearanceType"

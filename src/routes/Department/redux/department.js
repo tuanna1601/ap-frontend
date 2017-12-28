@@ -218,8 +218,11 @@ export function createStep(step, callback) {
 
     dispatch(onUpdateLoadingCreate(true));
 
-    const formattedValue = Object.assign({}, step, {
-      criteria: map(step.criteria, c => c.value),
+    const formattedStep = pick(step, 'autoClearanceAfter', 'autoClearanceType', 'autoClearanceAfterType',
+    'criteria', 'department', 'notification', 'notificationType', 'reviewingDepartment', 'title');
+
+    const formattedValue = Object.assign({}, formattedStep, {
+      criteria: map(formattedStep.criteria, c => c.value),
     });
     HTTP.post(formattedValue, auth, `${__CONFIG__.API.SERVER_URL}/steps`, dispatch, (data) => {
       if (callback) {
@@ -241,7 +244,7 @@ export function updateStep(step, callback) {
 
     dispatch(onUpdateLoadingUpdate(true));
 
-    const formattedValue = pick(step, 'autoClearanceAfter', 'autoClearanceType',
+    const formattedValue = pick(step, 'autoClearanceAfter', 'autoClearanceType', 'autoClearanceAfterType',
       'notification', 'notificationType', 'reviewingDepartment', 'title');
     formattedValue.criteria = map(step.criteria, c => c.value);
     HTTP.put(formattedValue, auth, `${__CONFIG__.API.SERVER_URL}/steps/${step.id}`, dispatch, (data) => {
