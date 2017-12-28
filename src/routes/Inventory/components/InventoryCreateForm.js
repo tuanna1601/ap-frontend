@@ -257,6 +257,7 @@ class InventoryForm extends Component {
                   <DepartmentField
                     id="department" name="department"
                     params={{ isHidden: 'false' }}
+                    label="Đơn vị" hasLabel
                   />
                 </div>
               </div>
