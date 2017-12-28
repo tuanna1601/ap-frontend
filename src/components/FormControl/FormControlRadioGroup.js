@@ -23,7 +23,7 @@ class FormControlRadioGroup extends Component {
         </label>
         <div className="radio">
           {map(options, (option, index) => (
-            <label key={index} style={{ paddingLeft: '22px' }} htmlFor={`${name}[${index}]`}>
+            <label key={index} style={{ paddingLeft: '22px', width: '100%' }} htmlFor={`${name}[${index}]`}>
               <div className="radio-wrapper">
                 <input
                   type="radio"
