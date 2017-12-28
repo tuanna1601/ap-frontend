@@ -34,17 +34,29 @@ const getImageLabel = (md) => (
       style={{ maxWidth: '50%' }}
       className="img-thumbnail"
     />
+    <input
+      type="text"
+      className="form-control"
+      value={md.path} readOnly
+    />
   </div>
 );
 
 const getVideoLabel = (md) => (
-  <video
-    controls
-    style={{ maxWidth: '50%' }}
-    poster={md.thumbnail}
-  >
-    <source src={md.path} />
-  </video>
+  <div>
+    <video
+      controls
+      style={{ maxWidth: '50%' }}
+      poster={md.thumbnail}
+    >
+      <source src={md.path} />
+    </video>
+    <input
+      type="text"
+      className="form-control"
+      value={md.path} readOnly
+    />
+  </div>
 );
 
 class InventoryAdsCreateForm extends Component {
