@@ -20,4 +20,4 @@ pipelines:
           script:
             - npm install
             - npm run deploy:prod
-            - scp -rf ./dist/* SERVER_DIST
+            - scp -r ./dist/* SERVER_DIST
