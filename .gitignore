@@ -10,4 +10,3 @@ coverage
 .idea/
 .vscode/
 config-development.js
-config-production.js
