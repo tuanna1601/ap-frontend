@@ -287,7 +287,9 @@ class InventoryForm extends Component {
               <table className="table table-condensed table-striped table-bordered table-field-array">
                 <thead>
                   <tr>
-                    <th style={{ width: '90%' }}>Headline</th>
+                    <th className="text-warning" style={{ width: '90%' }}>
+                      Headline
+                    </th>
                     <th style={{ width: '10%' }}>&nbsp;</th>
                   </tr>
                 </thead>
@@ -298,7 +300,9 @@ class InventoryForm extends Component {
               <table className="table table-condensed table-striped table-bordered table-field-array">
                 <thead>
                   <tr>
-                    <th colSpan={2} style={{ width: '90%' }}>Media</th>
+                    <th className="text-warning" colSpan={2} style={{ width: '90%' }}>
+                      Media
+                    </th>
                     <th style={{ width: '10%' }}>&nbsp;</th>
                   </tr>
                 </thead>
@@ -309,7 +313,9 @@ class InventoryForm extends Component {
               <table className="table table-condensed table-striped table-bordered table-field-array">
                 <thead>
                   <tr>
-                    <th style={{ width: '90%' }}>Description</th>
+                    <th className="text-warning" style={{ width: '90%' }}>
+                      Description
+                    </th>
                     <th style={{ width: '10%' }}>&nbsp;</th>
                   </tr>
                 </thead>
