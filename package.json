@@ -77,7 +77,7 @@
   "author": "David Zukowski <david@zuko.me> (http://zuko.me)",
   "license": "MIT",
   "dependencies": {
-    "admin-lte": "^2.3.6",
+    "admin-lte": "~2.3.6",
     "axios": "^0.17.1",
     "babel-cli": "^6.5.1",
     "babel-core": "^6.3.17",
