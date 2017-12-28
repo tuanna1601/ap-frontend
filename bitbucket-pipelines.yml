@@ -20,4 +20,5 @@ pipelines:
           script:
             - npm install
             - npm run deploy:prod
+            - ssh ubuntu@ap.edumall.vn "rm -rf /home/ubuntu/ads-police-web/dist/*"
             - scp -r ./dist/* ubuntu@ap.edumall.vn:/home/ubuntu/ads-police-web/dist/
