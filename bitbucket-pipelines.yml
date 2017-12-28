@@ -20,4 +20,4 @@ pipelines:
           script:
             - npm install
             - npm run deploy:prod
-            - scp -r ./dist/* SERVER_DIST
+            - scp -r ./dist/* ubuntu@ap.edumall.vn:/home/ubuntu/ads-police-web/dist/
