@@ -35,9 +35,9 @@ class UserList extends React.Component {
           <div className="table-responsive">
             <Table className="table table-striped table-bordered" sortable>
               <Thead>
-                <Th column="id">ID</Th>
                 <Th column="name">Tên</Th>
                 <Th column="email">Email</Th>
+                <Th column="deactivated">Trạng thái</Th>
                 <Th column="dept">Phòng ban</Th>
                 <Th column="action">Thao tác</Th>
               </Thead>
@@ -45,20 +45,31 @@ class UserList extends React.Component {
                 .orderBy(['isHighlighted', 'name'], ['asc', 'asc'])
                 .map((user) =>
                   <Tr key={user.id} className={user.isHighlighted ? 'highlighted table-row' : 'table-row'}>
-                    <Td column="id">{user.id}</Td>
                     <Td column="name">{user.name}</Td>
                     <Td column="email">{user.email}</Td>
+                    <Td column="deactivated">{user.deactivated ? 'Đã khoá' : 'Đã kích hoạt'}</Td>
                     <Td column="role" value={`${user.id}${user.roles[0]}`}>
-                      {user.roles.join(', ')}
+                      <div>{user.roles.join(', ')}</div>
                     </Td>
                     <Td column="action" value={user.id} className="table-col button-list">
-                      <button
-                        className="btn btn-xs btn-warning btn-flat"
-                        onClick={() => this.props.onEdit(user)}
-                        title="Sửa"
-                      >
-                        <i className="fa fa-fw fa-pencil" />
-                      </button>
+                      <div>
+                        <button
+                          className="btn btn-xs btn-warning btn-flat"
+                          onClick={() => this.props.onEdit(user)}
+                          title="Sửa"
+                        >
+                          <i className="fa fa-fw fa-pencil" />
+                        </button>
+                        {user.roles.indexOf('admin') === -1 &&
+                          <button
+                            className="btn btn-xs btn-success btn-flat"
+                            onClick={() => this.props.onDeactivate(user)}
+                            title={!user.deactivated ? 'Khoá' : 'Kích hoạt'}
+                          >
+                            <i className={`fa fa-fw ${!user.deactivated ? 'fa-lock' : 'fa-unlock'}`} />
+                          </button>
+                        }
+                      </div>
                     </Td>
                   </Tr>
                 ).value()
@@ -84,6 +95,7 @@ UserList.propTypes = {
 
   isLoadingList: React.PropTypes.bool.isRequired,
   onEdit: React.PropTypes.func.isRequired,
+  onDeactivate: React.PropTypes.func.isRequired,
 };
 
 export default UserList;

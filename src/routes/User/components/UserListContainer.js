@@ -32,6 +32,14 @@ const mapDispatchToProps = (dispatch) => ({
         Alert.success(`${data.name} đã được sửa thành công`);
       }))
     ));
+  },
+  onDeactivate: (user) => {
+    dispatch(updateUser({
+      id: user.id,
+      deactivated: !user.deactivated,
+    }, (data) => {
+      Alert.success(`Tài khoản ${data.email} đã được ${data.deactivated ? 'khoá' : 'kích hoạt'} thành công`);
+    }));
   }
 });
 
