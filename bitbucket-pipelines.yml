@@ -11,9 +11,7 @@ pipelines:
         caches:
           - node
         script: # Modify the commands below to build your repository.
-          - name: Set config
-            command: >
-              echo "export const API = { SERVER_URL: 'http://ap.edumall.vn:8080', };" >> config/config-production.js
+          - echo "export const API = { SERVER_URL: 'http://ap.edumall.vn:8080', };" >> config/config-production.js
           - npm install
           - npm run deploy:prod
           - scp -rf ./dist/* $SERVER_DIST
