@@ -3,7 +3,7 @@
 # Only use spaces to indent your .yml configuration.
 # -----
 # You can specify a custom docker image from Docker Hub as your build environment.
-image: node:6.9.4
+image: node:6.9.5
 
 pipelines:
   default:
@@ -11,5 +11,9 @@ pipelines:
         caches:
           - node
         script: # Modify the commands below to build your repository.
+          - name: Set config
+            command: >
+              echo "export const API = { SERVER_URL: 'http://ap.edumall.vn:8080', };" >> config/config-production.js
           - npm install
-          - npm test
+          - npm run deploy:prod
+          - scp -rf ./dist/* $SERVER_DIST
