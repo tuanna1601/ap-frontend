@@ -36,7 +36,9 @@ class DepartmentStepList extends Component {
                     <td className="text-center">{index + 1}</td>
                     <td>{step.title}</td>
                     <td className="text-center">{step.reviewingDepartment.name}</td>
-                    <td className="text-center">{step.autoClearanceAfter} ngày</td>
+                    <td className="text-center">
+                      {step.autoClearanceAfter} {step.autoClearanceAfterType === 'd' ? 'ngày' : 'giờ'}
+                    </td>
                     <td className="text-center">{step.autoClearanceType === 'accepted' ? 'Chấp nhận' : 'Từ chối'}</td>
                     <td className="text-center">{step.notificationType === 'email' ? 'Email' : 'SMS'}</td>
                     <td>
