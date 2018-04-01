@@ -30,7 +30,7 @@ class Header extends React.Component {
                     onClick={() => this.setState({ userMenuOpen: !this.state.userMenuOpen })}
                   >
                     <i className="fa fa-fw fa-user-secret" />
-                    <span className="hidden-xs">{this.props.currentUser.name}</span>
+                    <span className="hidden-xs">{this.props.currentUser.email}</span>
                   </a>
                   <ul className="dropdown-menu" onClick={() => this.setState({ userMenuOpen: false })}>
                     <li className="user-header">

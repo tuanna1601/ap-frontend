@@ -41,6 +41,7 @@ export function onAuthSuccess(token) {
   return {
     type: LOGIN_SUCCESS,
     token,
+    email: user.email,
     scope: user.scope
   };
 }
@@ -106,7 +107,7 @@ export function onAfterRenew() {
 }
 
 export function renew() {
-  return (dispatch, getState) => {
+  return () => {
     // const auth = getState().auth;
     // if (!auth) {
     //   return;
