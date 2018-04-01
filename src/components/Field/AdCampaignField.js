@@ -1,27 +1,50 @@
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
 import { Field } from 'redux-form';
+
 import { FormControlSelect } from '@/components/FormControl';
 
-class AdCampaignField extends React.Component {
+class AdCampaignField extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isLoading: false,
+      options: [],
+    };
+  }
+
   componentDidMount() {
-    this.props.listOptions();
+    this.listOptions();
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.account !== nextProps.account) {
-      this.props.listOptions(nextProps.account, nextProps.business);
+    const { account, business } = nextProps;
+    if (this.props.account !== account) {
+      this.listOptions(account, business);
     }
   }
 
-  componentWillUnmount() {
-    this.props.resetOptions();
+  async listOptions(accountId, businessId) {
+    const self = this;
+    const { listOptions, transformData } = this.props;
+    this.setState({ isLoading: true });
+    try {
+      const res = await listOptions(accountId, businessId);
+      transformData(res, options => self.setState({ options }));
+      self.setState({ isLoading: false });
+    } catch (error) {
+      console.error(error); // eslint-disable-line
+      self.setState({ isLoading: false });
+    }
   }
 
   render() {
+    const { isLoading, options } = this.state;
     return (
       <Field
         component={FormControlSelect}
-        options={this.props.options}
+        isLoading={isLoading}
+        options={options}
         {...this.props}
       />
     );
@@ -29,11 +52,10 @@ class AdCampaignField extends React.Component {
 }
 
 AdCampaignField.propTypes = {
-  account: React.PropTypes.string.isRequired,
-  business: React.PropTypes.string.isRequired,
-  options: React.PropTypes.array.isRequired,
-  listOptions: React.PropTypes.func.isRequired,
-  resetOptions: React.PropTypes.func.isRequired,
+  account: PropTypes.string.isRequired,
+  business: PropTypes.string.isRequired,
+  listOptions: PropTypes.func.isRequired,
+  transformData: PropTypes.func.isRequired,
 };
 
 export default AdCampaignField;

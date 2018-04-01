@@ -1,22 +1,23 @@
 import { connect } from 'react-redux';
-import * as _ from 'lodash';
-import { listPages, resetPages } from '@/store/common';
+import { chain, get } from 'lodash';
+
+import { listPages } from '@/store/common';
+
 import PageField from './PageField';
 
-const mapStateToProps = (state) => ({
-  options: _.chain(state.common.pages)
-    .orderBy(['name'], ['asc'])
-    .map((page) => ({
-      value: page.pageId,
-      label: `${page.name}`,
-      page
-    }))
-    .value(),
+const mapDispatchToProps = (dispatch, { business }) => ({
+  listOptions: async (businessId = business) => dispatch(listPages(businessId)),
+  transformData: (data, callback) => {
+    const options = chain(get(data, 'payload.rows', []))
+      .orderBy(['name'], ['asc'])
+      .map((page) => ({
+        value: page.pageId,
+        label: `${page.name}`,
+        page
+      }))
+      .value();
+    callback(options);
+  },
 });
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  listOptions: (business = ownProps.business) => dispatch(listPages(business)),
-  resetOptions: () => dispatch(resetPages()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(PageField);
+export default connect(null, mapDispatchToProps)(PageField);

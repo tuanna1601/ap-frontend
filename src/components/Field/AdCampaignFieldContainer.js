@@ -1,23 +1,24 @@
 import { connect } from 'react-redux';
-import * as _ from 'lodash';
-import { listAdCampaigns, resetAdCampaigns } from '@/store/common';
+import { chain, get } from 'lodash';
+
+import { listAdCampaigns } from '@/store/common';
+
 import AdCampaignField from './AdCampaignField';
 
-const mapStateToProps = (state) => ({
-  options: _.chain(state.common.adCampaigns)
-    .orderBy(['name'], ['asc'])
-    .map((campaign) => ({
-      value: campaign.id,
-      label: `${campaign.name}`,
-      campaign
-    }))
-    .value(),
+const mapDispatchToProps = (dispatch, { account, business }) => ({
+  listOptions: async (accountId = account, businessId = business) =>
+    dispatch(listAdCampaigns(accountId, businessId)),
+  transformData: (data, callback) => {
+    const options = chain(get(data, 'payload.data', []))
+      .orderBy(['name'], ['asc'])
+      .map(campaign => ({
+        value: campaign.id,
+        label: `${campaign.name}`,
+        campaign
+      }))
+      .value();
+    callback(options);
+  },
 });
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  listOptions: (account = ownProps.account, business = ownProps.business) =>
-    dispatch(listAdCampaigns(account, business)),
-  resetOptions: () => dispatch(resetAdCampaigns()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(AdCampaignField);
+export default connect(null, mapDispatchToProps)(AdCampaignField);

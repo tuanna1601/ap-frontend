@@ -1,29 +1,49 @@
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
 import { Field } from 'redux-form';
+
 import { FormControlSelect } from '@/components/FormControl';
 
-class PageField extends React.Component {
+class PageField extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isLoading: false,
+      options: [],
+    };
+  }
+
   componentDidMount() {
-    if (this.props.business) {
-      this.props.listOptions();
-    }
+    this.listOptions();
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.business !== nextProps.business) {
-      this.props.listOptions(nextProps.business);
+      this.listOptions(nextProps.business);
     }
   }
 
-  componentWillUnmount() {
-    this.props.resetOptions();
+  async listOptions(businessId) {
+    const self = this;
+    const { listOptions, transformData } = this.props;
+    this.setState({ isLoading: true });
+    try {
+      const res = await listOptions(businessId);
+      transformData(res, options => self.setState({ options }));
+      self.setState({ isLoading: false });
+    } catch (error) {
+      console.error(error); // eslint-disable-line
+      self.setState({ isLoading: false });
+    }
   }
 
   render() {
+    const { isLoading, options } = this.state;
     return (
       <Field
         component={FormControlSelect}
-        options={this.props.options}
+        isLoading={isLoading}
+        options={options}
         {...this.props}
       />
     );
@@ -31,10 +51,10 @@ class PageField extends React.Component {
 }
 
 PageField.propTypes = {
-  business: React.PropTypes.string,
-  options: React.PropTypes.array.isRequired,
-  listOptions: React.PropTypes.func.isRequired,
-  resetOptions: React.PropTypes.func.isRequired,
+  listOptions: PropTypes.func.isRequired,
+  transformData: PropTypes.func.isRequired,
+
+  business: PropTypes.string,
 };
 
 export default PageField;

@@ -1,21 +1,38 @@
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
 import { Field } from 'redux-form';
+
 import { FormControlSelect } from '@/components/FormControl';
 
-class BusinessField extends React.Component {
-  componentDidMount() {
-    this.props.listOptions();
+class BusinessField extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isLoading: true,
+      options: [],
+    };
   }
 
-  componentWillUnmount() {
-    this.props.resetOptions();
+  async componentDidMount() {
+    const self = this;
+    const { listOptions, transformData } = this.props;
+    try {
+      const res = await listOptions();
+      transformData(res, options => self.setState({ options }));
+      self.setState({ isLoading: false });
+    } catch (error) {
+      console.error(error); // eslint-disable-line
+      self.setState({ isLoading: false });
+    }
   }
 
   render() {
+    const { isLoading, options } = this.state;
     return (
       <Field
         component={FormControlSelect}
-        options={this.props.options}
+        isLoading={isLoading}
+        options={options}
         {...this.props}
       />
     );
@@ -23,9 +40,8 @@ class BusinessField extends React.Component {
 }
 
 BusinessField.propTypes = {
-  options: React.PropTypes.array.isRequired,
-  listOptions: React.PropTypes.func.isRequired,
-  resetOptions: React.PropTypes.func.isRequired,
+  listOptions: PropTypes.func.isRequired,
+  transformData: PropTypes.func.isRequired,
 };
 
 export default BusinessField;

@@ -1,17 +1,18 @@
 import * as _ from 'lodash';
 import HTTP from '@/helpers/http';
 
+const LIST_BUSINESSES = 'COMMON_LIST_BUSINESSES';
+const LIST_AD_ACCOUNTS = 'COMMON_LIST_AD_ACCOUNTS';
+const LIST_AD_CAMPAIGNS = 'COMMON_LIST_AD_CAMPAIGNS';
+const LIST_AD_SETS = 'COMMON_LIST_AD_SETS';
+const LIST_PAGES = 'COMMON_LIST_PAGES';
+
 const RELOAD_DEPARTMENTS = 'COMMON_RELOAD_DEPARTMENTS';
 const AFTER_CREATE_DEPARTMENT = 'COMMON_AFTER_CREATE_DEPARTMENT';
 const RELOAD_INVENTORIES = 'COMMON_RELOAD_INVENTORIES';
 const RELOAD_USERS = 'COMMON_RELOAD_USERS';
 const RELOAD_CRITERIA = 'COMMON_RELOAD_CRITERIA';
-const RELOAD_AD_ACCOUNTS = 'COMMON_RELOAD_AD_ACCOUNTS';
-const RELOAD_AD_CAMPAIGNS = 'COMMON_RELOAD_AD_CAMPAIGNS';
-const RELOAD_AD_SETS = 'COMMON_RELOAD_AD_SETS';
 const RELOAD_ADS = 'COMMON_RELOAD_ADS';
-const RELOAD_PAGES = 'COMMON_RELOAD_PAGES';
-const RELOAD_BUSINESSES = 'COMMON_RELOAD_BUSINESSES';
 
 export function reloadDeparments(rows) {
   return {
@@ -48,73 +49,10 @@ export function reloadCriteria(rows) {
   };
 }
 
-export function reloadAdAccounts(accounts) {
-  return {
-    type: RELOAD_AD_ACCOUNTS,
-    accounts
-  };
-}
-
-export function resetAdAccounts() {
-  return {
-    type: RELOAD_AD_ACCOUNTS,
-    accounts: []
-  };
-}
-
-export function reloadAdCampaigns(campaigns) {
-  return {
-    type: RELOAD_AD_CAMPAIGNS,
-    campaigns
-  };
-}
-
-export function resetAdCampaigns() {
-  return {
-    type: RELOAD_AD_CAMPAIGNS,
-    campaigns: []
-  };
-}
-
-export function reloadAdSets(sets) {
-  return {
-    type: RELOAD_AD_SETS,
-    sets
-  };
-}
-
-export function resetAdSets() {
-  return {
-    type: RELOAD_AD_SETS,
-    sets: []
-  };
-}
-
 export function reloadAds(ads) {
   return {
     type: RELOAD_ADS,
     ads
-  };
-}
-
-export function reloadPages(pages) {
-  return {
-    type: RELOAD_PAGES,
-    pages
-  };
-}
-
-export function resetPages() {
-  return {
-    type: RELOAD_PAGES,
-    pages: []
-  };
-}
-
-export function reloadBusinesses(businesses) {
-  return {
-    type: RELOAD_BUSINESSES,
-    businesses
   };
 }
 
@@ -188,61 +126,73 @@ export function listCriteria(department) {
 }
 
 export function listAdAccounts(businessId) {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
     const auth = getState().auth;
     if (!auth) {
-      return;
+      return undefined;
     }
 
-    const query = {
-      businessId,
-    };
-    const url = `${__CONFIG__.API.SERVER_URL}/businesses/ad-accounts?${HTTP.param(query)}`;
-    HTTP.get(auth, url, dispatch, (data) => {
-      dispatch(reloadAdAccounts(data.rows));
+    const url = '/businesses/ad-accounts';
+    return dispatch({
+      type: LIST_AD_ACCOUNTS,
+      payload: {
+        request: {
+          url,
+          method: 'GET',
+          params: {
+            businessId,
+          },
+        },
+      },
     });
   };
 }
 
 export function listAdCampaigns(accountId, businessId) {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
     const auth = getState().auth;
-    if (!auth) {
-      return;
+    if (!auth || !accountId) {
+      return undefined;
     }
 
-    const query = {
-      businessId
-    };
-    if (accountId) {
-      const url = `${__CONFIG__.API.SERVER_URL}/businesses/${accountId}/ad-campaigns?${HTTP.param(query)}`;
-      HTTP.get(auth, url, dispatch, (data) => {
-        dispatch(reloadAdCampaigns(data.data));
-      }, () => {
-        dispatch(reloadAdCampaigns([]));
-      });
-    }
+    const url = `/businesses/${accountId}/ad-campaigns`;
+
+    return dispatch({
+      type: LIST_AD_CAMPAIGNS,
+      payload: {
+        request: {
+          url,
+          method: 'GET',
+          params: {
+            businessId,
+          },
+        },
+      },
+    });
   };
 }
 
 export function listAdSets(campaignId, businessId) {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
     const auth = getState().auth;
-    if (!auth) {
-      return;
+    if (!auth || !campaignId) {
+      return undefined;
     }
 
-    const query = {
-      businessId
-    };
-    if (campaignId) {
-      const url = `${__CONFIG__.API.SERVER_URL}/businesses/${campaignId}/adsets?${HTTP.param(query)}`;
-      HTTP.get(auth, url, dispatch, (data) => {
-        dispatch(reloadAdSets(data.data));
-      }, () => {
-        dispatch(reloadAdSets([]));
-      });
-    }
+    const url = `/businesses/${campaignId}/adsets`;
+
+    return dispatch({
+      type: LIST_AD_SETS,
+      payload: {
+        request: {
+          url,
+          method: 'GET',
+          params: {
+            businessId,
+          },
+        },
+      },
+    });
   };
 }
 
@@ -268,30 +218,44 @@ export function listAds(keyword, isRemoved) {
 }
 
 export function listPages(businessId) {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
     const auth = getState().auth;
     if (!auth) {
-      return;
+      return undefined;
     }
 
-    const query = { businessId };
-    const url = `${__CONFIG__.API.SERVER_URL}/businesses/pages?${HTTP.param(query)}`;
-    HTTP.get(auth, url, dispatch, (data) => {
-      dispatch(reloadPages(data.rows));
+    const url = '/businesses/pages';
+    return dispatch({
+      type: LIST_PAGES,
+      payload: {
+        request: {
+          url,
+          method: 'GET',
+          params: {
+            businessId,
+          },
+        },
+      },
     });
   };
 }
 
 export function listBusinesses() {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
     const auth = getState().auth;
     if (!auth) {
-      return;
+      return undefined;
     }
 
-    const url = `${__CONFIG__.API.SERVER_URL}/businesses`;
-    HTTP.get(auth, url, dispatch, (data) => {
-      dispatch(reloadBusinesses(data.rows));
+    const url = '/businesses';
+    return dispatch({
+      type: LIST_BUSINESSES,
+      payload: {
+        request: {
+          url,
+          method: 'GET',
+        },
+      },
     });
   };
 }
@@ -343,34 +307,9 @@ export function reducer(state = initialState, action) {
         criteria: action.criteria
       });
     }
-    case RELOAD_AD_ACCOUNTS: {
-      return Object.assign({}, state, {
-        adAccounts: action.accounts
-      });
-    }
-    case RELOAD_AD_CAMPAIGNS: {
-      return Object.assign({}, state, {
-        adCampaigns: action.campaigns
-      });
-    }
-    case RELOAD_AD_SETS: {
-      return Object.assign({}, state, {
-        adSets: action.sets
-      });
-    }
     case RELOAD_ADS: {
       return Object.assign({}, state, {
         ads: action.ads
-      });
-    }
-    case RELOAD_PAGES: {
-      return Object.assign({}, state, {
-        pages: action.pages
-      });
-    }
-    case RELOAD_BUSINESSES: {
-      return Object.assign({}, state, {
-        businesses: action.businesses
       });
     }
     default:

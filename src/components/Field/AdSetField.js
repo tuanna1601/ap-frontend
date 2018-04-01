@@ -3,25 +3,47 @@ import { Field } from 'redux-form';
 import { FormControlSelect } from '@/components/FormControl';
 
 class AdSetField extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isLoading: false,
+      options: [],
+    };
+  }
+
   componentDidMount() {
-    this.props.listOptions();
+    this.listOptions();
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.campaign !== nextProps.campaign) {
-      this.props.listOptions(nextProps.campaign, nextProps.business);
+    const { campaign, business } = nextProps;
+    if (this.props.campaign !== campaign) {
+      this.listOptions(campaign, business);
     }
   }
 
-  componentWillUnmount() {
-    this.props.resetOptions();
+  async listOptions(campaignId, businessId) {
+    const self = this;
+    const { listOptions, transformData } = this.props;
+    this.setState({ isLoading: true });
+    try {
+      const res = await listOptions(campaignId, businessId);
+      transformData(res, options => self.setState({ options }));
+      self.setState({ isLoading: false });
+    } catch (error) {
+      console.error(error); // eslint-disable-line
+      self.setState({ isLoading: false });
+    }
   }
 
   render() {
+    const { isLoading, options } = this.state;
     return (
       <Field
         component={FormControlSelect}
-        options={this.props.options}
+        isLoading={isLoading}
+        options={options}
         {...this.props}
       />
     );
@@ -29,11 +51,10 @@ class AdSetField extends React.Component {
 }
 
 AdSetField.propTypes = {
-  campaign: React.PropTypes.string.isRequired,
   business: React.PropTypes.string.isRequired,
-  options: React.PropTypes.array.isRequired,
+  campaign: React.PropTypes.string.isRequired,
   listOptions: React.PropTypes.func.isRequired,
-  resetOptions: React.PropTypes.func.isRequired,
+  transformData: React.PropTypes.func.isRequired,
 };
 
 export default AdSetField;

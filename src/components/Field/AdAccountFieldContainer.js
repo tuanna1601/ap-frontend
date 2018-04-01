@@ -1,22 +1,23 @@
 import { connect } from 'react-redux';
-import * as _ from 'lodash';
-import { listAdAccounts, resetAdAccounts } from '@/store/common';
+import { get, chain } from 'lodash';
+
+import { listAdAccounts } from '@/store/common';
+
 import AdAccountField from './AdAccountField';
 
-const mapStateToProps = (state) => ({
-  options: _.chain(state.common.adAccounts)
-    .orderBy(['name'], ['asc'])
-    .map((account) => ({
-      value: account.accountId,
-      label: `${account.name}`,
-      account
-    }))
-    .value(),
-});
-
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  listOptions: (business = ownProps.business) => dispatch(listAdAccounts(business)),
-  resetOptions: () => dispatch(resetAdAccounts()),
+  listOptions: async (business = ownProps.business) => dispatch(listAdAccounts(business)),
+  transformData: (data, callback) => {
+    const options = chain(get(data, 'payload.rows', []))
+      .orderBy(['name'], ['asc'])
+      .map(account => ({
+        value: account.accountId,
+        label: `${account.name}`,
+        account,
+      }))
+      .value();
+    callback(options);
+  },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(AdAccountField);
+export default connect(null, mapDispatchToProps)(AdAccountField);

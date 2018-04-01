@@ -1,23 +1,24 @@
 import { connect } from 'react-redux';
-import * as _ from 'lodash';
-import { listAdSets, resetAdSets } from '@/store/common';
+import { chain, get } from 'lodash';
+
+import { listAdSets } from '@/store/common';
+
 import AdSetField from './AdSetField';
 
-const mapStateToProps = (state) => ({
-  options: _.chain(state.common.adSets)
-    .orderBy(['name'], ['asc'])
-    .map((set) => ({
-      value: set.id,
-      label: `${set.name}`,
-      set
-    }))
-    .value(),
+const mapDispatchToProps = (dispatch, { business, campaign }) => ({
+  listOptions: async (campaignId = campaign, businessId = business) =>
+    dispatch(listAdSets(campaignId, businessId)),
+  transformData: (data, callback) => {
+    const options = chain(get(data, 'payload.data', []))
+      .orderBy(['name'], ['asc'])
+      .map(set => ({
+        value: set.id,
+        label: `${set.name}`,
+        set,
+      }))
+      .value();
+    callback(options);
+  },
 });
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  listOptions: (campaign = ownProps.campaign, business = ownProps.business) =>
-    dispatch(listAdSets(campaign, business)),
-  resetOptions: () => dispatch(resetAdSets()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(AdSetField);
+export default connect(null, mapDispatchToProps)(AdSetField);
