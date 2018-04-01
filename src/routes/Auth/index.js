@@ -1,7 +1,7 @@
 import LoginContainer from './components/LoginContainer';
 import ChangePassword from './components/ChangePasswordContainer';
 
-export default (store) => ({
+export default () => ({
   path: 'auth',
   indexRoute: {
     component: LoginContainer,
