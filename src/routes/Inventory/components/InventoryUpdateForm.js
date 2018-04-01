@@ -183,11 +183,11 @@ function validateMedia(mediaArr) {
         return {
           value: (new Validator(media.value))
             .validateRequired()
-            .validateURL(['files.topica.edu.vn', 'files.topica.asia'])
+            .validateURL(__CONFIG__.APP.MEDIA_SOURCE)
             .getMessage(),
           thumbnail: (new Validator(media.thumbnail))
             .validateRequired()
-            .validateURL(['files.topica.edu.vn', 'files.topica.asia'])
+            .validateURL(__CONFIG__.APP.MEDIA_SOURCE)
             .getMessage(),
         };
       }
