@@ -35,7 +35,7 @@ const options = {
           // console.log(error.response);
           const err = typeof error === 'string' ? { message: error } : error.response.data;
           Alert.error(err.message);
-          Promise.reject(error);
+          return Promise.reject(error);
         },
       },
     ],
